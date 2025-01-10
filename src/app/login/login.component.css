@@ -1,0 +1,50 @@
+
+
+#formContainer {
+    max-height: 100vh;
+    max-width: 100vw;
+}
+nav {
+    padding-left: 10px;
+    border-bottom: 1px solid #dfdfdf;
+}
+#mainContainer {
+    height: 90vh;
+}
+
+.form-signin {
+  max-width: 600px;
+  padding: 2rem;
+  background-color: white;
+    border-radius: 9px;
+    border: 1px solid #c5c5c5;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+
+#loginhover{
+    background-image: linear-gradient(122deg, #c1dbe9, #f596b6);
+    color:black;
+}
+
+#loginhover:hover {
+    background-image: none;
+    background-color: #53686E;
+    color: white;
+}

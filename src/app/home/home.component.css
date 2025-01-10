@@ -1,0 +1,79 @@
+.navbar-brand {
+    display: flex;
+    align-items: center; /* Vertikale Zentrierung zwischen Icon und Text */
+    gap: 10px; /* Abstand zwischen Icon und Text */
+}
+
+.logo-container {
+    display: flex;
+    align-items: center; /* Vertikale Zentrierung des Textes und Icons */
+    gap: 10px; /* Abstand zwischen Icon und Text */
+}
+
+.logo-icon {
+    width: 40px; /* Größe des Icons anpassen */
+    height: 40px;
+    border-radius: 50%; /* Optional: Wenn Sie es als Kreis darstellen möchten */
+}
+
+.brand-text {
+    font-family: 'Montserrat', sans-serif; /* Stilvolle Schriftart */
+    font-size: 1.5rem; /* Schriftgröße für besseren Kontrast */
+    font-weight: bold; /* Starke Gewichtung für Text */
+    color: #000; /* Schwarz */
+}
+/* Allgemeines Styling für die Navigation */
+#home{
+    width:100%;
+    height:100vh;
+    background-image:url('/assets/Add-a-heading.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 70%;
+
+}
+
+#home .content{
+    padding-top: 300px;
+    margin-left: 56px;
+
+}
+
+#home .content h3{
+    font-size: 50px;
+    color: rgb(157, 42, 80);
+
+}
+.footer {
+    background-color:  #f8f9fa;;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 20px 10px;
+    margin-top: 20px;
+}
+
+.footer .social-media {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.footer .social-media a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer .social-media img {
+    width: 30px;
+    height: 30px;
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    
+}
+nav {
+    border-bottom: 1px solid #dfdfdf;
+ }

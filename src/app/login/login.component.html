@@ -1,0 +1,65 @@
+<div class=" row" id="formContainer">
+  <nav class="navbar bg-light" id="navbar">
+        
+    <div class="container-fluid">
+  
+      <a class="navbar-brand" href="#" id="logo">
+        <img src="../../assets/Logo.png" alt="Logo" width="45" height="44" class="d-inline-block align-text-top">
+        <span class="brand-text">Lieferpatz</span>
+      </a>
+  
+  
+      <ul class="nav justify-content-end" >
+       
+      
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/signup" routerLinkActive="active">
+            <button type="button" class="btn btn-light"> 
+                <img src="../../assets/icons8-user-30 (2).png" alt="Logo" width="25" height="24" class="d-inline-block align-text-top">
+                <i class="bi bi-person-plus"></i> Sign Up
+            </button>
+          </a>
+        </li>
+  
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/partner" routerLinkActive="active">
+              <button type="button" class="btn btn-light"> 
+                  <img src="../../assets/icons8-company-50.png" alt="Logo" width="25" height="24" class="d-inline-block align-text-top">
+                  <i class="bi bi-person-plus"></i> Join as a Partner
+              </button>
+            </a>
+          </li>
+  
+        
+      </ul>
+      
+    </div>
+    
+  </nav>
+  <div class="d-flex align-items-center py-4 bg-white" id="mainContainer">
+  
+ <main class="form-signin w-100 m-auto">
+    <form  #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" >
+      
+      <h1 class="h3 mb-3 fw-normal">Sign into your account</h1>
+  
+      <div class="form-floating">
+        <input  name="email"  type="email" class="form-control" id="floatingInput" placeholder="name@example.com" [(ngModel)]="email" required >
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password" [(ngModel)]="password" required>
+        <label for="floatingPassword">Password</label>
+      </div>
+      <button class="btn btn-secondary w-100 py-2 mb-3" type="submit" id="loginhover" > Log in</button>
+
+      <p >Not a member? <a routerLink="/signup" routerLinkActive="active">Sign Up</a></p>
+      
+    </form>
+  </main>
+  </div>
+</div>
+
+
+
+

@@ -1,0 +1,103 @@
+
+
+
+  .dashboard {
+    display: flex;
+    /* margin: 90px auto; */
+    background-color: #F8F8FD;
+    max-width: 1500px;
+    -webkit-box-shadow: 0px 0px 40px 1px rgba(0,0,0,0.1); 
+    box-shadow: 0px 0px 40px 1px rgba(0,0,0,0.1);
+    font-weight: light;
+    overflow-y: auto;
+    min-height: 100vh;
+  }
+
+  .sidebar {
+    box-sizing: border-box;
+    width: 300px;
+    background-color: #E9E9EF;
+    min-height: 100vh;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    vertical-align: top;
+    overflow-y: auto;
+    
+  }
+
+  
+  .menu {
+    list-style-type: none;
+    margin: 20px 0;
+    padding: 0;
+  }
+  .menu li {
+    margin: 7px 0;
+  }
+  .menu .active, .menu a:hover {
+    background-color: #ffffff;
+    margin-left: -30px;
+    padding-left: 30px;
+    border-radius: 0 4px 4px 0;
+    -webkit-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.05);
+  -moz-box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.05);
+  box-shadow: 3px 3px 5px 0px rgba(0,0,0,0.05);
+  }
+  .menu a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #757588;
+    display: block;
+    padding: 10px 0;
+  }
+  .menu i {
+    margin-right: 10px;
+    vertical-align: top;
+    padding-top: 1.5px;
+  }
+  .menu .active i, .menu .active a, .menu i:hover, .menu a:hover {
+    color: #6C75FF;
+  }
+  
+  /*CONTENT*/
+  .content {
+    width: 996px;
+    box-sizing: border-box;
+    height: 100%;
+    padding: 20px 30px;
+    display: inline-block;
+    vertical-align: top;
+  }
+  
+ 
+  
+  
+  
+  /*-----COLUMNS-----*/
+  .col1 {
+    width: 1000px;
+    display: inline-block;
+  }
+ 
+  .col1 .box {
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 20px;
+    -webkit-box-shadow: 0px 0px 40px 1px rgba(0,0,0,0.05); 
+    box-shadow: 0px 0px 40px 1px rgba(0,0,0,0.05);
+  }
+  .col1 .box {
+    margin: 15px 10px 15px 0;
+    height: 700px;
+  }
+ 
+
+   
+  
+
+  .table th, .table td {
+    text-align: center; /* Zentriert den Text in den Zellen */
+    vertical-align: middle; /* Zentriert den Inhalt vertikal */
+  }
+  

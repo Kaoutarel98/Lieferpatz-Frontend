@@ -1,0 +1,143 @@
+#formContainer {
+    max-height: 100vh;
+    max-width: 100vw;
+}
+
+nav {
+    padding-left: 10px;
+}
+
+#mainContainer {
+    height: 90vh;
+    flex-direction: column;
+}
+
+.form-signin {
+    max-width: 600px;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 9px;
+    border: 1px solid #c5c5c5;
+    margin: auto;
+}
+
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+#loginhover {
+    background-image: linear-gradient(122deg, #c1dbe9, #f596b6);
+    color: black;
+}
+
+#loginhover:hover {
+    background-image: none;
+    background-color: #53686E;
+    color: white;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group input[type="file"] {
+    padding: 5px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #218838;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    margin-right: 8px;
+}
+
+.navbar {
+    border-bottom: 1px solid #dfdfdf;
+}
+
+.tab-group {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px 0;
+    
+  }
+  
+  .tab-group::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  .tab-group li a {
+    display: block;
+    text-decoration: none;
+    padding: 15px;
+    background: rgba(211, 211, 211, 0.25); /* Replace $gray-light with its color value */
+    color: #d3d3d3; /* Replace $gray-light with its color value */
+    font-size: 20px;
+    float: left;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.5s ease;
+  }
+  
+  .tab-group li a:hover {
+    background: #333333; /* Replace $main-dark with its color value */
+    color: #ffffff; /* Replace $white with its color value */
+  }
+  
+  .tab-group .active a {
+    background: #53686E; /* Replace $main with its color value */
+    color: #ffffff; /* Replace $white with its color value */
+  }
+  

@@ -1,0 +1,125 @@
+
+    <div class="row" id="formContainer">
+        <nav class="navbar bg-light" id="navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" id="logo">
+                    <img src="../../assets/Logo.png" alt="Logo" width="45" height="44" class="d-inline-block align-text-top">
+                    <span class="brand-text">Lieferpatz</span>
+                </a>
+                <ul class="nav justify-content-end">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" routerLink="/login" routerLinkActive="active"  >
+                          <button  type="button" class="btn btn-light">
+                              <img src="../../assets/icons8-login-32.png" alt="Logo" width="25" height="24" class="d-inline-block align-text-top">
+                               <i class="bi bi-box-arrow-in-right"></i> Login
+                              </button>
+                        </a>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" routerLink="/signup" routerLinkActive="active">
+                            <button type="button" class="btn btn-light"> 
+                                <img src="../../assets/icons8-user-30 (2).png" alt="Logo" width="25" height="24" class="d-inline-block align-text-top">
+                                <i class="bi bi-person-plus"></i> Sign Up
+                            </button>
+                        </a>
+                    </li>
+                   
+                </ul>
+            </div>
+        </nav>
+
+        <div class="d-flex align-items-center py-4 bg-white" id="mainContainer">
+            
+        
+            <main class="form-signin w-100 m-auto">
+
+                <ul class="tab-group">
+                   <li class="tab active" [class.active]="signupContentIsActive" (click)="toggleTabs(true)" ><a >Sign Up</a></li>
+                   <li class="tab" [class.active]="!signupContentIsActive" (click)="toggleTabs(false)"><a >Log In</a></li>
+                    </ul>
+
+
+
+                    <form #loginForm="ngForm" (ngSubmit)="signupContentIsActive ? signup(loginForm.value) : login(loginForm.value)" class="needs-validation" novalidate>
+                <div id="signupContent" *ngIf="signupContentIsActive">
+                  
+                        <div class="form-group">
+                            <label for="name">Restraunt's Name</label>
+                            <input class="form-control" type="text" id="name" name="name" [(ngModel)]="user.name" required #name="ngModel">
+                            <div class="invalid-feedback" *ngIf="name.invalid && name.touched">
+                                Restraunt's Name is required.
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="strasse">Address</label>
+                            <input class="form-control" type="text" id="strasse" name="strasse" [(ngModel)]="user.strasse" required #strasse="ngModel">
+                            <div class="invalid-feedback">
+                                Address is required.
+                              </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="plz">Postal Code </label>
+                            <input class="form-control" type="text" id="plz" name="plz" [(ngModel)]="user.plz" required #plz="ngModel">
+                            <div class="invalid-feedback">
+                                Postal Code is required.
+                              </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="beschreibung">Description</label>
+                            <textarea id="beschreibung" name="beschreibung" [(ngModel)]="user.beschreibung" required #beschreibung="ngModel"></textarea>
+                            <div class="invalid-feedback">
+                                Description is required.
+                              </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="bild">Logo Image</label>
+                            <input class="form-control" type="file" id="bild" name="bild" accept="image/jpeg, image/png" [(ngModel)]="user.bild">
+                        </div>
+                        <div class="form-group">
+                            <label for="passwort">Passwort</label>
+                            <input class="form-control" type="password" id="passwort" name="passwort" [(ngModel)]="user.passwort" required #passwort="ngModel">
+                            <div class="invalid-feedback">
+                                Password is required.
+                              </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="loginhover">Sign up</button>
+                        </div>
+                    
+                </div>
+               
+                <div id="loginContent" *ngIf="!signupContentIsActive">
+                    <div class="form-group">
+                        <label for="usename" class="form-label">Username</label>
+                        <input class="form-control" type="text" id="username" name="username" [(ngModel)]="credentials.username" required #username="ngModel">
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">
+                            Username is required.
+                          </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword" class="form-label">Password</label>
+                        <input class="form-control" type="password" id="loginPassword" name="loginPassword" [(ngModel)]="credentials.loginPassword" required #loginPassword="ngModel">
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">
+                            Password is required.
+                          </div>
+                    </div>
+                    <div class="form-group" aria-current="page" routerLink="/restaurantProfile" routerLinkActive="active">
+                        <button type="submit" id="loginhover">Log In</button>
+                    </div>
+                </div>
+            </form>
+                
+            </main>
+        </div>
+    </div>
+    <div class="footer">
+        <p >
+
+        </p>
+    </div>
+
+

@@ -1,0 +1,141 @@
+
+<body>
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+      <!-- SVG icons here -->
+    </svg>
+  
+    <nav class="navbar bg-light" id="navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#" id="logo">
+          <img src="../../assets/Logo.png" alt="Logo" width="45" height="44" class="d-inline-block align-text-top">
+          <span class="brand-text">Lieferpatz</span>
+        </a>
+        <ul class="nav justify-content-end">
+          <!-- Navigation for Orders, Order History, and Logout -->
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" (click)="setActiveSection('activeOrders')">
+              <button type="button" class="btn btn-light">
+                <i aria-hidden="true" class="fa fa-cart-plus"></i> Orders
+              </button>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" (click)="setActiveSection('orderHistory')">
+              <button type="button" class="btn btn-light">
+                <i class="fa fa-history"></i> Order History
+              </button>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" (click)="logout()">
+              <button type="button" class="btn btn-light">
+                <i class="fa fa-sign-out-alt"></i> Logout
+              </button>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  
+    <main>
+      <!-- Active Orders Section -->
+      <section *ngIf="activeSection === 'activeOrders'" class="py-5">
+        <div class="container">
+          <h2>Current Orders</h2>
+          <div class="row">
+            <div class="col" *ngFor="let order of orders">
+              <div class="card shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title">Order #{{ order.id }}</h5>
+                  <p class="card-text">Status: {{ order.status }}</p>
+                  <button class="btn btn-success" (click)="acceptOrder(order)">Accept</button>
+                  <button class="btn btn-danger" (click)="declineOrder(order)">Decline</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  
+      <!-- Order History Section -->
+      <section *ngIf="activeSection === 'orderHistory'" class="py-5">
+        <div class="container">
+          <h2>Order History</h2>
+          <ul class="list-group">
+            <li *ngFor="let order of orderHistory" class="list-group-item">
+              <h5>Order #{{ order.id }} ({{ order.status }})</h5>
+              <p>Ordered at: {{ order.date | date: 'short' }}</p>
+              <ul>
+                <li *ngFor="let item of order.items">{{ item.name }} - {{ item.quantity }} x {{ item.price | currency }}</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+      
+      <!-- Restaurant Overview Section -->
+      <section *ngIf="activeSection === 'restaurantOverview'" class="py-5">
+        <div class="container">
+          <h2>Restaurants near you</h2>
+          <div class="row">
+            <div class="col" *ngFor="let restaurant of availableRestaurants">
+              <div class="card shadow-sm">
+                <img class="card-img-top" [src]="restaurant.imageUrl" alt="Restaurant Image">
+                <div class="card-body">
+                  <h5 class="card-title">{{ restaurant.name }}</h5>
+                  <p class="card-text">{{ restaurant.description }}</p>
+                  <button class="btn btn-primary" (click)="viewRestaurantDetails(restaurant.id)">View Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  
+      <!-- Restaurant Menu Section (Details) -->
+      <section *ngIf="activeSection === 'restaurantDetails'" class="py-5">
+        <div class="container">
+          <h2>{{ selectedRestaurant.name }} - Menu</h2>
+          <div class="row">
+            <div class="col" *ngFor="let item of selectedRestaurant.menuItems">
+              <div class="card">
+                <img class="card-img-top" [src]="item.imageUrl" alt="Item Image">
+                <div class="card-body">
+                  <h5 class="card-title">{{ item.name }}</h5>
+                  <p class="card-text">{{ item.description }}</p>
+                  <p class="card-text">Price: {{ item.price | currency }}</p>
+                  <input type="number" [(ngModel)]="item.quantity" name="quantity" min="1" class="form-control mb-3">
+                  <button class="btn btn-primary" (click)="addItemToCart(item)">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  
+      <!-- Order Summary Section -->
+      <section *ngIf="activeSection === 'orderSummary'" class="py-5">
+        <div class="container">
+          <h2>Your Order Summary</h2>
+          <ul>
+            <li *ngFor="let item of cartItems">{{ item.name }} - {{ item.quantity }} x {{ item.price | currency }}</li>
+          </ul>
+          <p>Total: {{ totalPrice | currency }}</p>
+          <textarea class="form-control mb-3" [(ngModel)]="orderNote" placeholder="Add any notes for the restaurant"></textarea>
+          <button type="button" class="btn btn-success" (click)="submitOrder()">Submit Order</button>
+        </div>
+      </section>
+  
+    </main>
+  
+    <div class="footer">
+      <p>&copy; 2024 LieferSpatz. All Rights Reserved.</p>
+      <div class="social-media">
+        <a href="https://facebook.com" target="_blank"><img src="/assets/facebook-icon.png" alt="Facebook"></a>
+        <a href="https://twitter.com" target="_blank"><img src="/assets/twitter-icon.png" alt="Twitter"></a>
+        <a href="https://instagram.com" target="_blank"><img src="/assets/instagram-icon.png" alt="Instagram"></a>
+      </div>
+    </div>
+  
+  </body>
+  
