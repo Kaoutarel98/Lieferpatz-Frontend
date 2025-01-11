@@ -3,6 +3,7 @@ import { Component, OnInit  } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-partner-login',
@@ -14,8 +15,8 @@ import { AuthService } from '../services/auth.service';
 export class PartnerLoginComponent {
   user: any = { name: '', strasse: '', plz: '', beschreibung: '', bild: null, passwort: '' };  // Für die Registrierung
   credentials = { username: '', loginPassword: '' };
-
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
+ 
 
 
 
@@ -57,11 +58,15 @@ export class PartnerLoginComponent {
   }
 
  
-  login(formValue: any){
+  login(formValue: any) {
     this.authService.login(formValue).subscribe({
-      next: (response) => console.log('Login erfolgreich', response),
-      error: (error) => console.log('Fehler beim Login', error)
+      next: (response: any) => {
+        console.log('Login erfolgreich', response);
+        if (response.status == 200) {
+          this.router.navigate(['/restaurantProfile']);
+        }
+      },
+      error: (error: any) => console.log('Fehler beim Login', error)
     });
   }
-
 }
