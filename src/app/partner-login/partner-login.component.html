@@ -52,6 +52,14 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="name">Email</label>
+                            <input class="form-control" type="text" id="Email" name="Email" [(ngModel)]="user.Email" required #Email="ngModel">
+                            <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched">
+                                Email is required.
+                          </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="strasse">Address</label>
                             <input class="form-control" type="text" id="strasse" name="strasse" [(ngModel)]="user.strasse" required #strasse="ngModel">
                             <div class="invalid-feedback">

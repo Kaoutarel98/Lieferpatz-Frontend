@@ -3,6 +3,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Attach to Port",
+      "type": "jdk",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": "8000"
+    },
+    {
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",

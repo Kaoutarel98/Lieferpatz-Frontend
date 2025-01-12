@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrl: './partner-login.component.css'
 })
 export class PartnerLoginComponent {
-  user: any = { name: '', strasse: '', plz: '', beschreibung: '', bild: null, passwort: '' };  // Für die Registrierung
+  user: any = { name: '',Email:'', strasse: '', plz: '', beschreibung: '', bild: null, passwort: '' };  // Für die Registrierung
   credentials = { username: '', loginPassword: '' };
   constructor(private authService: AuthService, private router: Router) {}
  
@@ -51,6 +51,7 @@ export class PartnerLoginComponent {
 
 
   signup(formValue: any) {
+    console.log('formValue: ', formValue);
     this.authService.signup(formValue).subscribe({
       next: (response) => console.log('Registrierung erfolgreich', response),
       error: (error) => console.log('Fehler bei der Registrierung', error)

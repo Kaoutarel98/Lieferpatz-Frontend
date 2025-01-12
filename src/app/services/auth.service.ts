@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   
-  private apiUrl= 'http://localhost:8080/api/v1/restaurant'; // Ändern Sie den Pfad entsprechend Ihrem Backend
+  private apiUrl= '/api/v1/restaurant'; // Ändern Sie den Pfad entsprechend Ihrem Backend
 
   constructor(private http: HttpClient) { }
   
   signup(restaurantData: any): Observable<any> {
-    console.log('restaurantData: ', restaurantData);
+    
     return this.http.post(`${this.apiUrl}/erstellen`, restaurantData);
   }
 
