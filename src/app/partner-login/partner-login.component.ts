@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrl: './partner-login.component.css'
 })
 export class PartnerLoginComponent {
-  user: any = { name: '',Email:'', strasse: '', plz: '',ort:'',beschreibung: '', bild: , passwort: '' };  // Für die Registrierung
+  user: any = { name: '',email:'', strasse: '', plz: '',ort:'',beschreibung: '', bild: '', password: '' };  // Für die Registrierung
   credentials = { username: '', loginPassword: '' };
   constructor(private authService: AuthService, private router: Router) {}
  
