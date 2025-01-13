@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class PartnerLoginComponent {
   user: any = { name: '',email:'', strasse: '', plz: '',ort:'',beschreibung: '', bild: '', password: '' };  // Für die Registrierung
-  credentials = { username: '', loginPassword: '' };
+  credentials = { email: '', password: '' };
   constructor(private authService: AuthService, private router: Router) {}
  
 

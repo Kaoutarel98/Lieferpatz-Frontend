@@ -19,7 +19,7 @@ export class AuthService {
   // Für Login (Annahme, dass Login Endpoint existiert oder ähnliche Methode)
   login(credentials: any): Observable<any> {
     console.log(' credentials:  ', credentials);
-    return this.http.post(`${this.apiUrl}/login`, credentials); // Ändern Sie den Pfad entsprechend Ihrem Backend
+    return this.http.post(`http://localhost:8080/api/v1/user/login`, credentials); // Ändern Sie den Pfad entsprechend Ihrem Backend
   }
 
 
