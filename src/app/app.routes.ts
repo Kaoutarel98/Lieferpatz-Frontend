@@ -8,7 +8,8 @@ import { PartnerLoginComponent } from './partner-login/partner-login.component';
 import { RestaurantProfileComponent } from './restaurant-profile/restaurant-profile.component';
 import { UserDashboardComponent } from './user-dashboard/user-dashboard.component';
 import { UserorderComponent } from './userorder/userorder.component';
-import { UserOrderHistoryComponent } from './user-order-history/user-order-history.component';
+
+import { UserRestaurantItemsComponent } from './user-restaurant-items/user-restaurant-items.component';
 
 
 export const routes: Routes = [
@@ -20,8 +21,9 @@ export const routes: Routes = [
     
     { path: 'restaurantProfile', component: RestaurantProfileComponent},
     { path: 'UserDashboard', component: UserDashboardComponent},
+    { path: 'restaurant-menu/:id', component: UserRestaurantItemsComponent},
     { path: 'userorder', component: UserorderComponent},
-    { path: 'userorderhistory', component: UserOrderHistoryComponent},
+   
 
 
 

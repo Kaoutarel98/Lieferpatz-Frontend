@@ -12,7 +12,7 @@ import { OrderService } from '../services/order.service';
 @Component({
   selector: 'app-restaurant-profile',
   standalone:true,
-  imports: [RouterModule,RouterLink,CommonModule,FormsModule ],
+  imports: [RouterModule, CommonModule, FormsModule],
   templateUrl: './restaurant-profile.component.html',
   styleUrl: './restaurant-profile.component.css',
  
@@ -46,29 +46,11 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
   }
 
   onSubmit(formData: NgForm): void {
-   
     console.log('Form Data: ', formData.value);
     this.items.push(formData.value);
-   
     console.log('Items: ', this.items);
-
-    // this.initializeValidation();
-    // // Here you would handle your form submission to server or further processing
-
-    // // if (!formData.valid) {
-    // //   console.log('Form is not valid');
-    // //   return;
-    // // }
-
-    // console.log('after validation');
-    
-    // // window.alert('Form submitted successfully!');
-   
-  
-
-     
     formData.reset();
- 
+
   
   }
 
@@ -196,5 +178,6 @@ declineOrder(order: any) {
   console.log('Order declined:', order);
   // Implementieren Sie die Logik zum Ablehnen der Bestellung
 }
+
 
 }

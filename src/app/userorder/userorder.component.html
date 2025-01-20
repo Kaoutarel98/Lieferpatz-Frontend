@@ -1,1 +1,114 @@
-<p>userorder works!</p>
+<nav class="navbar bg-light" id="navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" id="logo">
+            <img src="../../assets/Logo.png" alt="Logo" width="45" height="44" class="d-inline-block align-text-top">
+            <span class="brand-text">Lieferpatz</span>
+        </a>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" routerLink="/UserDashboard" routerLinkActive="active">
+                    <button type="button" class="btn btn-light">
+                        <i aria-hidden="true" ></i><span class="icon-[hugeicons--menu-restaurant]">Dashboard</span> 
+                    </button>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" routerLink="/home" routerLinkActive="active">
+                    <button type="button" class="btn btn-light">
+                        <i class="fa fa-sign-out-alt"></i> Logout
+                    </button>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <!-- Tabs for Current Orders and Order History -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="activeSection === 'CurrentOrder'" (click)="setActiveSection('CurrentOrder')">
+                Current Orders
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [class.active]="activeSection === 'OrderHistory'" (click)="setActiveSection('OrderHistory')">
+                Order History
+            </a>
+        </li>
+    </ul>
+
+    <div class="input-group my-3">
+        <span class="input-group-text">🔍</span>
+        <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Search by Restaurant, Items, or Status..." 
+            [(ngModel)]="searchTerm" 
+            (input)="filterOrders()"
+        />
+    </div>
+
+    <!-- Current Orders Section -->
+    <div *ngIf="activeSection === 'CurrentOrder'" class="mt-3">
+        <div class="row flex-column">
+            <div class="col-12 mb-3" *ngFor="let order of currentOrders">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ order.restaurantName }}</h5>
+                        <p class="card-text">
+                            <strong>Items:</strong> {{ order.items.join(', ') }}
+                        </p>
+                        <p class="card-text">
+                            <strong>Order Date:</strong> {{ order.date | date:'medium' }}
+                        </p>
+                        <span 
+                            class="badge text-bg-success" 
+                            *ngIf="order.status === 'Accepted'">
+                            {{ order.status }}
+                        </span>
+                        <span 
+                            class="badge text-bg-warning" 
+                            *ngIf="order.status === 'In Zubereitung'">
+                            {{ order.status }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order History Section -->
+    <div *ngIf="activeSection === 'OrderHistory'" class="mt-3">
+        <div class="row flex-column">
+            <div class="col-12 mb-3" *ngFor="let history of orderHistory">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ history.restaurantName }}</h5>
+                        <p class="card-text">
+                            <strong>Items:</strong> {{ history.items.join(', ') }}
+                        </p>
+                        <p class="card-text">
+                            <strong>Order Date:</strong> {{ history.date | date:'medium' }}
+                        </p>
+                        <span 
+                            class="badge text-bg-danger" 
+                            *ngIf="history.status === 'Storniert'">
+                            {{ history.status }}
+                        </span>
+                        <span 
+                            class="badge text-bg-secondary" 
+                            *ngIf="history.status === 'Abgeschlossen'">
+                            {{ history.status }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ 
+
+

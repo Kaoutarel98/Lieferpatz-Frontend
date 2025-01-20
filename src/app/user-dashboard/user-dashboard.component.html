@@ -1,7 +1,7 @@
-<body>
-    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-      <!-- SVG icons here -->
-    </svg>
+
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+      SVG icons here -->
+    <!-- </svg> --> 
   
     <nav class="navbar bg-light" id="navbar">
       <div class="container-fluid">
@@ -18,13 +18,13 @@
               </button>
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" aria-current="page" routerLink="/userorderhistory" routerLinkActive="active">
               <button type="button" class="btn btn-light">
                 <i class="fa fa-history"></i> Order History
               </button>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <a class="nav-link" aria-current="page" routerLink="/home" routerLinkActive="active">
               <button type="button" class="btn btn-light">
@@ -36,56 +36,155 @@
       </div>
     </nav>
   
-    <main>
-        <section class="py-5 text-center container">
-            <div class="row py-lg-5">
-              <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">Album example</h1>
-                <p class="lead text-body-secondary">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-                <p>
-                  <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                  <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-                </p>
+    <main > 
+     <div class="container">
+          <div class="album py-5">
+            <div class="text-center mb-4">
+              <h1>Your Restaurants</h1>
+              <p class="lead">Explore and manage your favorite restaurants.</p>
+            </div>
+            
+        
+              <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+                <div class="col" *ngFor="let restaurant of restaurants">
+                  <div class="card shadow-sm">
+                      <img class="card-img-top" [src]="restaurant.imageUrl" [alt]="restaurant.name" width="100%" height="225">
+                      <div class="card-body">
+                          <h5 class="card-title">{{ restaurant.name }}</h5>
+                          <p class="card-text">{{ restaurant.description }}</p>
+                          
+                          <p class="card-text"><small>Öffnungszeiten: {{ restaurant.openingHours }}</small></p>
+                          <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                <div class="d-flex justify-content-between align-items-center" [routerLink]="['/restaurant-menu', restaurant.id]">
+                                  <i class="fa fa-chevron-right" ></i> Menu
+
+                                </div>
+                              </div>
+                            
+                          </div> 
+                      </div>
+                  </div>
+              </div>
+
+
+
+
+
+
+                <div class="col">
+                  <div class="card shadow-sm">
+                    <img src="../../assets/Burger-king-2.avif" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
+                    <div class="card-body">
+                      <p class="restaurant-name mb-1">Burger King</p>
+                      <div class="d-flex justify-content-between align-items-center">
+                          <p class="restaurant-description mb-0"><small>Leckere Burgers</small></p>
+                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
+                      </div>
+                     
+                      <div class="text-center mt-3">
+                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantItems" routerLinkActive="active" >
+                          <i class="fa fa-chevron-right"></i> Menu
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="card shadow-sm">
+                    <img src="../../assets/Burger-king-2.avif" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
+                    <div class="card-body">
+                      <p class="restaurant-name mb-1">Burger King</p>
+                      <div class="d-flex justify-content-between align-items-center">
+                          <p class="restaurant-description mb-0"><small>Leckere Burgers</small></p>
+                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
+                      </div>
+                     
+                      <div class="text-center mt-3">
+                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantItems" routerLinkActive="active" >
+                          <i class="fa fa-chevron-right"></i>Menu
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="card shadow-sm">
+                    <img src="../../assets/Burger-king-2.avif" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
+                    <div class="card-body">
+                      <p class="restaurant-name mb-1">Burger King</p>
+                      <div class="d-flex justify-content-between align-items-center">
+                          <p class="restaurant-description mb-0"><small>Leckere Burgers</small></p>
+                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
+                      </div>
+                     
+                      <div class="text-center mt-3">
+                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantItems" routerLinkActive="active" >
+                          <i class="fa fa-chevron-right"></i> Menu
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="card shadow-sm">
+                    <img src="../../assets/Burger-king-2.avif" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
+                    <div class="card-body">
+                      <p class="restaurant-name mb-1">Burger King</p>
+                      <div class="d-flex justify-content-between align-items-center">
+                          <p class="restaurant-description mb-0"><small>Leckere Burgers</small></p>
+                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
+                      </div>
+                     
+                      <div class="text-center mt-3">
+                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantitem" routerLinkActive="active" >
+                          <i class="fa fa-chevron-right"></i> Menu
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="card shadow-sm">
+                    <img src="../../assets/tajine.jpeg" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
+                    <div class="card-body">
+                      <p class="restaurant-name mb-1">Marrakesh Tajine</p>
+                      <div class="d-flex justify-content-between align-items-center">
+                          <p class="restaurant-description mb-0"><small>Moroccan Food</small></p>
+                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
+                      </div>
+                     
+                      <div class="text-center mt-3">
+                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantitem" routerLinkActive="active" >
+                          <i class="fa fa-chevron-right"></i> Menu
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        
+                
               </div>
             </div>
-          </section>
-     
-   
-      
-      <div class="album py-5 bg-body-tertiary">
-        <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <div class="col" *ngFor="let restaurant of restaurants">
-                    <div class="card shadow-sm">
-                        <img class="card-img-top" [src]="restaurant.imageUrl" [alt]="restaurant.name" width="100%" height="225">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ restaurant.name }}</h5>
-                            <p class="card-text">{{ restaurant.description }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="viewRestaurantDetails(restaurant.id)">View</button>
-                                </div>
-                              
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-  
-    
-    
-  
+
     </main>
-  
-    <div class="footer">
-      <p>&copy; 2024 LieferSpatz. All Rights Reserved.</p>
-      <div class="social-media">
-        <a href="https://facebook.com" target="_blank"><img src="/assets/facebook-icon.png" alt="Facebook"></a>
-        <a href="https://twitter.com" target="_blank"><img src="/assets/twitter-icon.png" alt="Twitter"></a>
-        <a href="https://instagram.com" target="_blank"><img src="/assets/instagram-icon.png" alt="Instagram"></a>
+
+    <footer id="footer">
+      <div class="footer" >
+        <p>&copy; 2024 LieferSpatz. All Rights Reserved.</p>
+        <div class="social-media">
+          <a href="https://facebook.com" target="_blank"><img src="/assets/facebook-icon.png" alt="Facebook"></a>
+          <a href="https://twitter.com" target="_blank"><img src="/assets/twitter-icon.png" alt="Twitter"></a>
+          <a href="https://instagram.com" target="_blank"><img src="/assets/instagram-icon.png" alt="Instagram"></a>
+        </div>
       </div>
-    </div>
+    </footer>
+ 
   
-  </body>
+

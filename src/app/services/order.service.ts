@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class OrderService {
 
-  private apiUrl = '/api/v1/restaurant';  // Die Basis-URL deines Backend-Controllers
+  private apiUrl = '/api/v1/restaurant';
+  private WarenkorbUrl = '/api/v1/Warenkorb';  // Die Basis-URL deines Backend-Controllers
 
   constructor(private http: HttpClient) { }
 
@@ -30,4 +31,10 @@ export class OrderService {
   completeOrder(orderId: number): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/bestellung/complete/${orderId}`, {});
   }
+  getStatus(orderId: number): Observable<any> {
+
+    return this.http.get<any>(`${this.apiUrl}/bestellung/status/${orderId}`);
+  }
+
+  
 }

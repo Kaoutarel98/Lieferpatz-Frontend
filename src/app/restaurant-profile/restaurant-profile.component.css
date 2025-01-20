@@ -1,6 +1,4 @@
 
-
-
   .dashboard {
     display: flex;
     /* margin: 90px auto; */
@@ -25,7 +23,6 @@
     overflow-y: auto;
     
   }
-
   
   .menu {
     list-style-type: none;
@@ -100,4 +97,5 @@
     text-align: center; /* Zentriert den Text in den Zellen */
     vertical-align: middle; /* Zentriert den Inhalt vertikal */
   }
+  
   

@@ -1,0 +1,193 @@
+
+.nav-scroller {
+    position: relative;
+    z-index: 2;
+    height: 2.75rem;
+    overflow-y: hidden;
+  }
+
+  .nav-scroller .nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+.kleiner-nav{
+    height: 50px;
+}
+
+.tab {
+     
+   
+    /* font-size: 100px;   */
+    line-height: 60px; 
+    border: none; 
+    color: white;
+}
+
+.tab-group {
+    list-style: none;
+    
+  }
+  
+  /* .tab-group::after {
+    content: "";
+    display: table;
+    clear: both;
+  } */
+  
+  .tab-group li a {
+    display: block;
+    text-decoration: none;
+   
+    background: rgba(211, 211, 211, 0.25); /* Replace $gray-light with its color value */
+    color: #d3d3d3; /* Replace $gray-light with its color value */
+    font-size: 20px;
+    float: left;
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.5s ease;
+  }
+  
+  .tab-group li a:hover {
+    background: #393d3e4b; 
+    color:#000000; /* Replace $white with its color value */
+  }
+  
+  .tab-group .active a {
+    background: #5661644b; /* Replace $main with its color value */
+    color:#000000; /* Replace $white with its color value */
+  }
+
+  #mainContainer {
+    height: 100px;
+    flex-direction: column;
+    
+}
+
+.form-order{
+    width: 100%;
+    padding-top: -50px;
+    background-color: rgba(75, 50, 68, 0.311);
+    border-radius: 9px;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+  
+  .card-text strong {
+    color: #6c757d; /* Text muted color for labels */
+  }
+  
+  .badge {
+    font-size: 0.9rem;
+    padding: 0.4em 0.7em;
+  }
+  
+
+
+
+#user-banner .user-text{
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,0a151c+100&0+0,1+100 */
+	background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(10,21,28,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(10,21,28,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to left, rgba(255,255,255,0) 0%, rgba(10,21,28,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#0a151c', GradientType=1 ); /* IE6-9 */
+}
+#user-banner .user-text h2 {
+	font-family: 'open_sansbold';
+	color: #ffffff;
+	font-size: 40px;
+	text-transform: uppercase;
+	text-shadow: 1px 3px 1px #000000;
+}
+#user-banner .user-text p{
+color:#fff;
+} 
+#user-account-content{
+padding:25px 0px;
+}
+#user-account-content .list-group-item.disabled, #user-account-content .list-group-item.disabled:focus, #user-account-content .list-group-item.disabled:hover {
+    background-color: #e8206a;
+    color: #ffffff;
+    cursor: not-allowed;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+#user-account-content a.list-group-item{transition: all 0.3s ease-out;}
+#user-account-content .list-group-item.active, #user-account-content .list-group-item.active:focus, #user-account-content .list-group-item.active:hover {
+    background: #009dbf none repeat scroll 0 0;
+    text-shadow: 0 -1px 0 #286090;
+	border:none;
+}
+#user-account-content a.list-group-item:focus, #user-account-content a.list-group-item:hover, #user-account-content button.list-group-item:focus, #user-account-content button.list-group-item:hover {
+    background-color: #f89921;
+    color: #fff;
+    text-decoration: none;
+	padding-left: 25px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.filterable .panel-heading .pull-right {
+    margin-top: -20px;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+    color: #333;
+}
+.panel-default>.panel-heading {
+	background-image:none;
+    background-color: #f5f5f5 !important;
+}
+.btn-success {
+    color: #fff;
+	background-image:none;
+    background-color: #5cb85c !important;
+    border-color: #4cae4c;
+	box-shadow:none;
+	text-shadow:none;
+}
+.btn-danger {
+	background-image:none;
+    background-color: #d9534f !important;
+    border-color: #d43f3a;
+    color: #fff;
+	box-shadow:none;
+	text-shadow:none;
+}
+.btn-pink {
+	background-color: #e8206a;
+	color: #ffffff;
+	text-shadow: none;
+	border-radius: 0px;
+}
+.btn-primary {
+	background-image:none;
+    background-color: #337ab7 !important;
+    border-color: #2e6da4;
+    color: #fff;
+	box-shadow:none;
+	text-shadow:none;
+}

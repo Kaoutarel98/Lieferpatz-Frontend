@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
   styleUrl: './partner-login.component.css'
 })
 export class PartnerLoginComponent {
-  user: any = { name: '',Email:'', strasse: '', plz: '',ort:'',beschreibung: '', bild: , passwort: '' };  // Für die Registrierung
-  credentials = { username: '', loginPassword: '' };
+  user: any = { name: '',email:'', strasse: '', plz: '',ort:'',beschreibung: '', bild:'', password: '' };  // Für die Registrierung
+  credentials = { email: '', password: '' };
   constructor(private authService: AuthService, private router: Router) {}
  
 
@@ -63,8 +63,10 @@ export class PartnerLoginComponent {
     this.authService.login(formValue).subscribe({
       next: (response: any) => {
         console.log('Login erfolgreich', response);
-        if (response.status == 200) {
+        if (response && response.status === 200) {
           this.router.navigate(['/restaurantProfile']);
+        } else {
+          console.error('Unexpected response structure:', response);
         }
       },
       error: (error: any) => console.log('Fehler beim Login', error)

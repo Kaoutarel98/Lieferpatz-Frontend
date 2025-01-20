@@ -18,24 +18,21 @@
                     <a (click)="setActiveSection('activeOrders')">
                           <i class="fa fa-cart-arrow-down" ></i> active Orders
                     </a>
-               </li>
-            
-               <li>
-                <a (click)="setActiveSection('ordersHistory')">
-                      <i class="fa fa-history" ></i>order history
-                </a>
-           </li>
-        
-                
+                  </li>
+                  
+                    <li>
+                      <a (click)="setActiveSection('ordersHistory')">
+                            <i class="fa fa-history" ></i>order history
+                      </a>
+                    </li>
 
-                    <li><a (click)="setActiveSection('setting')"><i class="fas fa-cog"></i>Settings</a></li>
+                    <li>
+                      <a (click)="setActiveSection('setting')"><i class="fas fa-cog">
 
-                    
+                      </i>Settings</a>
+                    </li>
+
                 </ul>
-
-                <!-- <ul class="mt-auto">
-                    <li ><a (click)="setActiveSection('setting')"><i class="fas fa-cog"></i>Logout</a></li>
-                </ul> -->
 
                 
        </div>
@@ -45,95 +42,95 @@
     </div>
 
 
- <section *ngIf="activeSection === 'menu-management'" class="p-5">
+<section *ngIf="activeSection === 'menu-management'" class="p-5">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Add Item
+  </button>
+<hr>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add a new item to Menu</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form class="item needs-validation" #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" novalidate>
+              <label for="itemName">Item Name</label>
+              <input type="text" name="itemName" class="form-control" id="itemName" [(ngModel)]="itemName" required />
+              
+              <label for="itemPrice">Item Price</label>
+              <input type="text" name="itemPrice" class="form-control" id="itemPrice" [(ngModel)]="itemPrice" required/>
+             
+              <label for="image">Choose an Image</label>
+              <input type="file" name="image" accept="image/*" class="form-control" id="image" [(ngModel)]="image" required/>
+              
+
+              <label for="category">Select a Category</label>
+              <select name="category" id="category" class="form-control" [(ngModel)]="category">
+                <option value="Drinks">Drinks</option>
+                <option value="Meals">Meals</option>
+              </select>
+
+              <label for="description">Description</label>
+              <textarea name="description" class="form-control" id="description" [(ngModel)]="description"></textarea>
+
+             
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  
+                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                </div>
+            </form>
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+
+   <div class="ItemContent d-flex justify-content-center my-5">
+      <div class="card" style="width: 18rem; margin: 10px;">
+          <img src="../../assets/grilled-hamburger-meal-with-fries-cheese-generative-ai.jpg" class="card-img-top" >
+          <div class="card-body">
+          <h5 class="card-title">Beef Burger Menu</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary ">Edit</a>
+          <a href="#" class="btn btn-danger ms-2">Delete</a>
+          </div>
+      </div>
+
+      <div class="card" style="width: 18rem; margin: 10px;">
+          <img src="..." class="card-img-top" alt="...">
+          <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary ">Edit</a>
+          <a href="#" class="btn btn-danger ms-2">Delete</a>
+          </div>
+      </div>
+
+      <div class="card" style="width: 18rem; margin: 10px;">
+          <img src="..." class="card-img-top" alt="...">
+          <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary ">Edit</a>
+          <a href="#" class="btn btn-danger ms-2">Delete</a>
+          </div>
+      </div>
+
+  </div>
+</section> 
 
     <!-- Button trigger modal -->
 
-    <h1>Menu</h1>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Add Item
-  </button>
-  <hr>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Add a new item to Menu</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form class="item needs-validation" #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" novalidate>
-                <label for="itemName">Item Name</label>
-                <input type="text" name="itemName" class="form-control" id="itemName" [(ngModel)]="itemName" required />
-                
-                <label for="itemPrice">Item Price</label>
-                <input type="text" name="itemPrice" class="form-control" id="itemPrice" [(ngModel)]="itemPrice" required/>
-               
-                <label for="image">Choose an Image</label>
-                <input type="file" name="image" accept="image/*" class="form-control" id="image" [(ngModel)]="image" required/>
-                
-
-                <label for="category">Select a Category</label>
-                <select name="category" id="category" class="form-control" [(ngModel)]="category">
-                  <option value="Drinks">Drinks</option>
-                  <option value="Meals">Meals</option>
-                </select>
-
-                <label for="description">Description</label>
-                <textarea name="description" class="form-control" id="description" [(ngModel)]="description"></textarea>
-
-               
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    
-                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-                  </div>
-              </form>
-        </div>
-      
-      </div>
-    </div>
-  </div>
-
-
-
-     <div class="ItemContent d-flex justify-content-center my-5">
-        <div class="card" style="width: 18rem; margin: 10px;">
-            <img src="../../assets/grilled-hamburger-meal-with-fries-cheese-generative-ai.jpg" class="card-img-top" >
-            <div class="card-body">
-            <h5 class="card-title">Beef Burger Menu</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary ">Edit</a>
-            <a href="#" class="btn btn-danger ms-2">Delete</a>
-            </div>
-        </div>
-
-        <div class="card" style="width: 18rem; margin: 10px;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary ">Edit</a>
-            <a href="#" class="btn btn-danger ms-2">Delete</a>
-            </div>
-        </div>
-
-        <div class="card" style="width: 18rem; margin: 10px;">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary ">Edit</a>
-            <a href="#" class="btn btn-danger ms-2">Delete</a>
-            </div>
-        </div>
-
-    </div> 
     
- </section>
-
+    
+ 
  <section *ngIf="activeSection === 'activeOrders'" class="p-5">
 
     
