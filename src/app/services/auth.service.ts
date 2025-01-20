@@ -7,11 +7,14 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   
+
   private restaurantApiUrl= '/api/v1/restaurant';
   private kundeApiUrl = '/api/v1/user';
   
   
  // Ändern Sie den Pfad entsprechend Ihrem Backend
+
+  private apiUrl= '/api/v1/restaurant'; // Ändern Sie den Pfad entsprechend Ihrem Backend
 
   constructor(private http: HttpClient) { }
   
@@ -22,8 +25,14 @@ export class AuthService {
 
   // Für Login (Annahme, dass Login Endpoint existiert oder ähnliche Methode)
   login(credentials: any): Observable<any> {
+    
     console.log(' credentials:  ', credentials);
+
     return this.http.post(`${this.kundeApiUrl}/login`, credentials); // Ändern Sie den Pfad entsprechend Ihrem Backend
+
+    
+     // Ändern Sie den Pfad entsprechend Ihrem Backend
+ 
   }
 
 

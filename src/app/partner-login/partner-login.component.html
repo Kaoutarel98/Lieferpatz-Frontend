@@ -40,95 +40,115 @@
 
 
 
-                    <form #loginForm="ngForm" (ngSubmit)="signupContentIsActive ? signup(loginForm.value) : login(loginForm.value)" class="needs-validation" novalidate>
-                <div id="signupContent" *ngIf="signupContentIsActive">
-                  
-                        <div class="form-group">
-                            <label for="name">Restraunt's Name</label>
-                            <input class="form-control" type="text" id="name" name="name" [(ngModel)]="user.name" required #name="ngModel">
-                            <div class="invalid-feedback" *ngIf="name.invalid && name.touched">
-                                Restraunt's Name is required.
-                          </div>
-                        </div>
+             <form #loginForm="ngForm" (ngSubmit)="signupContentIsActive ? signup(loginForm.value) : login(loginForm.value)" class="needs-validation" novalidate>
+                    <div id="signupContent" *ngIf="signupContentIsActive">
+                    
+                            <div class="form-group">
+                                <label for="name">Restraunt's Name</label>
+                                <input class="form-control" type="text" id="name" name="name" [(ngModel)]="user.name" required #name="ngModel">
+                                <div class="invalid-feedback" *ngIf="name.invalid && name.touched">
+                                    Restraunt's Name is required.
+                            </div>
+                            </div>
 
+                            <div class="form-group">
+
+                                <label for="name">Email</label>
+                                <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #Email="ngModel">
+                                <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched">
+
+                                <label for="email">Email</label>
+                                <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #email="ngModel">
+                                <div class="invalid-feedback" *ngIf="email.invalid && email.touched">
+
+                                    Email is required.
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="strasse">Address</label>
+                                <input class="form-control" type="text" id="strasse" name="strasse" [(ngModel)]="user.strasse" required #strasse="ngModel">
+                                <div class="invalid-feedback">
+                                    Address is required.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="plz">Postal Code </label>
+                                <input class="form-control" type="text" id="plz" name="plz" [(ngModel)]="user.plz" required #plz="ngModel">
+                                <div class="invalid-feedback">
+                                    Postal Code is required.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="plz">Ort</label>
+                                <input class="form-control" type="text" id="ort" name="ort" [(ngModel)]="user.ort" required #ort="ngModel">
+                                <div class="invalid-feedback">
+                                    Ort is required.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="beschreibung">Description</label>
+                                <textarea id="beschreibung" name="beschreibung" [(ngModel)]="user.beschreibung" required #beschreibung="ngModel"></textarea>
+                                <div class="invalid-feedback">
+                                    Description is required.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="bild">Logo Image</label>
+                                <input class="form-control" type="file" id="bild" name="bild" accept="image/jpeg, image/png" [(ngModel)]="user.bild">
+                            </div>
+                            <div class="form-group">
+
+                                <label for="passwort">Passwort</label>
+                                <label for="password">Passwort</label>
+
+                                <input class="form-control" type="password" id="password" name="password" [(ngModel)]="user.password" required #password="ngModel">
+                                <div class="invalid-feedback">
+                                    Password is required.
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" id="loginhover">Sign up</button>
+                            </div>
+                        
+                    </div>
+                
+                    <div id="loginContent" *ngIf="!signupContentIsActive">
                         <div class="form-group">
                             <label for="name">Email</label>
                             <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #Email="ngModel">
                             <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched">
                                 Email is required.
-                          </div>
                         </div>
-
+                        </div>
                         <div class="form-group">
-                            <label for="strasse">Address</label>
-                            <input class="form-control" type="text" id="strasse" name="strasse" [(ngModel)]="user.strasse" required #strasse="ngModel">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <label for="usename" class="form-label">Email</label>
+                            <input class="form-control" type="text" id="email" name="email" [(ngModel)]="credentials.email" required #email="ngModel">
+                            <div class="valid-feedback">Looks good!</div>
                             <div class="invalid-feedback">
-                                Address is required.
-                              </div>
+                                Email is required.
+                            </div>
                         </div>
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
 
-                        <div class="form-group">
-                            <label for="plz">Postal Code </label>
-                            <input class="form-control" type="text" id="plz" name="plz" [(ngModel)]="user.plz" required #plz="ngModel">
-                            <div class="invalid-feedback">
-                                Postal Code is required.
-                              </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="plz">Ort</label>
-                            <input class="form-control" type="text" id="ort" name="ort" [(ngModel)]="user.ort" required #ort="ngModel">
-                            <div class="invalid-feedback">
-                                Ort is required.
-                              </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="beschreibung">Description</label>
-                            <textarea id="beschreibung" name="beschreibung" [(ngModel)]="user.beschreibung" required #beschreibung="ngModel"></textarea>
-                            <div class="invalid-feedback">
-                                Description is required.
-                              </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="bild">Logo Image</label>
-                            <input class="form-control" type="file" id="bild" name="bild" accept="image/jpeg, image/png" [(ngModel)]="user.bild">
-                        </div>
-                        <div class="form-group">
-                            <label for="passwort">Passwort</label>
-                            <input class="form-control" type="password" id="password" name="password" [(ngModel)]="user.password" required #password="ngModel">
+                            <input class="form-control" type="password" id="password" name="password" [(ngModel)]="credentials.password" required #password="ngModel">
+                            <div class="valid-feedback">Looks good!</div>
                             <div class="invalid-feedback">
                                 Password is required.
-                              </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" id="loginhover">Sign up</button>
+                        <!-- routerLink="/restaurantProfile" routerLinkActive="active" -->
+                        <div class="form-group" aria-current="page" >
+                            <button type="submit" id="loginhover">Log In</button>
                         </div>
-                    
-                </div>
-               
-                <div id="loginContent" *ngIf="!signupContentIsActive">
-                    <div class="form-group">
-                        <label for="name">Email</label>
-                        <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #Email="ngModel">
-                        <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched">
-                            Email is required.
-                      </div>
                     </div>
-                    <div class="form-group">
-                        <label for="loginPassword" class="form-label">Password</label>
-                        <input class="form-control" type="password" id="password" name="password" [(ngModel)]="credentials.password" required #password="ngModel">
-                        <div class="valid-feedback">Looks good!</div>
-                        <div class="invalid-feedback">
-                            Password is required.
-                          </div>
                     </div>
-                    <!-- routerLink="/restaurantProfile" routerLinkActive="active" -->
-                    <div class="form-group" aria-current="page" >
-                        <button type="submit" id="loginhover">Log In</button>
-                    </div>
-                </div>
-            </form>
+             </form>
                 
             </main>
         </div>
