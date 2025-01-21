@@ -1,9 +1,10 @@
 
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -15,11 +16,21 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor() {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit(formData: NgForm): void {
-    console.log('Form Data: ', formData.value);
-    formData.reset();
+    console.log(formData)
+    this.authService.login(formData).subscribe({
+      next: (response: any) => {
+        console.log('Login erfolgreich', response);
+        if (response && response.status === 200) {
+          this.router.navigate(['/UserDashboard']);
+        } else {
+          console.error('Unexpected response structure:', response);
+        }
+      },
+      error: (error: any) => console.log('Fehler beim Login', error)
+    });
   }
 
 }
