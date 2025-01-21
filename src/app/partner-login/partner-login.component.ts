@@ -64,6 +64,13 @@ export class PartnerLoginComponent {
       next: (response: any) => {
         console.log('Login erfolgreich', response);
         if (response && response.status === 200) {
+          const authHeader = response.headers.get('Authorization');
+          if (authHeader) {
+            sessionStorage.setItem('Authorization', authHeader);
+            console.log('Authorization header saved:', authHeader);
+          } else {
+            console.log('Authorization header is not present in the response');
+          }
           this.router.navigate(['/restaurantProfile']);
         } else {
           console.error('Unexpected response structure:', response);
