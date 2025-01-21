@@ -102,7 +102,6 @@
                             </div>
                             <div class="form-group">
 
-                                <label for="passwort">Passwort</label>
                                 <label for="password">Passwort</label>
 
                                 <input class="form-control" type="password" id="password" name="password" [(ngModel)]="user.password" required #password="ngModel">
@@ -115,17 +114,9 @@
                             </div>
                         
                     </div>
-                
+                </div>
                     <div id="loginContent" *ngIf="!signupContentIsActive">
                         <div class="form-group">
-                            <label for="name">Email</label>
-                            <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #Email="ngModel">
-                            <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched">
-                                Email is required.
-                        </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="loginPassword" class="form-label">Password</label>
                             <label for="usename" class="form-label">Email</label>
                             <input class="form-control" type="text" id="email" name="email" [(ngModel)]="credentials.email" required #email="ngModel">
                             <div class="valid-feedback">Looks good!</div>
@@ -147,7 +138,7 @@
                             <button type="submit" id="loginhover">Log In</button>
                         </div>
                     </div>
-                    </div>
+                    
              </form>
                 
             </main>
