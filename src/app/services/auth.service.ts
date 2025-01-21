@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -19,22 +19,22 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
   
-  signup(restaurantData: any): Observable<any> {
+  signup(restaurantData: any): Observable<HttpResponse<void>> {
     
-    return this.http.post(`${this.restaurantApiUrl}/erstellen`, restaurantData);
+    return this.http.post<void>(`${this.restaurantApiUrl}/erstellen`, restaurantData, {observe: 'response'});
   }
 
-  signupKunde(kundeData: any): Observable<any> {
+  signupKunde(kundeData: any): Observable<HttpResponse<void>> {
     
-    return this.http.post(`${this.kundeApiUrl}/erstellen`, kundeData);
+    return this.http.post<void>(`${this.kundeApiUrl}/erstellen`, kundeData, {observe: 'response'});
   }
 
   // Für Login (Annahme, dass Login Endpoint existiert oder ähnliche Methode)
-  login(credentials: any): Observable<any> {
+  login(credentials: any): Observable<HttpResponse<void>> {
     
     console.log(' credentials:  ', credentials);
 
-    return this.http.post(`${this.userApiUrl}/login`, credentials); // Ändern Sie den Pfad entsprechend Ihrem Backend
+    return this.http.post<void>(`${this.userApiUrl}/login`, credentials, {observe: 'response'}); // Ändern Sie den Pfad entsprechend Ihrem Backend
 
     
      // Ändern Sie den Pfad entsprechend Ihrem Backend
