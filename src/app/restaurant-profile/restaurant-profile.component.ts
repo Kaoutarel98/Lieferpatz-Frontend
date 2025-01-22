@@ -218,13 +218,17 @@ updateDeliveryRadius() {
   });
 }
 acceptOrder(order: any) {
-  console.log('Order accepted:', order);
-  // Implementieren Sie die Logik zum Akzeptieren der Bestellung
+  this.orderService.confirmOrder(order.id).subscribe({
+    next: () => this.loadOrders(),
+    error: (error) => console.error('Fehler beim Bestätigen der Bestellung', error)
+  });
 }
 
 declineOrder(order: any) {
-  console.log('Order declined:', order);
-  // Implementieren Sie die Logik zum Ablehnen der Bestellung
+  this.orderService.cancelOrder(order.id).subscribe({
+    next: () => this.loadOrders(),
+    error: (error) => console.error('Fehler beim Decline der Bestellung', error)
+  });
 }
 
 

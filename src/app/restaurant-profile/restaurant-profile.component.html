@@ -164,6 +164,7 @@
           <th scope="col">Lieferadresse</th>
           <th scope="col">Gesamtpreis</th>
           <th scope="col">Bestellzeitpunkt</th>
+          <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>
@@ -173,6 +174,7 @@
           <td>{{ order.lieferAdresse }}</td>
           <td>{{ order.gesamtpreis }}</td>
           <td>{{ order.bestellzeitpunkt | date: 'short' }}</td>
+          <td>{{ order.status }}</td>
         </tr>
       </tbody>
     </table>
