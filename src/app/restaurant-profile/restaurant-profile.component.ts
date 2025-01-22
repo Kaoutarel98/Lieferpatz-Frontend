@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 declare var $: any; 
 
 import { OrderService } from '../services/order.service';
+import { RestaurantService } from '../services/restaurant.service';
 import { SettingsService } from '../services/settings.service';
 import { WebSocketService } from '../services/WebSocketService';
 
@@ -33,7 +34,8 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
   constructor(
     private settingsService: SettingsService,
     private orderService: OrderService,
-    private webSocketService: WebSocketService
+    private webSocketService: WebSocketService,
+    private restaurantService: RestaurantService
   ) { }
   
 
@@ -45,7 +47,7 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
   onSubmit(formData: any): void {
     const values = formData.value;
     values["imageUrl"] = this.item.imageUrl;
-    this.orderService.addItem(values).subscribe({
+    this.restaurantService.addItem(values).subscribe({
       next: () => this.loadItems(),
       error: (error) => console.log('Fehler beim Hinzufügen', error),
       complete: () => formData.reset()
@@ -70,7 +72,7 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
 
   editItem(item: any) {
     // TODO: implement editItem
-    // this.orderService.updateItem(item).subscribe({
+    // this.restaurantService.updateItem(item).subscribe({
     //   next: () => this.loadItems(),
     //   error: (error) => console.log('Fehler bei der Update', error),
     // });
@@ -81,7 +83,7 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
     if (!confirmed) {
       return;
     }
-    this.orderService.deleteItem(item).subscribe({
+    this.restaurantService.deleteItem(item).subscribe({
       next: () => this.loadItems(),
       error: (error) => console.log('Fehler beim Löschen', error),
     });

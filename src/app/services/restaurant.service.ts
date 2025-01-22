@@ -1,6 +1,6 @@
 // src/app/services/restaurant.service.ts
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,16 +13,16 @@ export class RestaurantService {
 
   // Neues Item hinzufügen
   addItem(item: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/item/add`, item);
+    return this.http.post<any>(`${this.apiUrl}/item/add`, item, {observe: 'response'});
   }
 
   // Item löschen
   deleteItem(itemId: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/item/delete/${itemId}`);
+    return this.http.delete<any>(`${this.apiUrl}/item/delete/${itemId}`, {observe: 'response'});
   }
 
   // Item aktualisieren
   updateItem(item: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/item/update`, item);
+    return this.http.post<any>(`${this.apiUrl}/item/update`, item, {observe: 'response'});
   }
 }
