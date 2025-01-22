@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit  } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-partner-login',
@@ -13,8 +12,9 @@ import { Router } from '@angular/router';
   styleUrl: './partner-login.component.css'
 })
 export class PartnerLoginComponent {
-  user: any = { name: '', email:'', strasse: '', plz: '',ort:'',beschreibung: '', bild: '', password: '' };  // Für die Registrierung
+  user: any = { name: '', email:'', strasse: '', plz: '',ort:'',beschreibung: '', image: '', password: '' };  // Für die Registrierung
   credentials = { email: '', password: '' };
+  selectedFile!: File;
   constructor(private authService: AuthService, private router: Router) {}
  
 
@@ -51,11 +51,25 @@ export class PartnerLoginComponent {
 
 
   signup(formValue: any) {
-    console.log('formValue: ', formValue);
+    formValue["image"] = this.user.image;
     this.authService.signup(formValue).subscribe({
       next: (response) => console.log('Registrierung erfolgreich', response),
       error: (error) => console.log('Fehler bei der Registrierung', error)
     });
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+
+      // Convert the image to a Base64 string
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.user.image = reader.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
   }
 
  
