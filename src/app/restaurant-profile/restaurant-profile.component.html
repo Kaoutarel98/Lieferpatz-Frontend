@@ -59,23 +59,18 @@
       <div class="modal-body">
           <form class="item needs-validation" #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" novalidate>
               <label for="itemName">Item Name</label>
-              <input type="text" name="itemName" class="form-control" id="itemName" [(ngModel)]="itemName" required />
+              <input type="text" name="name" class="form-control" id="itemName" [(ngModel)]="item.name" required />
               
-              <label for="itemPrice">Item Price</label>
-              <input type="text" name="itemPrice" class="form-control" id="itemPrice" [(ngModel)]="itemPrice" required/>
+              <label for="itemPreis">Item Price</label>
+              <input type="text" name="preis" class="form-control" id="itemPreis" [(ngModel)]="item.preis" required/>
              
-              <label for="image">Choose an Image</label>
-              <input type="file" name="image" accept="image/*" class="form-control" id="image" [(ngModel)]="image" required/>
+              <label for="imageUrl">Choose an Image</label>
+              <input type="file" name="imageUrl" accept="image/*" class="form-control" id="imageUrl" [(ngModel)]="item.imageUrl" required (change)="onFileSelected($event)"/>
               
 
-              <label for="category">Select a Category</label>
-              <select name="category" id="category" class="form-control" [(ngModel)]="category">
-                <option value="Drinks">Drinks</option>
-                <option value="Meals">Meals</option>
-              </select>
 
-              <label for="description">Description</label>
-              <textarea name="description" class="form-control" id="description" [(ngModel)]="description"></textarea>
+              <label for="beschreibung">Description</label>
+              <textarea name="beschreibung" class="form-control" id="beschreibung" [(ngModel)]="item.beschreibung"></textarea>
 
              
               <div class="modal-footer">
@@ -92,36 +87,18 @@
 
 
 
-   <div class="ItemContent d-flex justify-content-center my-5">
-      <div class="card" style="width: 18rem; margin: 10px;">
-          <img src="../../assets/grilled-hamburger-meal-with-fries-cheese-generative-ai.jpg" class="card-img-top" >
+   <div class="ItemContent d-flex justify-content-start my-5 flex-wrap">
+    <div *ngFor="let item of items" class="card" style="width: 18rem; margin: 10px;">
+          <img [src]="item.imageUrl" class="card-img-top" >
           <div class="card-body">
-          <h5 class="card-title">Beef Burger Menu</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary ">Edit</a>
-          <a href="#" class="btn btn-danger ms-2">Delete</a>
+          <h5 class="card-title">{{item.name}}</h5>
+          <p class="card-text">{{item.beschreibung}}</p>
+          <p class="card-text">{{item.preis}}</p>
+          <button class="btn btn-primary " (click)="editItem(item)">Edit</button>
+          <button href="#" class="btn btn-danger ms-2" (click)="deleteItem(item)">Delete</button>
           </div>
       </div>
 
-      <div class="card" style="width: 18rem; margin: 10px;">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary ">Edit</a>
-          <a href="#" class="btn btn-danger ms-2">Delete</a>
-          </div>
-      </div>
-
-      <div class="card" style="width: 18rem; margin: 10px;">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary ">Edit</a>
-          <a href="#" class="btn btn-danger ms-2">Delete</a>
-          </div>
-      </div>
 
   </div>
 </section> 
@@ -137,23 +114,33 @@
   
 <div class="container mt-3" >
   <h2>Orders</h2>
-  <table class="display" style="width:100%" id="ordersTable">
+  <table class="display" style="width:100%" id="pendingOrdersTable">
     <thead>
       <tr>
         <th scope="col">Order Id</th>
-        <th scope="col">Order</th>
-        <th scope="col">Received Time</th>
+        <th scope="col">Kundenname</th>
+        <th scope="col">Lieferadresse</th>
+        <th scope="col">Gesamtpreis</th>
+        <th scope="col">Bestellzeitpunkt</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let order of orders">
+      <tr *ngFor="let order of pendingOrders">
         <td>{{ order.id }}</td>
-        <td>{{ order.description }}</td>
-        <td>{{ order.receivedTime | date: 'short' }}</td>
+        <td>{{ order.kundeName }}</td>
+        <td>{{ order.lieferAdresse }}</td>
+        <td>{{ order.gesamtpreis }}</td>
+        <td>{{ order.bestellzeitpunkt | date: 'short' }}</td>
         <td>
-          <button class="btn btn-success btn-sm" (click)="acceptOrder(order)">Accept</button>
-          <button class="btn btn-danger btn-sm" (click)="declineOrder(order)">Decline</button>
+          <div class="row">
+            <div class="col">
+              <button class="btn btn-success btn-sm" (click)="acceptOrder(order)">Accept</button>
+            </div>
+            <div class="col">
+              <button class="btn btn-danger btn-sm" (click)="declineOrder(order)">Decline</button>
+            </div>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -169,27 +156,26 @@
  
     <h1>Order History</h1>
     <div class="container mt-3">
-      <h2>Completed Orders</h2>
-      <table id="completedOrdersTable" class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Order ID</th>
-            <th scope="col">Customer</th>
-            <th scope="col">Total Price</th>
-            <th scope="col">Ordered At</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let order of completedOrders">
-            <td>{{ order.id }}</td>
-            <td>{{ order.customerName }}</td>
-            <td>{{ order.totalPrice | currency }}</td>
-            <td>{{ order.orderedAt | date: 'short' }}</td>
-            <td>{{ order.status }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <table class="display" style="width:100%" id="completedOrdersTable">
+      <thead>
+        <tr>
+          <th scope="col">Order Id</th>
+          <th scope="col">Kundenname</th>
+          <th scope="col">Lieferadresse</th>
+          <th scope="col">Gesamtpreis</th>
+          <th scope="col">Bestellzeitpunkt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of completedOrders">
+          <td>{{ order.id }}</td>
+          <td>{{ order.kundeName }}</td>
+          <td>{{ order.lieferAdresse }}</td>
+          <td>{{ order.gesamtpreis }}</td>
+          <td>{{ order.bestellzeitpunkt | date: 'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
     </div>
   
     

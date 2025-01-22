@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgForm } from '@angular/forms';
-import {RouterLink, RouterModule} from '@angular/router';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 declare var $: any; 
 
-import { SettingsService } from '../services/settings.service';
 import { OrderService } from '../services/order.service';
+import { SettingsService } from '../services/settings.service';
+import { WebSocketService } from '../services/WebSocketService';
 
 @Component({
   selector: 'app-restaurant-profile',
@@ -18,25 +18,22 @@ import { OrderService } from '../services/order.service';
  
 })
 export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
+  item = {name: '', preis: '', imageUrl: '', beschreibung: ''};
   activeSection: string = 'activeOrders'; // Die Standardsektion
   openingHours: any = {
     monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''
   };
   deliveryRadius: number = 0;
-  orders: any[] = [];
   completedOrders: any[] = [];
   pendingOrders: any[] = [];
   items: any[] = [];
-  itemName: string = '';  // Item Name für das Menu-Management
-  itemPrice: string = '';  // Preis des Items
-  image: any;  // Für das Bild
-  category: string = '';  // Kategorie (Drinks, Meals)
-  description: string = '';  // Beschreibung des Items
+  selectedFile!: File;
 
   
   constructor(
     private settingsService: SettingsService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private webSocketService: WebSocketService
   ) { }
   
 
@@ -45,16 +42,50 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
    
   }
 
-  onSubmit(formData: NgForm): void {
-    console.log('Form Data: ', formData.value);
-    this.items.push(formData.value);
-    console.log('Items: ', this.items);
-    formData.reset();
+  onSubmit(formData: any): void {
+    const values = formData.value;
+    values["imageUrl"] = this.item.imageUrl;
+    this.orderService.addItem(values).subscribe({
+      next: () => this.loadItems(),
+      error: (error) => console.log('Fehler beim Hinzufügen', error),
+      complete: () => formData.reset()
+    });
 
   
   }
 
-  
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+
+      // Convert the image to a Base64 string
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.item.imageUrl = reader.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  editItem(item: any) {
+    // TODO: implement editItem
+    // this.orderService.updateItem(item).subscribe({
+    //   next: () => this.loadItems(),
+    //   error: (error) => console.log('Fehler bei der Update', error),
+    // });
+  }
+
+  deleteItem(item: any) {
+    const confirmed = window.confirm('Are you sure you want to delete the item?');
+    if (!confirmed) {
+      return;
+    }
+    this.orderService.deleteItem(item).subscribe({
+      next: () => this.loadItems(),
+      error: (error) => console.log('Fehler beim Löschen', error),
+    });
+  }
 
   initializeValidation(): void {
     const forms = document.querySelectorAll(
@@ -81,13 +112,23 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
   
 
   ngOnInit(): void {
+    this.webSocketService.connect((msg: any) => this.pendingOrders.unshift(JSON.parse(msg)));
+    
     this.loadOrders(); // Bestellungen beim Initialisieren der Komponente laden
+    this.loadItems()
     this.loadSettings(); // Einstellungen beim Initialisieren der Komponente laden
+
     $(document).ready(function() {
-      $('#ordersTable').DataTable();
+      $('#pendingOrdersTable').DataTable();
+    });
+    $(document).ready(function() {
+      $('#completedOrdersTable').DataTable();
     });
   }
 
+  ngOnDestroy() {
+    this.webSocketService.disconnect();
+  }
 
   ngAfterViewInit(): void {
     // Initialisierung der DataTable
@@ -97,8 +138,15 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
 
   loadOrders(): void {
     this.orderService.getOrders().subscribe((orders) => {
-      this.completedOrders = orders.filter(order => order.status === 'Completed');
-      this.pendingOrders = orders.filter(order => order.status === 'Pending');
+      this.completedOrders = orders.filter(order => order.status !== 'BEARBEITUNG');
+      console.log('Completed Orders:', this.completedOrders);
+      this.pendingOrders = orders.filter(order => order.status === 'BEARBEITUNG');
+    });
+  }
+
+  loadItems(): void {
+    this.orderService.getItems().subscribe((items) => {
+      this.items = items;
     });
   }
 

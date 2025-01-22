@@ -1,5 +1,5 @@
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,6 +15,22 @@ export class OrderService {
   // Bestellungen abfragen
   getOrders(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/bestellungen`);
+  }
+
+  getItems(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/items`);
+  }
+
+  addItem(item: any): Observable<HttpResponse<void>> {
+    return this.http.post<void>(`${this.apiUrl}/item/add`, item, {observe: 'response'});
+  }
+
+  updateItem(item: any): Observable<HttpResponse<void>> {
+    return this.http.post<void>(`${this.apiUrl}/item/update`, item, {observe: 'response'});
+  }
+
+  deleteItem(item: any): Observable<HttpResponse<void>> {
+    return this.http.delete<void>(`${this.apiUrl}/item/delete/${item.id}`, {observe: 'response'});
   }
 
   // Bestellung bestätigen

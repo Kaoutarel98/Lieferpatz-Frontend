@@ -41,5 +41,11 @@ export class AuthService {
  
   }
 
+  getAccount(): Observable<any> {
+
+    return this.http.get<any>(`${this.userApiUrl}`, {observe: 'response'}); 
+ 
+  }
+
 
 }
