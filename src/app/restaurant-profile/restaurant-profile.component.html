@@ -186,39 +186,44 @@
 
 
 
- <section *ngIf="activeSection === 'setting'">
+ <section *ngIf="activeSection === 'setting'" class="p-5">
 
 
   
-    <h1>Settings</h1>
+    <h1 class="mb-4">Settings</h1>
     
     <!-- Opening Hours -->
     <div class="container mt-3">
-      <h2>Update Opening Hours</h2>
+      <h3 class="mb-4">Update Opening Hours</h3>
       <form (ngSubmit)="updateOpeningHours()">
         <div class="form-group">
-          <label for="mondayHours">Monday</label>
-          <h5>
-            from
-          </h5>
-          
-          <input type="time" id="mondayHours" class="form-control" [(ngModel)]="openingHours.monday.from" name="monday" required>
-          <h5>
-            to
-          </h5>
-          <input type="time" id="mondayHours" class="form-control" [(ngModel)]="openingHours.monday.to" name="monday" required>
+          <div class="row" *ngFor="let day of openingHours">
+            <div class="col-3">
+            <p>
+              {{day.dayOfWeek.charAt(0).toUpperCase() + day.dayOfWeek.slice(1).toLowerCase()}}
+            </p>
+          </div>
+          <div class="col">
+            <p>
+              from
+            </p>
+          </div>
+          <div class="col">
+            <input type="time" [id]="day.dayOfWeek" class="form-control" [(ngModel)]="day.openTime" [value]="day.openTime" [ngModelOptions]="{standalone: true}" required>
+          </div>
+          <div class="col">
+              <p>
+                to
+              </p>
+            </div>
+            <div class="col">
+            <input type="time" [id]="day.dayOfWeek" class="form-control" [(ngModel)]="day.closeTime" [value]="day.closeTime" [ngModelOptions]="{standalone: true}" required>
+          </div>
+            <hr class="my-4"/>
+          </div>
 
         </div>
-        <div class="form-group">
-          <label for="tuesdayHours">Tuesday</label>
-          <input type="text" id="tuesdayHours" class="form-control" [(ngModel)]="openingHours.tuesday" name="tuesday" required>
-        </div>
-        <div class="form-group">
-          <label for="wednesdayHours">Wednesday</label>
-          <input type="text" id="wednesdayHours" class="form-control" [(ngModel)]="openingHours.wednesday" name="wednesday" required>
-        </div>
-        <!-- Add more days as needed -->
-        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="submit" class="btn btn-primary" >Save Changes</button>
       </form>
     </div>
   

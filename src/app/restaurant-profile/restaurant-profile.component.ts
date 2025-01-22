@@ -21,9 +21,7 @@ import { WebSocketService } from '../services/WebSocketService';
 export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
   item = {name: '', preis: '', imageUrl: '', beschreibung: ''};
   activeSection: string = 'activeOrders'; // Die Standardsektion
-  openingHours: any = {
-    monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''
-  };
+  openingHours: any[] = []
   deliveryRadius: number = 0;
   completedOrders: any[] = [];
   pendingOrders: any[] = [];
@@ -153,9 +151,9 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
   }
 
   loadSettings(): void {
-    this.settingsService.getSettings().subscribe((settings) => {
-      this.openingHours = settings.openingHours;
-      this.deliveryRadius = settings.deliveryRadius;
+    this.settingsService.getOpeningHours().subscribe({
+      next: (response) => this.openingHours = response,
+      error: (error) => console.error('Fehler beim Laden der Öffnungszeiten', error)
     });
   }
   
@@ -189,17 +187,9 @@ getPendingOrders() {
 }
 
 
-getSettings() {
-  this.settingsService.getSettings().subscribe((settings) => {
-    this.openingHours = settings.openingHours;
-    this.deliveryRadius = settings.deliveryRadius;
-  });
-}
-
 // Öffnungszeiten aktualisieren
 updateOpeningHours() {
-  const updatedHours = this.openingHours;
-  this.settingsService.updateOpeningHours(updatedHours).subscribe({
+  this.settingsService.updateOpeningHours(this.openingHours).subscribe({
     next: (response) => {
       console.log('Öffnungszeiten erfolgreich aktualisiert', response);
     },
