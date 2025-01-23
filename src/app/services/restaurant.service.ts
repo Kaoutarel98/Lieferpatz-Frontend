@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class RestaurantService {
-  private apiUrl = '/api/v1/restaurant'; // Basis-URL des Controllers
+  private apiUrl = 'http://localhost:8080/api/v1/restaurant'; // Basis-URL des Controllers
 
   constructor(private http: HttpClient) {}
 

@@ -1,253 +1,321 @@
 
 
-<div class="dashboard">
-    <div class="sidebar">
-      <a class="navbar-brand" href="#" id="logo">
-            <img src="../../assets/Logo.png" alt="Logo" width="45" height="44" class="d-inline-block align-text-top">
-            <span class="brand-text ">Lieferpatz</span>
-          </a>
-      <div class="my-2">
-                <ul class="menu">
-                    <li>
-                        <a (click)="setActiveSection('menu-management')">
-                              <i class="fa fa-list-alt" ></i>Menu Management
-                        </a>
-                   </li>
 
-                   <li>
-                    <a (click)="setActiveSection('activeOrders')">
-                          <i class="fa fa-cart-arrow-down" ></i> active Orders
+
+<div class="dashboard">
+  <div class="sidebar">
+    <a class="navbar-brand" href="#" id="logo">
+          <img src="../../assets/Logo.png" alt="Logo" width="45" height="44" class="d-inline-block align-text-top">
+          <span class="brand-text ">Lieferpatz</span>
+        </a>
+    <div class="my-2">
+              <ul class="menu">
+                  <li>
+                      <a (click)="setActiveSection('menu-management')">
+                            <i class="fa fa-list-alt" ></i>Menu Management
+                      </a>
+                 </li>
+
+                 <li>
+                  <a (click)="setActiveSection('activeOrders')">
+                        <i class="fa fa-cart-arrow-down" ></i> active Orders
+                  </a>
+                </li>
+                
+                  <li>
+                    <a (click)="setActiveSection('ordersHistory')">
+                          <i class="fa fa-history" ></i>order history
                     </a>
                   </li>
-                  
-                    <li>
-                      <a (click)="setActiveSection('ordersHistory')">
-                            <i class="fa fa-history" ></i>order history
-                      </a>
-                    </li>
 
-                    <li>
-                      <a (click)="setActiveSection('setting')"><i class="fas fa-cog">
+                  <li>
+                    <a (click)="setActiveSection('setting')"><i class="fas fa-cog">
 
-                      </i>Settings</a>
-                    </li>
+                    </i>Settings</a>
+                  </li>
 
-                </ul>
+              </ul>
 
-                
-       </div>
+              
+     </div>
 
-       <button class="btn btn-outline-danger mt-auto" id="Logout-Button">Logout</button>
-      
-    </div>
+     <button class="btn btn-outline-danger mt-auto" id="Logout-Button">Logout</button>
+    
+  </div>
 
 
 <section *ngIf="activeSection === 'menu-management'" class="p-5">
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Add Item
-  </button>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+Add Item
+</button>
 <hr>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Add a new item to Menu</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <form class="item needs-validation" #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" novalidate>
-              <label for="itemName">Item Name</label>
-              <input type="text" name="itemName" class="form-control" id="itemName" [(ngModel)]="itemName" required />
-              
-              <label for="itemPrice">Item Price</label>
-              <input type="text" name="itemPrice" class="form-control" id="itemPrice" [(ngModel)]="itemPrice" required/>
-             
-              <label for="image">Choose an Image</label>
-              <input type="file" name="image" accept="image/*" class="form-control" id="image" [(ngModel)]="image" required/>
-              
-
-              <label for="category">Select a Category</label>
-              <select name="category" id="category" class="form-control" [(ngModel)]="category">
-                <option value="Drinks">Drinks</option>
-                <option value="Meals">Meals</option>
-              </select>
-
-              <label for="description">Description</label>
-              <textarea name="description" class="form-control" id="description" [(ngModel)]="description"></textarea>
-
-             
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  
-                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-                </div>
-            </form>
-      </div>
-    
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Add a new item to Menu</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
+    <div class="modal-body">
+        <form class="item needs-validation" #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" novalidate>
+            <label for="itemName">Item Name</label>
+            <input type="text" name="itemName" class="form-control" id="itemName" [(ngModel)]="itemName" required />
+            
+            <label for="itemPrice">Item Price</label>
+            <input type="text" name="itemPrice" class="form-control" id="itemPrice" [(ngModel)]="itemPrice" required/>
+           
+            <label for="image">Choose an Image</label>
+            <input type="file" name="image" accept="image/*" class="form-control" id="image" [(ngModel)]="image" required/>
+            
+
+            <label for="category">Select a Category</label>
+            <select name="category" id="category" class="form-control" [(ngModel)]="category">
+              <option value="Drinks">Drinks</option>
+              <option value="Meals">Meals</option>
+            </select>
+
+            <label for="description">Description</label>
+            <textarea name="description" class="form-control" id="description" [(ngModel)]="description"></textarea>
+
+           
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+              </div>
+          </form>
+    </div>
+  
   </div>
+</div>
 </div>
 
 
 
-   <div class="ItemContent d-flex justify-content-center my-5">
-      <div class="card" style="width: 18rem; margin: 10px;">
-          <img src="../../assets/grilled-hamburger-meal-with-fries-cheese-generative-ai.jpg" class="card-img-top" >
-          <div class="card-body">
-          <h5 class="card-title">Beef Burger Menu</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary ">Edit</a>
-          <a href="#" class="btn btn-danger ms-2">Delete</a>
-          </div>
-      </div>
+ <div class="ItemContent d-flex justify-content-center my-5">
+    <div class="card" style="width: 18rem; margin: 10px;">
+        <img src="../../assets/grilled-hamburger-meal-with-fries-cheese-generative-ai.jpg" class="card-img-top" >
+        <div class="card-body">
+        <h5 class="card-title">Beef Burger Menu</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary ">Edit</a>
+        <a href="#" class="btn btn-danger ms-2">Delete</a>
+        </div>
+    </div>
 
-      <div class="card" style="width: 18rem; margin: 10px;">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary ">Edit</a>
-          <a href="#" class="btn btn-danger ms-2">Delete</a>
-          </div>
-      </div>
+    <div class="card" style="width: 18rem; margin: 10px;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary ">Edit</a>
+        <a href="#" class="btn btn-danger ms-2">Delete</a>
+        </div>
+    </div>
 
-      <div class="card" style="width: 18rem; margin: 10px;">
-          <img src="..." class="card-img-top" alt="...">
-          <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary ">Edit</a>
-          <a href="#" class="btn btn-danger ms-2">Delete</a>
-          </div>
-      </div>
+    <div class="card" style="width: 18rem; margin: 10px;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary ">Edit</a>
+        <a href="#" class="btn btn-danger ms-2">Delete</a>
+        </div>
+    </div>
 
-  </div>
+</div>
 </section> 
 
-    <!-- Button trigger modal -->
+  <!-- Button trigger modal -->
 
-    
-    
- 
- <section *ngIf="activeSection === 'activeOrders'" class="p-5">
-
-    
   
-<div class="container mt-3" >
-  <h2>Orders</h2>
-  <table class="display" style="width:100%" id="ordersTable">
-    <thead>
-      <tr>
-        <th scope="col">Order Id</th>
-        <th scope="col">Order</th>
-        <th scope="col">Received Time</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of orders">
-        <td>{{ order.id }}</td>
-        <td>{{ order.description }}</td>
-        <td>{{ order.receivedTime | date: 'short' }}</td>
-        <td>
-          <button class="btn btn-success btn-sm" (click)="acceptOrder(order)">Accept</button>
-          <button class="btn btn-danger btn-sm" (click)="declineOrder(order)">Decline</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  
+  <section *ngIf="activeSection === 'activeOrders'" class="p-5">
+    <div id="Container" class="container ">
+      
+  
+      <!-- Guthabenanzeige -->
+      <!-- <div  id="Balance" class="btn btn-danger rounded  mb-4">
+        <h4 class="text-secondary">Current Balance</h4>
+        <div class="d-flex justify-content-between">
+          <div class="justify-content-center">
+            <span class="text-success">{{ restaurantBalance | currency }}</span>
 
-    
- </section>
-
- <section *ngIf="activeSection === 'ordersHistory'" class="p-5">
-
-    
- 
-    <h1>Order History</h1>
-    <div class="container mt-3">
-      <h2>Completed Orders</h2>
-      <table id="completedOrdersTable" class="table table-bordered">
-        <thead>
+            
+          </div>
+          
+        </div>
+      </div> -->
+      <div class="contentc">
+        <div class="main-stats">
+         
+          <div class="stat-item">
+            <i class="material-icons green">Balance</i>
+            <div class="counter">
+              <div class="count">{{ restaurantBalance | currency }}</div>
+              <div class="description">Today's sales</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Orders-Tabelle -->
+      <table class="table table-hover align-middle w-100">
+        <thead class="table-hover">
           <tr>
-            <th scope="col">Order ID</th>
-            <th scope="col">Customer</th>
-            <th scope="col">Total Price</th>
-            <th scope="col">Ordered At</th>
+            <th scope="col">Order Id</th>
+            <th scope="col">Order</th>
+            <th scope="col">Received Time</th>
             <th scope="col">Status</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let order of completedOrders">
+          <tr *ngFor="let order of orders">
             <td>{{ order.id }}</td>
-            <td>{{ order.customerName }}</td>
-            <td>{{ order.totalPrice | currency }}</td>
-            <td>{{ order.orderedAt | date: 'short' }}</td>
-            <td>{{ order.status }}</td>
+            <td>{{ order.description }}</td>
+            <td>{{ order.receivedTime | date: 'short' }}</td>
+            <td>
+              <span class="badge" [ngClass]="getOrderStatusClass(order.status)">
+                {{ order.status }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-success btn-sm" *ngIf="order.status === 'Pending'" (click)="acceptOrder(order)">Accept</button>
+              <button class="btn btn-danger btn-sm" *ngIf="order.status === 'Pending'" (click)="declineOrder(order)">Decline</button>
+              <span *ngIf="order.status !== 'Pending'" class="text-muted">No Actions</span>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
-  
-    
   </section>
   
 
-
-
- <section *ngIf="activeSection === 'setting'">
-
+<section *ngIf="activeSection === 'ordersHistory'" class="p-5">
 
   
-    <h1>Settings</h1>
+
+  <h1>Order History</h1>
+  <div class="container mt-3">
+    <h2>Completed Orders</h2>
+    <table id="completedOrdersTable" class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Order ID</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Total Price</th>
+          <th scope="col">Ordered At</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of completedOrders">
+          <td>{{ order.id }}</td>
+          <td>{{ order.customerName }}</td>
+          <td>{{ order.totalPrice | currency }}</td>
+          <td>{{ order.orderedAt | date: 'short' }}</td>
+          <td>{{ order.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+</section>
+
+
+
+
+<section *ngIf="activeSection === 'setting'" id="Container"  class="p-5">
+  <!-- Custom Navbar -->
+  <nav class="custom-nav mb-5">
+    <div class="custom-nav">
+      <a href="javascript:void(0)" 
+         class="custom-tab" 
+         [ngClass]="{'active': selectedTab === 'openingHours'}" 
+         (click)="setActiveTab('openingHours')">
+       Opening Hours
+      </a>
+      <a href="javascript:void(0)" 
+         class="custom-tab" 
+         [ngClass]="{'active': selectedTab === 'deliveryRadius'}" 
+         (click)="setActiveTab('deliveryRadius')">
+         Delivery Radius
+      </a>
+    </div>
     
-    <!-- Opening Hours -->
-    <div class="container mt-3">
-      <h2>Update Opening Hours</h2>
-      <form (ngSubmit)="updateOpeningHours()">
-        <div class="form-group">
-          <label for="mondayHours">Monday</label>
-          <h5>
-            from
-          </h5>
-          
-          <input type="time" id="mondayHours" class="form-control" [(ngModel)]="openingHours.monday.from" name="monday" required>
-          <h5>
-            to
-          </h5>
-          <input type="time" id="mondayHours" class="form-control" [(ngModel)]="openingHours.monday.to" name="monday" required>
+   
+    
+  </nav>
 
+  <!-- Update Opening Hours -->
+  <div *ngIf="selectedTab === 'openingHours'" class="container bg-light rounded shadow p-4">
+    
+    <form (ngSubmit)="updateOpeningHours()">
+      <!-- Tage dynamisch generieren -->
+      <div class="row g-4" *ngFor="let day of weekDays">
+        <div class="col-md-12">
+          <div class="d-flex align-items-center justify-content-between bg-white p-3 rounded shadow-sm">
+            <div class="d-flex align-items-center gap-3">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="{{ day }}Enabled"
+                [(ngModel)]="openingHours[day.toLowerCase()].enabled"
+                [name]="day + 'Enabled'"
+              />
+              <label class="form-label fw-bold mb-0 text-capitalize" for="{{ day }}">{{ day }}</label>
+              
+            </div>
+            <div class="d-flex gap-3">
+              <input
+                type="time"
+                class="form-control"
+                [(ngModel)]="openingHours[day.toLowerCase()].from"
+                [name]="day + 'From'"
+                [disabled]="!openingHours[day.toLowerCase()].enabled"
+              />
+              <input
+                type="time"
+                class="form-control"
+                [(ngModel)]="openingHours[day.toLowerCase()].to"
+                [name]="day + 'To'"
+                [disabled]="!openingHours[day.toLowerCase()].enabled"
+              />
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="tuesdayHours">Tuesday</label>
-          <input type="text" id="tuesdayHours" class="form-control" [(ngModel)]="openingHours.tuesday" name="tuesday" required>
-        </div>
-        <div class="form-group">
-          <label for="wednesdayHours">Wednesday</label>
-          <input type="text" id="wednesdayHours" class="form-control" [(ngModel)]="openingHours.wednesday" name="wednesday" required>
-        </div>
-        <!-- Add more days as needed -->
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-      </form>
-    </div>
-  
-    <!-- Delivery Radius -->
-    <div class="container mt-3">
-      <h2>Update Delivery Radius</h2>
-      <form (ngSubmit)="updateDeliveryRadius()">
-        <div class="form-group">
-          <label for="deliveryRadius">Delivery Radius (in km)</label>
-          <input type="number" id="deliveryRadius" class="form-control" [(ngModel)]="deliveryRadius" name="deliveryRadius" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-      </form>
-    </div>
-  </section>
-  
-      
+      </div>
+      <button type="submit" id="btn-save" class="btn btn-primary mt-4 w-100">Save Changes</button>
+    </form>
+  </div>
+
+  <!-- Update Delivery Radius -->
+  <div *ngIf="selectedTab === 'deliveryRadius'" class="container bg-light rounded shadow p-4">
+    
+    <form (ngSubmit)="updateDeliveryRadius()">
+      <div class="form-group">
+        <label for="deliveryRadius" class="form-label fw-bold">Delivery Radius (in km)</label>
+        <input
+          type="number"
+          id="deliveryRadius"
+          class="form-control"
+          [(ngModel)]="deliveryRadius"
+          name="deliveryRadius"
+          required
+        />
+      </div>
+      <button type="submit" id="btn-save" class="btn btn-primary mt-4 w-100">Save Changes</button>
+    </form>
+  </div>
+</section>
+
+
+
+    
 
 
 
@@ -255,5 +323,4 @@
 </div>
 
 
-  
-  
+

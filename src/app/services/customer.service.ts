@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class CustomerService {
   // API URL
-  private apiUrl = '/api/v1/kunde';  // Adjust the URL for your backend API
+  private apiUrl = 'http://localhost:8080/api/v1/kunde';  // Adjust the URL for your backend API
 
   constructor(private http: HttpClient) {}
 

@@ -19,6 +19,7 @@ export class UserorderComponent implements OnInit {
   currentOrders: any[] = [];
   orderHistory: any[] = [];
   activeSection: 'CurrentOrder' | 'OrderHistory' = 'CurrentOrder';
+  activeSectionS:String= 'openingHours'
   searchTerm: string = '';
   filteredCurrentOrders: any[] = [];
   filteredOrderHistory: any[] = [];

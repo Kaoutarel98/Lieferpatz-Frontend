@@ -6,9 +6,12 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
+  declineOrder(id: any) {
+    throw new Error('Method not implemented.');
+  }
 
-  private apiUrl = '/api/v1/restaurant';
-  private WarenkorbUrl = '/api/v1/Warenkorb';  // Die Basis-URL deines Backend-Controllers
+  private apiUrl = 'http://localhost:8080/api/v1/restaurant';
+  private WarenkorbUrl = 'http://localhost:8080/api/v1/Warenkorb';  // Die Basis-URL deines Backend-Controllers
 
   constructor(private http: HttpClient) { }
 
@@ -18,18 +21,19 @@ export class OrderService {
   }
 
   // Bestellung bestätigen
+  // Funktion zum Akzeptieren einer Bestellung
   confirmOrder(orderId: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/bestellung/confirm/${orderId}`, {});
+    return this.http.post(`${this.apiUrl}/confirm/${orderId}`, {});
   }
 
   // Bestellung stornieren
   cancelOrder(orderId: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/bestellung/stornieren/${orderId}`, {});
+    return this.http.post(`${this.apiUrl}/stornieren/${orderId}`, {});
   }
 
-  // Bestellung abschließen
+  // Bestellung abschließen (complete)
   completeOrder(orderId: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/bestellung/complete/${orderId}`, {});
+    return this.http.post(`${this.apiUrl}/complete/${orderId}`, {});
   }
   getStatus(orderId: number): Observable<any> {
 

@@ -53,9 +53,9 @@
 
                             <div class="form-group">
 
-                                <label for="name">Email</label>
+                                <!-- <label for="name">Email</label>
                                 <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #Email="ngModel">
-                                <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched">
+                                <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched"> -->
 
                                 <label for="email">Email</label>
                                 <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #email="ngModel">
@@ -103,7 +103,7 @@
                             <div class="form-group">
 
                                 <label for="passwort">Passwort</label>
-                                <label for="password">Passwort</label>
+                                <!-- <label for="password">Passwort</label> -->
 
                                 <input class="form-control" type="password" id="password" name="password" [(ngModel)]="user.password" required #password="ngModel">
                                 <div class="invalid-feedback">
@@ -125,7 +125,6 @@
                         </div>
                         </div>
                         <div class="form-group">
-                            <label for="loginPassword" class="form-label">Password</label>
                             <label for="usename" class="form-label">Email</label>
                             <input class="form-control" type="text" id="email" name="email" [(ngModel)]="credentials.email" required #email="ngModel">
                             <div class="valid-feedback">Looks good!</div>
@@ -133,21 +132,14 @@
                                 Email is required.
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="password" class="form-label">Password</label>
-
-                            <input class="form-control" type="password" id="password" name="password" [(ngModel)]="credentials.password" required #password="ngModel">
-                            <div class="valid-feedback">Looks good!</div>
-                            <div class="invalid-feedback">
-                                Password is required.
-                            </div>
-                        </div>
+                       
                         <!-- routerLink="/restaurantProfile" routerLinkActive="active" -->
                         <div class="form-group" aria-current="page" >
                             <button type="submit" id="loginhover">Log In</button>
                         </div>
                     </div>
-                    </div>
+
+                    
              </form>
                 
             </main>

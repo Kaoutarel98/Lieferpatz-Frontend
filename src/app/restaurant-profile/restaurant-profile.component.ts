@@ -18,12 +18,36 @@ import { OrderService } from '../services/order.service';
  
 })
 export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
+
+
+switchTab(tab: string): void {
+    this.selectedTab = tab;
+  }
+
   activeSection: string = 'activeOrders'; // Die Standardsektion
-  openingHours: any = {
-    monday: '', tuesday: '', wednesday: '', thursday: '', friday: '', saturday: '', sunday: ''
+  weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  // Öffnungszeiten
+  openingHours = {
+    monday: { enabled: true, from: '09:00', to: '18:00' },
+    tuesday: { enabled: true, from: '09:00', to: '18:00' },
+    wednesday: { enabled: true, from: '09:00', to: '18:00' },
+    thursday: { enabled: true, from: '09:00', to: '18:00' },
+    friday: { enabled: true, from: '09:00', to: '18:00' },
+    saturday: { enabled: false, from: '', to: '' },
+    sunday: { enabled: false, from: '', to: '' },
   };
+  restaurantBalance: number = 250.50; // Beispiel für Restaurantguthaben
+  
+  orders: any[] = [
+    { id: 101, description: '2x Burger, 1x Fries', receivedTime: new Date(), status: 'Pending' },
+    { id: 102, description: '1x Pizza, 2x Soda', receivedTime: new Date(), status: 'Completed' },
+    { id: 103, description: '1x Salad, 1x Water', receivedTime: new Date(), status: 'Cancelled' },
+    { id: 104, description: '3x Tacos, 1x Juice', receivedTime: new Date(), status: 'Pending' }
+  ];
+
   deliveryRadius: number = 0;
-  orders: any[] = [];
+  
   completedOrders: any[] = [];
   pendingOrders: any[] = [];
   items: any[] = [];
@@ -32,6 +56,8 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
   image: any;  // Für das Bild
   category: string = '';  // Kategorie (Drinks, Meals)
   description: string = '';  // Beschreibung des Items
+
+selectedTab: any;
 
   
   constructor(
@@ -81,6 +107,7 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
   
 
   ngOnInit(): void {
+    this.selectedTab = 'openingHours'; // Setze die Standard-Section auf Opening Hours
     this.loadOrders(); // Bestellungen beim Initialisieren der Komponente laden
     this.loadSettings(); // Einstellungen beim Initialisieren der Komponente laden
     $(document).ready(function() {
@@ -88,9 +115,26 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
     });
   }
 
+  getOrderStatusClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return 'badge-success';
+      case 'pending':
+        return 'badge-warning';
+      case 'cancelled':
+        return 'badge-danger';
+      default:
+        return 'badge-secondary';
+    }
+  }
+  setActiveTab(tab: string): void {
+    this.selectedTab = tab;
+  }
+
 
   ngAfterViewInit(): void {
     // Initialisierung der DataTable
+   this.initializeValidation();
    
   }
 

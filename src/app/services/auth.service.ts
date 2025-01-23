@@ -8,13 +8,13 @@ import { Observable } from 'rxjs';
 export class AuthService {
   
 
-  private restaurantApiUrl= '/api/v1/restaurant';
-  private kundeApiUrl = '/api/v1/user';
+  private restaurantApiUrl= 'http://localhost:8080/api/v1/restaurant';
+  private kundeApiUrl = 'http://localhost:8080/api/v1/user';
   
   
  // Ändern Sie den Pfad entsprechend Ihrem Backend
 
-  private apiUrl= '/api/v1/restaurant'; // Ändern Sie den Pfad entsprechend Ihrem Backend
+ 
 
   constructor(private http: HttpClient) { }
   
