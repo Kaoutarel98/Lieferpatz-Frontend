@@ -34,7 +34,7 @@
 <main class="container">
   
     <div class=" rounded text-body-emphasis bg-body-secondary bd-placeholder-img" id="image-header" >
-      <div class="restaurant-image"  [style.background-image]="'url(' + restaurant?.imageUrl + ')'">
+      <div class="restaurant-image"  [style.background-image]="'url(' + restaurant?.image + ')'">
        </div>
       
       <div class="row">
@@ -63,8 +63,8 @@
                       <div class="col-8">
                         <div class="card-body">
                           <h6 class="card-title mb-1">{{item.name}}</h6>
-                          <p class="card-text mb-1" style="font-size: 0.9em;">{{item.description}}</p>
-                          <p class="card-text mb-1 text-body-secondary" style="font-size: 0.8em;"><strong>{{item.price| currency: 'EUR'}}</strong></p>
+                          <p class="card-text mb-1" style="font-size: 0.9em;">{{item.beschreibung}}</p>
+                          <p class="card-text mb-1 text-body-secondary" style="font-size: 0.8em;"><strong>{{item.preis| currency: 'EUR'}}</strong></p>
                           <button class="fa-solid fa-plus position-absolute top-0 end-0 mt-3 me-3" (click)="addToCart(item)"></button>
                         </div>
                       </div>
@@ -102,7 +102,7 @@
                               </div>
                           
                               <!-- Description -->
-                              <small class="text-body-secondary d-block mb-2">{{ cartItem.description }}</small>
+                              <small class="text-body-secondary d-block mb-2">{{ cartItem.beschreibung }}</small>
                           
                               <!-- Remark and Actions -->
                               <div class="d-flex justify-content-between align-items-center">

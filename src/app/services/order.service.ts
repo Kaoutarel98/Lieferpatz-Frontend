@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 export class OrderService {
 
   private apiUrl = '/api/v1/restaurant';
-  private WarenkorbUrl = '/api/v1/Warenkorb';  // Die Basis-URL deines Backend-Controllers
 
   constructor(private http: HttpClient) { }
 
