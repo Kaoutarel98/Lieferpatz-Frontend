@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 import { CustomerService } from '../services/customer.service';
 
 
@@ -11,72 +11,16 @@ import { CustomerService } from '../services/customer.service';
 @Component({
   selector: 'app-user-restaurant-items',
   imports: [RouterModule, RouterLink, CommonModule, FormsModule],
+  standalone: true,
   templateUrl: './user-restaurant-items.component.html',
   styleUrls: ['./user-restaurant-items.component.css']
 })
 export class UserRestaurantItemsComponent implements OnInit {
   restaurantId: number = 0; //aktuelle Restaurant-Id
-  restaurant: { id: string; name: string; items: string[]; imageUrl:string ; description:String; openinghours:String}
-  restaurants = [
-    { id: '1', name: 'Burger King', items: ['Burger', 'Fries', 'Drinks'], imageUrl: './../assets/Burger-king-2.avif', description:'', openinghours:''},
-    { id: '2', name: 'Marrakesh Tajine', items: ['Tajine kafta', 'Couscous', 'Mint Tea'], imageUrl: './../assets/Marokkanisch-Restau.jpg', description:'', openinghours:'' },
-    { id: '3', name: 'Pizza Palace', items: ['Margherita', 'Pepperoni', 'Calzone'], imageUrl: './../assets/pizza-palace.png', description:'' , openinghours:''},
-    { id: '4', name: 'AL MadaQ AL Dimshqi', items: ['Margherita', 'Pepperoni', 'Calzone'], imageUrl: './../assets/suria-res.jpg', description:'' , openinghours:''},
+  restaurant = { id: '', name: '', items: [], image:'',  description: '', openinghours:''} 
+  items: any ; //Produkte aus der Datenbank
 
-  ];
-  items: any[] = [
-    {
-      id: 1,
-      name: 'Tajine Kafta',
-      description: 'Hackfleisch in Tajine mit Tomatensauce',
-      price: 12,
-      imageUrl: './../../assets/tajine-hackfleich.jpeg'
-    },
-    {
-      id: 2,
-      name: 'Pizza Margherita',
-      description: 'Tomaten, Mozzarella, Basilikum',
-      price: 8.5,
-      imageUrl: './../../assets/mar.jpeg'
-    },
-    {
-      id: 3,
-      name: 'Grillteller',
-      description: 'Verschiedene gegrillte Fleischsorten',
-      price: 15,
-      imageUrl: './../../assets/gegrillte-teller.webp'
-    },
-    {
-      id: 4,
-      name: 'Spaghetti Carbonara',
-      description: 'Spaghetti mit Speck und cremiger Soße',
-      price: 10,
-      imageUrl: './../../assets/carbonara.jpeg'
-    }
-  ]; //Produkte aus der Datenbank
-
-  cartItems: any[] = [
-    {
-      id: 1,
-      name: 'Tajine Kafta',
-      description: 'Hackfleisch in Tajine mit Tomatensauce',
-      price: 12,
-      quantity: 2,
-      remark: '',
-      newRemark: '',
-      showRemarkInput: false
-    },
-    {
-      id: 2,
-      name: 'Pizza Margherita',
-      description: 'Tomaten, Mozzarella, Basilikum',
-      price: 8.5,
-      quantity: 1,
-      remark: '',
-      newRemark: '',
-      showRemarkInput: false
-    }
-  ]; // Warenkorb-Items
+  cartItems: any[] = []; // Warenkorb-Items
   balance: number = 100;//Guthaben
   subtotal: number = 0; // Zwischensumme
   total: number = 0; // Gesamtsumme
@@ -87,32 +31,49 @@ export class UserRestaurantItemsComponent implements OnInit {
  
   event: Event;
   
-  constructor(private customerService: CustomerService, private route: ActivatedRoute) { }
+  constructor(private customerService: CustomerService, private route: ActivatedRoute, private authService: AuthService ) { }
 
   
 
   ngOnInit() {
     // ID aus der Route abrufen
     this.restaurantId = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-
-    // Restaurant anhand der ID suchen
-    this.restaurant = this.restaurants.find(r => r.id === this.restaurantId.toString());
-
-    if (this.restaurant) {
-      console.log('Restaurant gefunden:', this.restaurant);
-    } else {
-      console.error('Restaurant nicht gefunden!');
-    }
+    this.loadrestaurantItems();
+    this.updateBalance();
+    this.loadWarekorbItems();
   }
 
-  loadrestaurantItems(restaurantId: number):void {
+  updateBalance(): void {
+    this.authService.getAccount().subscribe({
+      next: (data: any) => this.balance = data.body.geldbeutel - data.body.vorgemerkt,
+      error: (error) => console.error('Fehler beim Laden des Guthabens:', error)
+    });
+  }
+
+  loadWarekorbItems(): void {
+    this.customerService.getWarenkorbItems().subscribe({
+      next: (data: any) => {
+        console.log('Warenkorb-Items geladen:', data);
+        if(data) {
+          this.cartItems = data;
+          this.updateTotals();
+        }
+      },
+      error: (error) => console.error('Fehler beim Laden der Warenkorb-Items:', error)
+    });
+  }
+
+  loadrestaurantItems():void {
     this.customerService.getRestaurantItems(this.restaurantId).subscribe({
-      next: (data) => {
-        this.items = data;
+      next: (data: any) => {
+        console.log('Menü-Items geladen:', data);
+        if(data) {
+          this.restaurant.name = data.restaurantName;
+          this.restaurant.image = data.restaurantImage;
+          this.items = data.items;
+        }
       },
-      error: (error) => {
-        console.error('Fehler beim Laden der Menü-Items:', error);
-      },
+      error: (error) => console.error('Fehler beim Laden der Menü-Items:', error)
     });
   }
 
@@ -125,20 +86,14 @@ export class UserRestaurantItemsComponent implements OnInit {
   addToCart(item: any): void {
     // Prüfen, ob das Item bereits im Warenkorb existiert
     const existingCartItem = this.cartItems.find(cartItem => cartItem.id === item.id);
-
-    if (existingCartItem) {
-      // Menge erhöhen, falls das Item bereits vorhanden ist
-      existingCartItem.quantity += 1;
-    } else {
-      // Neues Item hinzufügen
-      this.cartItems.push({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        quantity: 1,
-      });
-    }
-
+    const quantity = existingCartItem ? existingCartItem.quantity + 1 : 1;
+    this.customerService.addWarenkorbItem({itemId: item.id, quantity: quantity}).subscribe({
+      next: (data: any) => {
+        console.log('Item zum Warenkorb hinzugefügt:', data);
+        this.loadWarekorbItems();
+      },
+      error: (error) => console.error('Fehler beim Hinzufügen des Items zum Warenkorb:', error)
+    });
     console.log('Aktualisierter Warenkorb:', this.cartItems);
   }
 
@@ -149,52 +104,69 @@ export class UserRestaurantItemsComponent implements OnInit {
 
 
   increaseItemQuantity(item: any): void {
-    item.quantity += 1;
-    this.updateTotals();
+    this.customerService.addWarenkorbItem({itemId: item.itemId, quantity: item.quantity + 1, remark: item.remark}).subscribe({
+      next: (data: any) => {
+        console.log('Item zum Warenkorb hinzugefügt:', data);
+        this.loadWarekorbItems();
+      },
+      error: (error) => console.error('Fehler beim Hinzufügen des Items zum Warenkorb:', error)
+    });
   }
 
   // Menge verringern
   decreaseItemQuantity(item: any): void {
-    if (item.quantity > 1) {
-      item.quantity -= 1;
-      this.updateTotals();
-    }
+      this.customerService.addWarenkorbItem({itemId: item.itemId, quantity: item.quantity - 1, remark: item.remark}).subscribe({
+        next: (data: any) => {
+          console.log('Item zum Warenkorb hinzugefügt:', data);
+          this.loadWarekorbItems();
+        },
+        error: (error) => console.error('Fehler beim Hinzufügen des Items zum Warenkorb:', error)
+      });
   }
 
   // Artikel entfernen
   removeItemFromCart(item: any): void {
-    this.cartItems = this.cartItems.filter((i) => i.id !== item.id);
-    this.updateTotals();
+    this.decreaseItemQuantity(item)
   }
   updateTotals(): void {
-    this.subtotal = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    this.total = this.subtotal - this.balance;
+    this.subtotal = this.cartItems.reduce((sum, item) => sum + item.preis * item.quantity, 0);
+    this.total = this.balance - this.subtotal;
   }
   
 
   // Anmerkung speichern
  
   checkout(): void {
-    alert('Vielen Dank für Ihre Bestellung!');
-    this.cartItems = [];
-    this.updateTotals();
+    this.customerService.placeOrder().subscribe({
+      next: (data: any) => {
+        this.updateBalance();
+        this.loadWarekorbItems();
+        alert('Vielen Dank für Ihre Bestellung!');
+      },
+      error: (error) => console.error('Fehler beim Aufgeben der Bestellung:', error)
+    });
   }
   // Controls the visibility of the remark box
 
   toggleRemarkInput(cartItem: any): void {
     cartItem.showRemarkInput = true; // Öffne das Eingabefeld
-    cartItem.newRemark = cartItem.remark; // Lade vorhandenes Remark (falls vorhanden)
   }
   saveRemark(cartItem: any): void {
     // Save the remark
     cartItem.remark = cartItem.tempRemark;
+    this.customerService.addWarenkorbItem({itemId: cartItem.itemId, quantity: cartItem.quantity, remark: cartItem.remark }).subscribe({
+      next: (data: any) => {
+        console.log('Item zum Warenkorb hinzugefügt:', data);
+        this.loadWarekorbItems();
+      },
+      error: (error) => console.error('Fehler beim Hinzufügen des Items zum Warenkorb:', error)
+    });
     cartItem.showRemarkInput = false; // Close the input box
   }
   
   editRemark(cartItem: any): void {
     // Open remark input box with the current remark for editing
     cartItem.showRemarkInput = true;
-    cartItem.tempRemark = cartItem.remark;
   }
   
   cancelRemark(cartItem: any): void {

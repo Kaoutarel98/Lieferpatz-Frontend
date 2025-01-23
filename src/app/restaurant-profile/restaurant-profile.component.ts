@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NgForm } from '@angular/forms';
-import {RouterLink, RouterModule} from '@angular/router';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 declare var $: any; 
 
-import { SettingsService } from '../services/settings.service';
 import { OrderService } from '../services/order.service';
+import { RestaurantService } from '../services/restaurant.service';
+import { SettingsService } from '../services/settings.service';
+import { WebSocketService } from '../services/WebSocketService';
 
 @Component({
   selector: 'app-restaurant-profile',
@@ -18,51 +19,66 @@ import { OrderService } from '../services/order.service';
  
 })
 export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
+orders: any;
 
+getOrderStatusClass(arg0: any): string|string[]|Set<string>|{ [klass: string]: any; } {
+throw new Error('Method not implemented.');
+}
 
-switchTab(tab: string): void {
-    this.selectedTab = tab;
-  }
-
+weekDays: any;
+setActiveTab(arg0: string) {
+throw new Error('Method not implemented.');
+}
+  item = {name: '', preis: '', imageUrl: '', beschreibung: ''};
   activeSection: string = 'activeOrders'; // Die Standardsektion
-  weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-  // Öffnungszeiten
-  openingHours = {
-    monday: { enabled: true, from: '09:00', to: '18:00' },
-    tuesday: { enabled: true, from: '09:00', to: '18:00' },
-    wednesday: { enabled: true, from: '09:00', to: '18:00' },
-    thursday: { enabled: true, from: '09:00', to: '18:00' },
-    friday: { enabled: true, from: '09:00', to: '18:00' },
-    saturday: { enabled: false, from: '', to: '' },
-    sunday: { enabled: false, from: '', to: '' },
-  };
-  restaurantBalance: number = 250.50; // Beispiel für Restaurantguthaben
-  
-  orders: any[] = [
-    { id: 101, description: '2x Burger, 1x Fries', receivedTime: new Date(), status: 'Pending' },
-    { id: 102, description: '1x Pizza, 2x Soda', receivedTime: new Date(), status: 'Completed' },
-    { id: 103, description: '1x Salad, 1x Water', receivedTime: new Date(), status: 'Cancelled' },
-    { id: 104, description: '3x Tacos, 1x Juice', receivedTime: new Date(), status: 'Pending' }
-  ];
-
-  deliveryRadius: number = 0;
-  
+  openingHours: any[] = [{
+    'dayOfWeek': 'Monday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Tuesday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Wednesday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Thursday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Friday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Saturday',
+    'openTime': '',
+    'closeTime': ''
+  },{
+    'dayOfWeek': 'Sunday',
+    'openTime': '',
+    'closeTime': ''
+  }]
+  plz: string = '';
   completedOrders: any[] = [];
   pendingOrders: any[] = [];
   items: any[] = [];
-  itemName: string = '';  // Item Name für das Menu-Management
-  itemPrice: string = '';  // Preis des Items
-  image: any;  // Für das Bild
-  category: string = '';  // Kategorie (Drinks, Meals)
-  description: string = '';  // Beschreibung des Items
-
+  selectedFile!: File;
+restaurantBalance: string|number;
 selectedTab: any;
 
   
   constructor(
     private settingsService: SettingsService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private webSocketService: WebSocketService,
+    private restaurantService: RestaurantService
   ) { }
   
 
@@ -71,16 +87,50 @@ selectedTab: any;
    
   }
 
-  onSubmit(formData: NgForm): void {
-    console.log('Form Data: ', formData.value);
-    this.items.push(formData.value);
-    console.log('Items: ', this.items);
-    formData.reset();
+  onSubmit(formData: any): void {
+    const values = formData.value;
+    values["imageUrl"] = this.item.imageUrl;
+    this.restaurantService.addItem(values).subscribe({
+      next: () => this.loadItems(),
+      error: (error) => console.log('Fehler beim Hinzufügen', error),
+      complete: () => formData.reset()
+    });
 
   
   }
 
-  
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    console.log(this.selectedFile )
+    if (input.files && input.files[0]) {
+
+      // Convert the image to a Base64 string
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.item.imageUrl = reader.result as string;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  editItem(item: any) {
+    // TODO: implement editItem
+    // this.restaurantService.updateItem(item).subscribe({
+    //   next: () => this.loadItems(),
+    //   error: (error) => console.log('Fehler bei der Update', error),
+    // });
+  }
+
+  deleteItem(item: any) {
+    const confirmed = window.confirm('Are you sure you want to delete the item?');
+    if (!confirmed) {
+      return;
+    }
+    this.restaurantService.deleteItem(item.id).subscribe({
+      next: () => this.loadItems(),
+      error: (error) => console.log('Fehler beim Löschen', error),
+    });
+  }
 
   initializeValidation(): void {
     const forms = document.querySelectorAll(
@@ -107,49 +157,60 @@ selectedTab: any;
   
 
   ngOnInit(): void {
-    this.selectedTab = 'openingHours'; // Setze die Standard-Section auf Opening Hours
+    this.webSocketService.connect((msg: any) => this.pendingOrders.unshift(JSON.parse(msg)));
+    
     this.loadOrders(); // Bestellungen beim Initialisieren der Komponente laden
+    this.loadItems()
     this.loadSettings(); // Einstellungen beim Initialisieren der Komponente laden
+    this.loadPlz();
+
     $(document).ready(function() {
-      $('#ordersTable').DataTable();
+      $('#pendingOrdersTable').DataTable();
+    });
+    $(document).ready(function() {
+      $('#completedOrdersTable').DataTable();
     });
   }
 
-  getOrderStatusClass(status: string): string {
-    switch (status.toLowerCase()) {
-      case 'completed':
-        return 'badge-success';
-      case 'pending':
-        return 'badge-warning';
-      case 'cancelled':
-        return 'badge-danger';
-      default:
-        return 'badge-secondary';
-    }
+  ngOnDestroy() {
+    this.webSocketService.disconnect();
   }
-  setActiveTab(tab: string): void {
-    this.selectedTab = tab;
-  }
-
 
   ngAfterViewInit(): void {
     // Initialisierung der DataTable
-   this.initializeValidation();
    
   }
 
 
   loadOrders(): void {
     this.orderService.getOrders().subscribe((orders) => {
-      this.completedOrders = orders.filter(order => order.status === 'Completed');
-      this.pendingOrders = orders.filter(order => order.status === 'Pending');
+      this.completedOrders = orders.filter(order => order.status !== 'BEARBEITUNG');
+      console.log('Completed Orders:', this.completedOrders);
+      this.pendingOrders = orders.filter(order => order.status === 'BEARBEITUNG');
+    });
+  }
+
+  loadItems(): void {
+    this.orderService.getItems().subscribe((items) => {
+      this.items = items;
     });
   }
 
   loadSettings(): void {
-    this.settingsService.getSettings().subscribe((settings) => {
-      this.openingHours = settings.openingHours;
-      this.deliveryRadius = settings.deliveryRadius;
+    this.settingsService.getOpeningHours().subscribe({
+      next: (response) => {
+        if(response && response.length > 0) {
+          this.openingHours = response
+        }
+      },
+      error: (error) => console.error('Fehler beim Laden der Öffnungszeiten', error)
+    });
+  }
+
+  loadPlz(): void {
+    this.settingsService.getDeliveryPlz().subscribe({
+      next: (response) => this.plz = response.plz,
+      error: (error) => console.error('Fehler beim Laden der Öffnungszeiten', error)
     });
   }
   
@@ -183,17 +244,9 @@ getPendingOrders() {
 }
 
 
-getSettings() {
-  this.settingsService.getSettings().subscribe((settings) => {
-    this.openingHours = settings.openingHours;
-    this.deliveryRadius = settings.deliveryRadius;
-  });
-}
-
 // Öffnungszeiten aktualisieren
 updateOpeningHours() {
-  const updatedHours = this.openingHours;
-  this.settingsService.updateOpeningHours(updatedHours).subscribe({
+  this.settingsService.updateOpeningHours(this.openingHours).subscribe({
     next: (response) => {
       console.log('Öffnungszeiten erfolgreich aktualisiert', response);
     },
@@ -202,25 +255,28 @@ updateOpeningHours() {
     }
   });
 }
-updateDeliveryRadius() {
-  const updatedRadius = this.deliveryRadius;
-  this.settingsService.updateDeliveryRadius(updatedRadius).subscribe({
+updateDeliveryPlz() {
+  this.settingsService.updateDeliveryPlz(this.plz).subscribe({
     next: (response) => {
-      console.log('Lieferradius erfolgreich aktualisiert', response);
+      console.log('LieferPlz erfolgreich aktualisiert', response);
     },
     error: (error) => {
-      console.error('Fehler bei der Aktualisierung des Lieferradius', error);
+      console.error('Fehler bei der Aktualisierung des LieferPlz', error);
     }
   });
 }
 acceptOrder(order: any) {
-  console.log('Order accepted:', order);
-  // Implementieren Sie die Logik zum Akzeptieren der Bestellung
+  this.orderService.confirmOrder(order.id).subscribe({
+    next: () => this.loadOrders(),
+    error: (error) => console.error('Fehler beim Bestätigen der Bestellung', error)
+  });
 }
 
 declineOrder(order: any) {
-  console.log('Order declined:', order);
-  // Implementieren Sie die Logik zum Ablehnen der Bestellung
+  this.orderService.cancelOrder(order.id).subscribe({
+    next: () => this.loadOrders(),
+    error: (error) => console.error('Fehler beim Decline der Bestellung', error)
+  });
 }
 
 

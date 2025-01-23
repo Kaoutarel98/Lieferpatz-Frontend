@@ -39,38 +39,44 @@
     <div class="d-flex align-items-center py-4 bg-white" id="mainContainer">
     
    <main class="form-signin w-100 m-auto">
-      <form>
+      <form #signupForm="ngForm" (ngSubmit)="signup(signupForm.value)" class="needs-validation" novalidate>
         
         <h1 class="h3 mb-3 fw-normal">Create a new account</h1>
     <div class="row my-2">
         <div class="field-wrap col-6">
-            <input type="text" class="form-control" id="floatingInput" placeholder="First Name">
+            <input class="form-control" type="text" id="vorname" name="vorname" placeholder="First Name" [(ngModel)]="kunde.vorname" required #vorname="ngModel">
         </div>
   
           <div class="field-wrap col-6 ">
-              <input type="text" class="form-control" id="floatingInput" placeholder="Last Name">
+              <input class="form-control" type="text" id="nachname" name="nachname" placeholder="Last Name" [(ngModel)]="kunde.nachname" required #nachname="ngModel">
              
             </div>
     </div>
     
 
           <div class="field-wrap my-2">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <input class="form-control" type="email" id="email" name="email" placeholder="name@example.com" [(ngModel)]="kunde.email" required #email="ngModel">
             
           </div>
 
         <div class="field-wrap my-2">
-          <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+          <input class="form-control" type="password" id="password" name="password" placeholder="Password" [(ngModel)]="kunde.password" required #password="ngModel">
           
         </div>
 
         <div class="row my-2">
             <div class="form-group col-6">
-            <input class="form-control" type="text" id="strasse" name="strasse" placeholder="Street">
+            <input class="form-control" type="text" id="strasse" name="strasse" placeholder="Street" [(ngModel)]="kunde.strasse" required #strasse="ngModel">
             </div>
         
             <div class="form-group col-6">
-                <input class="form-control" type="text" id="plz" name="plz" placeholder="Code Postal">
+                <input class="form-control" type="text" id="plz" name="plz" placeholder="Code Postal" [(ngModel)]="kunde.plz" required #plz="ngModel">
+            </div>
+        </div>
+
+        <div class="row my-2">
+            <div class="form-group col-12">
+            <input class="form-control" type="text" id="ort" name="ort" placeholder="Ort" [(ngModel)]="kunde.ort" required #ort="ngModel">
             </div>
         </div>
 

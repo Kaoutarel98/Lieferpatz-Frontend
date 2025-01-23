@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,8 +12,8 @@ export class SettingsService {
   constructor(private http: HttpClient) { }
 
   // Öffnungszeiten abfragen
-  getSettings(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/settings`);
+  getOpeningHours(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/opening`);
   }
 
   // Öffnungszeiten aktualisieren
@@ -22,7 +22,11 @@ export class SettingsService {
   }
 
   // Lieferradius aktualisieren
-  updateDeliveryRadius(deliveryRadius: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/delivery/radius`, { deliveryRadius });
+  updateDeliveryPlz(plz: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/plz/add`, { plz: plz });
+  }
+
+  getDeliveryPlz(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/plz`);
   }
 }

@@ -49,12 +49,11 @@
 
                 <div class="col" *ngFor="let restaurant of restaurants">
                   <div class="card shadow-sm">
-                      <img class="card-img-top" [src]="restaurant.imageUrl" [alt]="restaurant.name" width="100%" height="225">
+                      <img class="card-img-top" [src]="restaurant.image" [alt]="restaurant.name" width="100%" height="225">
                       <div class="card-body">
                           <h5 class="card-title">{{ restaurant.name }}</h5>
-                          <p class="card-text">{{ restaurant.description }}</p>
+                          <p class="card-text">{{ restaurant.beschreibung }}</p>
                           
-                          <p class="card-text"><small>Öffnungszeiten: {{ restaurant.openingHours }}</small></p>
                           <div class="d-flex justify-content-between align-items-center">
                               <div class="btn-group">
                                 <div class="d-flex justify-content-between align-items-center" [routerLink]="['/restaurant-menu', restaurant.id]">
@@ -73,100 +72,6 @@
 
 
 
-                <div class="col">
-                  <div class="card shadow-sm">
-                    <img src="../../assets/Burger-king-2.avif" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
-                    <div class="card-body">
-                      <p class="restaurant-name mb-1">Burger King</p>
-                      <div class="d-flex justify-content-between align-items-center">
-                          <p class="restaurant-description mb-0"><small>Leckere Burgers</small></p>
-                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
-                      </div>
-                     
-                      <div class="text-center mt-3">
-                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantItems" routerLinkActive="active" >
-                          <i class="fa fa-chevron-right"></i> Menu
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col">
-                  <div class="card shadow-sm">
-                    <img src="../../assets/Burger-king-2.avif" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
-                    <div class="card-body">
-                      <p class="restaurant-name mb-1">Burger King</p>
-                      <div class="d-flex justify-content-between align-items-center">
-                          <p class="restaurant-description mb-0"><small>Leckere Burgers</small></p>
-                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
-                      </div>
-                     
-                      <div class="text-center mt-3">
-                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantItems" routerLinkActive="active" >
-                          <i class="fa fa-chevron-right"></i>Menu
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col">
-                  <div class="card shadow-sm">
-                    <img src="../../assets/Burger-king-2.avif" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
-                    <div class="card-body">
-                      <p class="restaurant-name mb-1">Burger King</p>
-                      <div class="d-flex justify-content-between align-items-center">
-                          <p class="restaurant-description mb-0"><small>Leckere Burgers</small></p>
-                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
-                      </div>
-                     
-                      <div class="text-center mt-3">
-                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantItems" routerLinkActive="active" >
-                          <i class="fa fa-chevron-right"></i> Menu
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col">
-                  <div class="card shadow-sm">
-                    <img src="../../assets/Burger-king-2.avif" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
-                    <div class="card-body">
-                      <p class="restaurant-name mb-1">Burger King</p>
-                      <div class="d-flex justify-content-between align-items-center">
-                          <p class="restaurant-description mb-0"><small>Leckere Burgers</small></p>
-                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
-                      </div>
-                     
-                      <div class="text-center mt-3">
-                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantitem" routerLinkActive="active" >
-                          <i class="fa fa-chevron-right"></i> Menu
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col">
-                  <div class="card shadow-sm">
-                    <img src="../../assets/tajine.jpeg" alt="Restaurant Thumbnail" class="card-img-top" width="100%" height="225">
-                    <div class="card-body">
-                      <p class="restaurant-name mb-1">Marrakesh Tajine</p>
-                      <div class="d-flex justify-content-between align-items-center">
-                          <p class="restaurant-description mb-0"><small>Moroccan Food</small></p>
-                          <p class="restaurant-hour mb-0"><small>Mo-so 10-22 </small></p>
-                      </div>
-                     
-                      <div class="text-center mt-3">
-                        <a class="btn btn-link text-decoration-none text-dark" routerLink="/restaurantitem" routerLinkActive="active" >
-                          <i class="fa fa-chevron-right"></i> Menu
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
         
                 
               </div>

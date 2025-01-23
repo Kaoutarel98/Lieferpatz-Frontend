@@ -39,17 +39,17 @@
   <div class="d-flex align-items-center py-4 bg-white" id="mainContainer">
   
  <main class="form-signin w-100 m-auto">
-    <form  #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" >
+    <form  #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm.value)" >
       
       <h1 class="h3 mb-3 fw-normal">Sign into your account</h1>
   
       <div class="form-floating">
-        <input  name="email"  type="email" class="form-control" id="floatingInput" placeholder="name@example.com" [(ngModel)]="email" required >
-        <label for="floatingInput">Email address</label>
+        <input name="email"  type="email" class="form-control" id="email" placeholder="name@example.com" [(ngModel)]="email" required>
+        <label for="email">Email address</label>
       </div>
       <div class="form-floating">
-        <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password" [(ngModel)]="password" required>
-        <label for="floatingPassword">Password</label>
+        <input name="password" type="password" class="form-control" id="password" placeholder="Password" [(ngModel)]="password" required>
+        <label for="password">Password</label>
       </div>
       <button class="btn btn-secondary w-100 py-2 mb-3" type="submit" id="loginhover" > Log in</button>
 

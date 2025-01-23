@@ -48,21 +48,18 @@
                                 <input class="form-control" type="text" id="name" name="name" [(ngModel)]="user.name" required #name="ngModel">
                                 <div class="invalid-feedback" *ngIf="name.invalid && name.touched">
                                     Restraunt's Name is required.
-                            </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
 
-                                <!-- <label for="name">Email</label>
-                                <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #Email="ngModel">
-                                <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched"> -->
-
+                               
                                 <label for="email">Email</label>
                                 <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #email="ngModel">
                                 <div class="invalid-feedback" *ngIf="email.invalid && email.touched">
 
                                     Email is required.
-                            </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -96,40 +93,44 @@
                                     Description is required.
                                 </div>
                             </div>
+
                             <div class="form-group">
-                                <label for="bild">Logo Image</label>
-                                <input class="form-control" type="file" id="bild" name="bild" accept="image/jpeg, image/png" [(ngModel)]="user.bild">
+                                <label for="image">Logo Image</label>
+                                <input class="form-control" type="file" id="image" name="image" accept="image/jpeg, image/png" (change)="onFileSelected($event)">
                             </div>
+
                             <div class="form-group">
 
                                 <label for="passwort">Passwort</label>
-                                <!-- <label for="password">Passwort</label> -->
+                               
 
                                 <input class="form-control" type="password" id="password" name="password" [(ngModel)]="user.password" required #password="ngModel">
                                 <div class="invalid-feedback">
                                     Password is required.
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <button type="submit" id="loginhover">Sign up</button>
                             </div>
                         
                     </div>
-                
+               
                     <div id="loginContent" *ngIf="!signupContentIsActive">
                         <div class="form-group">
                             <label for="name">Email</label>
                             <input class="form-control" type="text" id="email" name="email" [(ngModel)]="user.email" required #Email="ngModel">
                             <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched">
                                 Email is required.
-                        </div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="usename" class="form-label">Email</label>
-                            <input class="form-control" type="text" id="email" name="email" [(ngModel)]="credentials.email" required #email="ngModel">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            
+                            <input class="form-control" type="password" id="password" name="password" [(ngModel)]="credentials.password" required #email="ngModel">
                             <div class="valid-feedback">Looks good!</div>
                             <div class="invalid-feedback">
-                                Email is required.
+                                Password is required.
                             </div>
                         </div>
                        
@@ -138,7 +139,6 @@
                             <button type="submit" id="loginhover">Log In</button>
                         </div>
                     </div>
-
                     
              </form>
                 

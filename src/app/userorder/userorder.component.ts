@@ -1,11 +1,9 @@
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { CustomerService } from '../services/customer.service';
 import { OrderService } from '../services/order.service';
-import { forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { CommonModule, DatePipe } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-userorder',
@@ -24,59 +22,22 @@ export class UserorderComponent implements OnInit {
   filteredCurrentOrders: any[] = [];
   filteredOrderHistory: any[] = [];
 
-  // Beispiele für Mock-Daten
-  mockOrders = [
-    { id: 1, restaurantName: 'Sushi Place', items: ['California Roll', 'Miso Soup'], date: '2025-01-13T19:30:00', status: 'In Zubereitung' },
-    { id: 2, restaurantName: 'Pizza Town', items: ['Margherita', 'Garlic Bread'], date: '2025-01-12T19:45:00', status: 'In Zubereitung' },
-    { id: 3, restaurantName: 'Curry House', items: ['Butter Chicken', 'Naan'], date: '2025-01-02T18:00:00', status: 'Abgeschlossen' },
-    { id: 4, restaurantName: 'Burger Grill', items: ['Cheeseburger', 'Fries'], date: '2025-01-08T16:30:00', status: 'Storniert' }
-  ];
-
   constructor(
     private customerService: CustomerService,
-    private orderService: OrderService,
     private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
-    this.initializeMockOrders();
     this.loadOrdersWithStatus();
   }
 
-  initializeMockOrders() {
-    // Mock-Daten sortieren und aufteilen (case-insensitive) nach Datum
-    this.currentOrders = this.mockOrders
-      .filter(order => ['in zubereitung', 'accepted'].includes(order.status.toLowerCase()))
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Neueste zuerst
-  
-    this.orderHistory = this.mockOrders
-      .filter(order => !['in zubereitung', 'accepted'].includes(order.status.toLowerCase()))
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Neueste zuerst
-  }
-  
   loadOrdersWithStatus() {
-    this.customerService.getCustomerOrders().subscribe(orders => {
-      const statusRequests = orders.map(order =>
-        this.orderService.getStatus(order.id).pipe(
-          map(status => ({ ...order, status: status.status }))
-        )
-      );
-  
-      forkJoin(statusRequests).subscribe(completeOrders => {
-        const currentOrders = completeOrders
-          .filter(order => ['in zubereitung', 'accepted'].includes(order.status.toLowerCase()))
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Neueste zuerst
-  
-        const orderHistory = completeOrders
-          .filter(order => !['in zubereitung', 'accepted'].includes(order.status.toLowerCase()))
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Neueste zuerst
-  
-        // Merge mit Mock-Daten
-        this.currentOrders = [...this.currentOrders, ...currentOrders];
-        this.orderHistory = [...this.orderHistory, ...orderHistory];
-      });
+    this.customerService.getCustomerOrders().subscribe((orders) => {
+      this.currentOrders = orders.filter(order => ['BEARBEITUNG', 'ZUBEREITUNG'].includes(order.status));
+      this.orderHistory = orders.filter(order => !['BEARBEITUNG', 'ZUBEREITUNG'].includes(order.status));
     });
   }
+  
   
   setActiveSection(section: 'CurrentOrder' | 'OrderHistory') {
     this.activeSection = section;
@@ -90,13 +51,13 @@ export class UserorderComponent implements OnInit {
     const term = this.searchTerm.toLowerCase();
     this.filteredCurrentOrders = this.currentOrders.filter(order =>
       order.restaurantName.toLowerCase().includes(term) ||
-      order.items.some((item: string) => item.toLowerCase().includes(term)) ||
+      order.bestellungItems.some((item: any) => item.itemLabel.toLowerCase().includes(term)) ||
       order.status.toLowerCase().includes(term)
     );
-
+    
     this.filteredOrderHistory = this.orderHistory.filter(history =>
       history.restaurantName.toLowerCase().includes(term) ||
-      history.items.some((item: string) => item.toLowerCase().includes(term)) ||
+      history.bestellungItems.some((item: any) => item.itemLabel.toLowerCase().includes(term)) ||
       history.status.toLowerCase().includes(term)
     );
   }

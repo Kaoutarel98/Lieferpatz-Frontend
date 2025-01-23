@@ -56,20 +56,23 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">{{ order.restaurantName }}</h5>
+                        <span class="card-text">
+                            <strong>Items:</strong>
+                            <div *ngFor="let item of order.bestellungItems" class="ms-3">
+                                <span>{{ item.itemLabel }}: ({{ item.quantity }} x {{ item.preis | currency: 'EUR'}} = {{(item.quantity * item.preis) | currency: 'EUR'}})</span>
+                            </div>
+                        </span>
                         <p class="card-text">
-                            <strong>Items:</strong> {{ order.items.join(', ') }}
-                        </p>
-                        <p class="card-text">
-                            <strong>Order Date:</strong> {{ order.date | date:'medium' }}
+                            <strong>Order Date:</strong> {{ order.bestellzeitpunkt | date:'medium' }}
                         </p>
                         <span 
                             class="badge text-bg-success" 
-                            *ngIf="order.status === 'Accepted'">
+                            *ngIf="order.status === 'ZUBEREITUNG'">
                             {{ order.status }}
                         </span>
                         <span 
                             class="badge text-bg-warning" 
-                            *ngIf="order.status === 'In Zubereitung'">
+                            *ngIf="order.status === 'BEARBEITUNG'">
                             {{ order.status }}
                         </span>
                     </div>
@@ -85,20 +88,23 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">{{ history.restaurantName }}</h5>
+                        <span class="card-text">
+                            <strong>Items:</strong>
+                            <div *ngFor="let item of history.bestellungItems" class="ms-3">
+                                <span>{{ item.itemLabel }}: ({{ item.quantity }} x {{ item.preis | currency: 'EUR'}} = {{(item.quantity * item.preis) | currency: 'EUR'}})</span>
+                            </div>
+                        </span>
                         <p class="card-text">
-                            <strong>Items:</strong> {{ history.items.join(', ') }}
-                        </p>
-                        <p class="card-text">
-                            <strong>Order Date:</strong> {{ history.date | date:'medium' }}
+                            <strong>Order Date:</strong> {{ history.bestellzeitpunkt | date:'medium' }}
                         </p>
                         <span 
                             class="badge text-bg-danger" 
-                            *ngIf="history.status === 'Storniert'">
+                            *ngIf="history.status === 'STORNIERT'">
                             {{ history.status }}
                         </span>
                         <span 
                             class="badge text-bg-secondary" 
-                            *ngIf="history.status === 'Abgeschlossen'">
+                            *ngIf="history.status === 'ABGESCHLOSSEN'">
                             {{ history.status }}
                         </span>
                     </div>

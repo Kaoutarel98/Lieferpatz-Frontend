@@ -1,6 +1,7 @@
 // src/app/services/customer.service.ts
-import { Injectable } from '@angular/core';
+// src/app/services/customer.service.ts
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 // Injectable decorator makes this class a service that can be injected into other components
@@ -9,7 +10,8 @@ import { Observable } from 'rxjs';
 })
 export class CustomerService {
   // API URL
-  private apiUrl = 'http://localhost:8080/api/v1/kunde';  // Adjust the URL for your backend API
+  private apiUrl = '/api/v1/kunde';  // Adjust the URL for your backend API
+  private warenkorbUrl = '/api/v1/warenkorb';  // Die Basis-URL deines Backend-Controllers
 
   constructor(private http: HttpClient) {}
 
@@ -29,12 +31,20 @@ export class CustomerService {
   }
 
   // Place a new order
-  placeOrder(orderData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/bestellung`, orderData);
+  placeOrder(): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/bestellung`, null);
   }
 
   // Fetch order details
   getOrderDetails(orderId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/bestellung/${orderId}`);
+  }
+
+  getWarenkorbItems(): Observable<any> {
+    return this.http.get<any>(`${this.warenkorbUrl}`);
+  }
+
+  addWarenkorbItem(item: any): Observable<any> {
+    return this.http.post<any>(`${this.warenkorbUrl}`, item);
   }
 }
