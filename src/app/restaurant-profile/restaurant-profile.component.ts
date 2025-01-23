@@ -114,7 +114,7 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
     if (!confirmed) {
       return;
     }
-    this.restaurantService.deleteItem(item).subscribe({
+    this.restaurantService.deleteItem(item.id).subscribe({
       next: () => this.loadItems(),
       error: (error) => console.log('Fehler beim Löschen', error),
     });
