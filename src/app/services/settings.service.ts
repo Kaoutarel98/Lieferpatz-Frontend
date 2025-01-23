@@ -22,7 +22,11 @@ export class SettingsService {
   }
 
   // Lieferradius aktualisieren
-  updateDeliveryRadius(deliveryRadius: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/delivery/radius`, { deliveryRadius });
+  updateDeliveryPlz(plz: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/plz/add`, { plz: plz });
+  }
+
+  getDeliveryPlz(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/plz`);
   }
 }

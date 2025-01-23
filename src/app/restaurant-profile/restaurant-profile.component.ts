@@ -21,8 +21,41 @@ import { WebSocketService } from '../services/WebSocketService';
 export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
   item = {name: '', preis: '', imageUrl: '', beschreibung: ''};
   activeSection: string = 'activeOrders'; // Die Standardsektion
-  openingHours: any[] = []
-  deliveryRadius: number = 0;
+  openingHours: any[] = [{
+    'dayOfWeek': 'Monday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Tuesday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Wednesday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Thursday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Friday',
+    'openTime': '',
+    'closeTime': ''
+  },
+  {
+    'dayOfWeek': 'Saturday',
+    'openTime': '',
+    'closeTime': ''
+  },{
+    'dayOfWeek': 'Sunday',
+    'openTime': '',
+    'closeTime': ''
+  }]
+  plz: string = '';
   completedOrders: any[] = [];
   pendingOrders: any[] = [];
   items: any[] = [];
@@ -56,15 +89,15 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
+    console.log(this.selectedFile )
     if (input.files && input.files[0]) {
-      this.selectedFile = input.files[0];
 
       // Convert the image to a Base64 string
       const reader = new FileReader();
       reader.onload = () => {
         this.item.imageUrl = reader.result as string;
       };
-      reader.readAsDataURL(this.selectedFile);
+      reader.readAsDataURL(input.files[0]);
     }
   }
 
@@ -117,6 +150,7 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
     this.loadOrders(); // Bestellungen beim Initialisieren der Komponente laden
     this.loadItems()
     this.loadSettings(); // Einstellungen beim Initialisieren der Komponente laden
+    this.loadPlz();
 
     $(document).ready(function() {
       $('#pendingOrdersTable').DataTable();
@@ -152,7 +186,18 @@ export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
 
   loadSettings(): void {
     this.settingsService.getOpeningHours().subscribe({
-      next: (response) => this.openingHours = response,
+      next: (response) => {
+        if(response && response.length > 0) {
+          this.openingHours = response
+        }
+      },
+      error: (error) => console.error('Fehler beim Laden der Öffnungszeiten', error)
+    });
+  }
+
+  loadPlz(): void {
+    this.settingsService.getDeliveryPlz().subscribe({
+      next: (response) => this.plz = response.plz,
       error: (error) => console.error('Fehler beim Laden der Öffnungszeiten', error)
     });
   }
@@ -198,14 +243,13 @@ updateOpeningHours() {
     }
   });
 }
-updateDeliveryRadius() {
-  const updatedRadius = this.deliveryRadius;
-  this.settingsService.updateDeliveryRadius(updatedRadius).subscribe({
+updateDeliveryPlz() {
+  this.settingsService.updateDeliveryPlz(this.plz).subscribe({
     next: (response) => {
-      console.log('Lieferradius erfolgreich aktualisiert', response);
+      console.log('LieferPlz erfolgreich aktualisiert', response);
     },
     error: (error) => {
-      console.error('Fehler bei der Aktualisierung des Lieferradius', error);
+      console.error('Fehler bei der Aktualisierung des LieferPlz', error);
     }
   });
 }

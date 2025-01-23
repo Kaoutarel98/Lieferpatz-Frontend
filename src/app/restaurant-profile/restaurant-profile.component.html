@@ -65,7 +65,7 @@
               <input type="text" name="preis" class="form-control" id="itemPreis" [(ngModel)]="item.preis" required/>
              
               <label for="imageUrl">Choose an Image</label>
-              <input type="file" name="imageUrl" accept="image/*" class="form-control" id="imageUrl" [(ngModel)]="item.imageUrl" required (change)="onFileSelected($event)"/>
+              <input type="file" name="imageUrl" accept="image/*" class="form-control" id="imageUrl" [(ngModel)]="selectedFile" required (change)="onFileSelected($event)"/>
               
 
 
@@ -227,13 +227,13 @@
       </form>
     </div>
   
-    <!-- Delivery Radius -->
+    <!-- Delivery deliveryPlz -->
     <div class="container mt-3">
-      <h2>Update Delivery Radius</h2>
-      <form (ngSubmit)="updateDeliveryRadius()">
+      <h2>Update Delivery PLZ</h2>
+      <form (ngSubmit)="updateDeliveryPlz()">
         <div class="form-group">
-          <label for="deliveryRadius">Delivery Radius (in km)</label>
-          <input type="number" id="deliveryRadius" class="form-control" [(ngModel)]="deliveryRadius" name="deliveryRadius" required>
+          <label for="deliveryPlz">Liste der PLZ</label>
+          <input type="text" id="deliverydeliveryPlz" class="form-control" [(ngModel)]="plz" name="deliveryPlz" required>
         </div>
         <button type="submit" class="btn btn-primary">Save Changes</button>
       </form>

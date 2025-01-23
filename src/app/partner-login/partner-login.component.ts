@@ -66,7 +66,7 @@ export class PartnerLoginComponent {
       // Convert the image to a Base64 string
       const reader = new FileReader();
       reader.onload = () => {
-        this.user.imageUrl = reader.result as string;
+        this.user.image = reader.result as string;
       };
       reader.readAsDataURL(this.selectedFile);
     }
