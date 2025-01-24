@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 })
 export class CustomerService {
   // API URL
-  private apiUrl = '/api/v1/kunde';  // Adjust the URL for your backend API
-  private warenkorbUrl = '/api/v1/warenkorb';  // Die Basis-URL deines Backend-Controllers
+  private apiUrl = "http://localhost:8080" + '/api/v1/kunde';  // Adjust the URL for your backend API
+  private warenkorbUrl = "http://localhost:8080" +'/api/v1/warenkorb';  // Die Basis-URL deines Backend-Controllers
 
   constructor(private http: HttpClient) {}
 
