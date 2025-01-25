@@ -20,15 +20,14 @@ import { WebSocketService } from '../services/WebSocketService';
 })
 export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
 orders: any;
+deliveryPlzs: string[] = [];
 
 getOrderStatusClass(arg0: any): string|string[]|Set<string>|{ [klass: string]: any; } {
 throw new Error('Method not implemented.');
 }
 
 weekDays: any;
-setActiveTab(arg0: string) {
-throw new Error('Method not implemented.');
-}
+
   item = {name: '', preis: '', imageUrl: '', beschreibung: ''};
   activeSection: string = 'activeOrders'; // Die Standardsektion
   openingHours: any[] = [{
@@ -70,8 +69,8 @@ throw new Error('Method not implemented.');
   pendingOrders: any[] = [];
   items: any[] = [];
   selectedFile!: File;
-restaurantBalance: string|number;
-selectedTab: any;
+  restaurantBalance: string|number;
+  selectedTab: any;
 
   
   constructor(
@@ -84,7 +83,14 @@ selectedTab: any;
 
   setActiveSection(section: string): void {
     this.activeSection = section;
+    if (section === 'setting') {
+      this.selectedTab = 'openingHours'; // Setzt den "Opening Hours" Tab als aktiv
+    }
    
+  }
+  setActiveTab(tab: string): void {
+    console.log("Wechsel zum Tab:", tab);
+    this.selectedTab = tab;
   }
 
   onSubmit(formData: any): void {
@@ -163,6 +169,7 @@ selectedTab: any;
     this.loadItems()
     this.loadSettings(); // Einstellungen beim Initialisieren der Komponente laden
     this.loadPlz();
+    
 
     $(document).ready(function() {
       $('#pendingOrdersTable').DataTable();
@@ -209,7 +216,10 @@ selectedTab: any;
 
   loadPlz(): void {
     this.settingsService.getDeliveryPlz().subscribe({
-      next: (response) => this.plz = response.plz,
+      next: (response) =>   {
+        // Stelle sicher, dass response.plz ein Array ist
+        this.deliveryPlzs = Array.isArray(response.plz) ? response.plz : [response.plz];
+      },
       error: (error) => console.error('Fehler beim Laden der Öffnungszeiten', error)
     });
   }
@@ -256,6 +266,8 @@ updateOpeningHours() {
   });
 }
 updateDeliveryPlz() {
+  this.deliveryPlzs.push(this.plz); // Füge die neue PLZ zur Liste hinzu
+  this.plz = ''; 
   this.settingsService.updateDeliveryPlz(this.plz).subscribe({
     next: (response) => {
       console.log('LieferPlz erfolgreich aktualisiert', response);
@@ -265,6 +277,13 @@ updateDeliveryPlz() {
     }
   });
 }
+
+removeDeliveryPlz(plz: string) {
+  this.settingsService.deleteDeliveryPlz(plz).subscribe(() => {
+    this.deliveryPlzs = this.deliveryPlzs.filter(p => p !== plz); // Entferne die PLZ aus der Liste
+  });
+}
+
 acceptOrder(order: any) {
   this.orderService.confirmOrder(order.id).subscribe({
     next: () => this.loadOrders(),

@@ -2,6 +2,10 @@
 
 
 
+
+
+
+
 <div class="dashboard">
   <div class="sidebar">
     <a class="navbar-brand" href="#" id="logo">
@@ -44,7 +48,7 @@
   </div>
 
 
-<section *ngIf="activeSection === 'menu-management'" class="p-5">
+<section *ngIf="activeSection === 'menu-management'" id="Container" class="p-5">
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
 Add Item
 </button>
@@ -117,7 +121,7 @@ Add Item
     
     
  
- <section *ngIf="activeSection === 'activeOrders'" class="p-5">
+ <section *ngIf="activeSection === 'activeOrders'"  id="Container" class="p-5">
 
     
   
@@ -162,74 +166,15 @@ Add Item
 
   
  
-  <section *ngIf="activeSection === 'activeOrders'" class="p-5">
-    <div id="Container" class="container ">
-      <div class="contentc">
-        <div class="main-stats">
-         
-          <div class="stat-item">
-            <i class="material-icons green">Balance</i>
-            <div class="counter">
-              <div class="count">{{ restaurantBalance | currency }}</div>
-              <div class="description">Today's sales</div>
-            </div>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Guthabenanzeige -->
-      <!-- <div  id="Balance" class="btn btn-danger rounded  mb-4">
-        <h4 class="text-secondary">Current Balance</h4>
-        <div class="d-flex justify-content-between">
-          <div class="justify-content-center">
-            <span class="text-success">{{ restaurantBalance | currency }}</span>
 
-            
-          </div>
-          
-        </div>
-      </div> -->
-      
-      
-      <!-- Orders-Tabelle -->
-      <table class="table table-hover align-middle w-100">
-        <thead class="table-hover">
-          <tr>
-            <th scope="col">Order Id</th>
-            <th scope="col">Order</th>
-            <th scope="col">Received Time</th>
-            <th scope="col">Status</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let order of orders">
-            <td>{{ order.id }}</td>
-            <td>{{ order.description }}</td>
-            <td>{{ order.receivedTime | date: 'short' }}</td>
-            <td>
-              <span class="badge" [ngClass]="getOrderStatusClass(order.status)">
-                {{ order.status }}
-              </span>
-            </td>
-            <td>
-              <button class="btn btn-success btn-sm" *ngIf="order.status === 'Pending'" (click)="acceptOrder(order)">Accept</button>
-              <button class="btn btn-danger btn-sm" *ngIf="order.status === 'Pending'" (click)="declineOrder(order)">Decline</button>
-              <span *ngIf="order.status !== 'Pending'" class="text-muted">No Actions</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
   
 
-<section *ngIf="activeSection === 'ordersHistory'" class="p-5">
+<section *ngIf="activeSection === 'ordersHistory'" id="Container" class="p-5">
 
     
  
     <h1>Order History</h1>
-    <div class="container mt-3">
+    <div  class="container mt-3">
       <table class="display" style="width:100%" id="completedOrdersTable">
       <thead>
         <tr>
@@ -293,92 +238,78 @@ Add Item
 
   <!-- Update Opening Hours -->
   <div *ngIf="selectedTab === 'openingHours'" class="container bg-light rounded shadow p-4">
-    
     <form (ngSubmit)="updateOpeningHours()">
-      <!-- Tage dynamisch generieren -->
-      <!-- <div class="row g-4" *ngFor="let day of weekDays">
+      <div class="row g-4" *ngFor="let day of openingHours">
         <div class="col-md-12">
           <div class="d-flex align-items-center justify-content-between bg-white p-3 rounded shadow-sm">
             <div class="d-flex align-items-center gap-3">
               <input
                 type="checkbox"
                 class="form-check-input"
-                id="{{ day }}Enabled"
-                [(ngModel)]="openingHours[day.toLowerCase()].enabled"
-                [name]="day + 'Enabled'"
+                id="{{ day.dayOfWeek }}Enabled"
+                [(ngModel)]="day.enabled"
+                name="{{ day.dayOfWeek }}Enabled"
               />
-              <label class="form-label fw-bold mb-0 text-capitalize" for="{{ day }}">{{ day }}</label>
-              
+              <label class="form-label fw-bold mb-0 text-capitalize" for="{{ day.dayOfWeek }}">
+                {{ day.dayOfWeek.charAt(0).toUpperCase() + day.dayOfWeek.slice(1).toLowerCase() }}
+              </label>
             </div>
             <div class="d-flex gap-3">
               <input
                 type="time"
                 class="form-control"
-                [(ngModel)]="openingHours[day.toLowerCase()].from"
-                [name]="day + 'From'"
-                [disabled]="!openingHours[day.toLowerCase()].enabled"
+                [(ngModel)]="day.openTime"
+                name="{{ day.dayOfWeek }}From"
+                [disabled]="!day.enabled"
               />
               <input
                 type="time"
                 class="form-control"
-                [(ngModel)]="openingHours[day.toLowerCase()].to"
-                [name]="day + 'To'"
-                [disabled]="!openingHours[day.toLowerCase()].enabled"
+                [(ngModel)]="day.closeTime"
+                name="{{ day.dayOfWeek }}To"
+                [disabled]="!day.enabled"
               />
             </div>
           </div>
         </div>
-      </div> -->
-      <!-- <button type="submit" id="btn-save" class="btn btn-primary mt-4 w-100">Save Changes</button> -->
-      <div class="form-group">
-        <div class="row" *ngFor="let day of openingHours">
-          <div class="col-3">
-          <p>
-            {{day.dayOfWeek.charAt(0).toUpperCase() + day.dayOfWeek.slice(1).toLowerCase()}}
-          </p>
-        </div>
-        <div class="col">
-          <p>
-            from
-          </p>
-        </div>
-        <div class="col">
-          <input type="time" [id]="day.dayOfWeek" class="form-control" [(ngModel)]="day.openTime" [value]="day.openTime" [ngModelOptions]="{standalone: true}" required>
-        </div>
-        <div class="col">
-            <p>
-              to
-            </p>
-          </div>
-          <div class="col">
-          <input type="time" [id]="day.dayOfWeek" class="form-control" [(ngModel)]="day.closeTime" [value]="day.closeTime" [ngModelOptions]="{standalone: true}" required>
-        </div>
-          <hr class="my-4"/>
-        </div>
-
-      </div>
-      <button type="submit" class="btn btn-primary" >Save Changes</button>
-    </form>
-  </div>
-
-  <!-- Update Delivery Radius -->
-  <div *ngIf="selectedTab === 'deliveryRadius'" class="container bg-light rounded shadow p-4">
-    
-    <form (ngSubmit)="updateDeliveryPlz()">
-      <div class="form-group">
-        <label for="deliveryRadius" class="form-label fw-bold">Delivery Radius (in km)</label>
-        <input
-          type="number"
-          id="deliveryRadius"
-          class="form-control"
-          [(ngModel)]="plz"
-          name="deliveryRadius"
-          required
-        />
       </div>
       <button type="submit" id="btn-save" class="btn btn-primary mt-4 w-100">Save Changes</button>
     </form>
   </div>
+  
+
+  <!-- Update Delivery Radius -->
+  <div *ngIf="selectedTab === 'deliveryRadius'" class="container bg-light rounded shadow p-4">
+    <form (ngSubmit)="updateDeliveryPlz()">
+      <div class="form-group">
+        <label for="deliveryRadius" class="form-label fw-bold">Delivery Radius</label>
+        <input type="number" id="deliveryRadius" class="form-control" [(ngModel)]="plz" name="deliveryRadius" required />
+      </div>
+      <button type="submit" id="btn-save" class="btn btn-primary mt-4 w-100">Save Changes</button>
+    </form>
+  
+    <!-- Tabelle zur Anzeige der PLZs -->
+     <div > 
+        <table class="table mt-4">
+        <thead>
+          <tr>
+            <th>PLZ</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let plz of deliveryPlzs">
+            <td>{{ plz }}</td>
+            <td>
+              <a class="btn btn-secondary" (click)="removeDeliveryPlz(plz)"><i class="fas fa-trash-alt"></i> </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+   
+  </div>
+  
 </section>
 
 
@@ -389,6 +320,5 @@ Add Item
 
 
 </div>
-
 
 

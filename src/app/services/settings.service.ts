@@ -29,4 +29,7 @@ export class SettingsService {
   getDeliveryPlz(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/plz`);
   }
+  deleteDeliveryPlz(plz: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/plz/delete/${plz}`);
+  }
 }
