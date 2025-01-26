@@ -122,46 +122,97 @@ Add Item
     
  
  <section *ngIf="activeSection === 'activeOrders'"  id="Container" class="p-5">
-
-    
+  <div class="row "  >
   
-<div class="container mt-3" >
-  <h2>Orders</h2>
-  <table class="display" style="width:100%" id="pendingOrdersTable">
-    <thead>
-      <tr>
-        <th scope="col">Order Id</th>
-        <th scope="col">Kundenname</th>
-        <th scope="col">Lieferadresse</th>
-        <th scope="col">Gesamtpreis</th>
-        <th scope="col">Bestellzeitpunkt</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of pendingOrders">
-        <td>{{ order.id }}</td>
-        <td>{{ order.kundeName }}</td>
-        <td>{{ order.lieferAdresse }}</td>
-        <td>{{ order.gesamtpreis }}</td>
-        <td>{{ order.bestellzeitpunkt | date: 'short' }}</td>
-        <td>
-          <div class="row">
-            <div class="col">
-              <button class="btn btn-success btn-sm" (click)="acceptOrder(order)">Accept</button>
-            </div>
-            <div class="col">
-              <button class="btn btn-danger btn-sm" (click)="declineOrder(order)">Decline</button>
+		
+		<div class="col-xl-3 mb-50" style="width: 100%; ">
+      <div class="box-shadow border-radius-10 height-100-p widget-style1" id="gradient-style">
+        <div class="d-flex flex-wrap align-items-center">
+          <div class="circle-icon">
+            <div class="icon border-radius-100 font-24 text-blue">
+              <i class="fa fa-euro-sign" aria-hidden="true"></i>
             </div>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+          <div class="widget-data d-flex align-items-center">
+            <div class="weight-500 me-3">Balance:</div>
+            <div class="weight-800 font-18">{{restaurantBalance}}€</div>
+          </div>
+          <div class="progress-data">
+            <div id="chart4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+	</div>
+
+ <tr></tr>
+  <div >
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" >Active Order</a>
+      </li>
+    </ul>
+    <div *ngIf="pendingOrders.length > 0; else noOrdersTemplate">
+    
+        <div class="container bg-light rounded shadow p-5" id="Container" style="height: auto;">
+          <table class="display" style="width:100%" id="pendingOrdersTable">
+            <thead>
+              <tr>
+                <th scope="col">Order Id</th>
+                <th scope="col">Kundenname</th>
+                <th scope="col">Lieferadresse</th>
+                <th scope="col">Gesamtpreis</th>
+                <th scope="col">Bestellzeitpunkt</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of pendingOrders">
+                <td>{{ order.id }}</td>
+                <td>{{ order.kundeName }}</td>
+                <td>{{ order.lieferAdresse }}</td>
+                <td>{{ order.gesamtpreis }}</td>
+                <td>{{ order.bestellzeitpunkt | date: 'short' }}</td>
+                <td>
+                  <div class="row">
+                    <div class="col">
+                      
+                        <i (click)="acceptOrder(order)" class="fa-solid fa-circle-check fa-lg" style="color: #63E6BE;"></i>
+      
+                      
+                    </div>
+                    <div class="col">
+                    
+                        <i (click)="declineOrder(order)" class="fas fa-times fa-lg" style="color: #e90909;"></i>
+      
+                    
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+
+  </div>
+  
+  
+
 
     
  </section>
+
+ <ng-template #noOrdersTemplate>
+  <div class="no-orders-container" >
+    <div class="no-orders-message">
+      <i class="fas fa-box-open fa-2x"></i> <!-- FontAwesome Icon -->
+      <p>No current orders.</p>
+    </div>
+  </div>
+</ng-template>
   <!-- Button trigger modal -->
 
   
@@ -173,8 +224,13 @@ Add Item
 
     
  
-    <h1>Order History</h1>
-    <div  class="container mt-3">
+   
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" >Order History</a>
+      </li>
+    </ul>
+    <div  class="container bg-light rounded shadow p-4" id="Container" style="height: auto;">
       <table class="display" style="width:100%" id="completedOrdersTable">
       <thead>
         <tr>
@@ -184,6 +240,7 @@ Add Item
           <th scope="col">Gesamtpreis</th>
           <th scope="col">Bestellzeitpunkt</th>
           <th scope="col">Status</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -193,14 +250,39 @@ Add Item
           <td>{{ order.lieferAdresse }}</td>
           <td>{{ order.gesamtpreis }}</td>
           <td>{{ order.bestellzeitpunkt | date: 'short' }}</td>
-          <td>{{ order.status }}</td>
+          <td [ngClass]="getStatusClass(order.status)">{{ order.status }}</td>
+          <td>
+            <button class="btn btn-info" (click)="openDetailsModal(order)">Details</button>
+          </td>
         </tr>
+        
       </tbody>
     </table>
+    
     </div>
   
     
   </section>
+
+  <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <strong>Items:</strong>
+          <ul>
+            <li *ngFor="let item of selectedOrder?.items">{{ item.quantity }}x {{ item.label }} </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
   
   
 
@@ -301,7 +383,7 @@ Add Item
           <tr *ngFor="let plz of deliveryPlzs">
             <td>{{ plz }}</td>
             <td>
-              <a class="btn btn-secondary" (click)="removeDeliveryPlz(plz)"><i class="fas fa-trash-alt"></i> </a>
+              <a (click)="removeDeliveryPlz(plz)"><i class="fas fa-trash-alt"></i> </a>
             </td>
           </tr>
         </tbody>

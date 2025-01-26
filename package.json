@@ -23,6 +23,7 @@
     "@primeng/themes": "^19.0.1",
     "@stomp/stompjs": "^7.0.0",
     "@types/sockjs-client": "^1.5.4",
+    "apexcharts": "^4.4.0",
     "bootstrap": "^5.3.3",
     "datatables.net": "^2.1.8",
     "global": "^4.4.0",

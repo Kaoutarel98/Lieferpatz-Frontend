@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-declare var $: any; 
+declare var $: any;
+import ApexCharts from 'apexcharts';
+import * as bootstrap from 'bootstrap';
 
 import { OrderService } from '../services/order.service';
 import { RestaurantService } from '../services/restaurant.service';
@@ -21,6 +23,8 @@ import { WebSocketService } from '../services/WebSocketService';
 export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
 orders: any;
 deliveryPlzs: string[] = [];
+ 
+selectedOrder: any;
 
 getOrderStatusClass(arg0: any): string|string[]|Set<string>|{ [klass: string]: any; } {
 throw new Error('Method not implemented.');
@@ -65,11 +69,64 @@ weekDays: any;
     'closeTime': ''
   }]
   plz: string = '';
-  completedOrders: any[] = [];
-  pendingOrders: any[] = [];
+  completedOrders: any[] = [
+    {
+      id: 1,
+      kundeName: 'John Doe',
+      lieferAdresse: 'Beispielstraße 1, 10101 Musterstadt',
+      gesamtpreis: 25.99,
+      bestellzeitpunkt: new Date('2025-01-23T18:30:00'),
+      status: 'accepted',
+      items: [
+        { label: "Pizza Margherita", quantity: 2, price: 7.50 },
+        { label: "Cola 0.5L", quantity: 1, price: 2.50 }
+      ]
+    },
+    {
+      id: 2,
+      kundeName: 'Jane Doe',
+      lieferAdresse: 'Musterweg 2, 10202 Beispielstadt',
+      gesamtpreis: 15.99,
+      bestellzeitpunkt: new Date('2025-01-23T19:00:00'),
+      status: 'completed',
+      items: [
+        { label: "Sushi Set", quantity: 1, price: 15.99 }
+      ]
+    }
+  ];
+
+  pendingOrders: any[] = [
+    {
+      id: 3,
+      kundeName: 'Alice Müller',
+      lieferAdresse: 'Waldstraße 12, 10303 Waldstadt',
+      gesamtpreis: 39.90,
+      bestellzeitpunkt: new Date('2025-01-24T14:00:00'),
+      status: 'pending',
+      items: [
+        { label: "Burger Deluxe", quantity: 1, price: 11.90 },
+        { label: "Pommes Frites", quantity: 2, price: 5.00 },
+        { label: "Salat Caesar", quantity: 1, price: 8.00 }
+      ]
+    },
+    {
+      id: 4,
+      kundeName: 'Bob Schmidt',
+      lieferAdresse: 'Hauptstraße 5, 10404 Hauptstadt',
+      gesamtpreis: 18.50,
+      bestellzeitpunkt: new Date('2025-01-24T15:30:00'),
+      status: 'pending',
+      items: [
+        { label: "Pasta Carbonara", quantity: 1, price: 12.50 },
+        { label: "Garlic Bread", quantity: 1, price: 6.00 }
+      ]
+    }
+];
+
+  
   items: any[] = [];
   selectedFile!: File;
-  restaurantBalance: string|number;
+  restaurantBalance: number =1000;
   selectedTab: any;
 
   
@@ -79,18 +136,47 @@ weekDays: any;
     private webSocketService: WebSocketService,
     private restaurantService: RestaurantService
   ) { }
-  
+  targetBalance: number = 1000; // Ziel-Guthaben
+
+  getStatusClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'accepted':
+        return 'status-accepted';
+      case 'completed':
+        return 'status-completed';
+      case 'cancelled':
+        return 'status-cancelled';
+      default:
+        return '';
+    }
+  }
+  openDetailsModal(order: any) {
+    this.selectedOrder = order;
+    // Bootstrap Modal öffnen
+    const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+    modal.show();
+  }
+
+
 
   setActiveSection(section: string): void {
     this.activeSection = section;
     if (section === 'setting') {
       this.selectedTab = 'openingHours'; // Setzt den "Opening Hours" Tab als aktiv
+      
+    }
+    if (section === 'activeOrders' || section === 'ordersHistory') {
+      // Verwenden Sie setTimeout, um sicherzustellen, dass die DOM-Elemente vollständig geladen sind
+      setTimeout(() => {
+        this.initializeDataTables();
+      }, 0);
     }
    
   }
   setActiveTab(tab: string): void {
     console.log("Wechsel zum Tab:", tab);
     this.selectedTab = tab;
+    
   }
 
   onSubmit(formData: any): void {
@@ -163,27 +249,65 @@ weekDays: any;
   
 
   ngOnInit(): void {
-    this.webSocketService.connect((msg: any) => this.pendingOrders.unshift(JSON.parse(msg)));
-    
-    this.loadOrders(); // Bestellungen beim Initialisieren der Komponente laden
-    this.loadItems()
-    this.loadSettings(); // Einstellungen beim Initialisieren der Komponente laden
+    this.webSocketService.connect((msg: any) => {
+      let newOrder = JSON.parse(msg);
+      this.pendingOrders.unshift(newOrder); // Füge die neue Bestellung direkt zu den laufenden hinzu
+    });
+  
+    this.loadOrders(); // Lade alle Bestellungen beim Start
+    this.loadItems();
+    this.loadSettings();
     this.loadPlz();
     
-
-    $(document).ready(function() {
-      $('#pendingOrdersTable').DataTable();
-    });
-    $(document).ready(function() {
-      $('#completedOrdersTable').DataTable();
-    });
+   
+    
+  
+    // $(document).ready(function() {
+    //   $('#pendingOrdersTable').DataTable();
+    //   $('#completedOrdersTable').DataTable({
+    //     "order": [[4, 'asc']], // Bestellzeitpunkt sortieren
+    //     "columnDefs": [{
+    //       "targets": 5,
+    //       "orderData": [5, 4] // Innerhalb des gleichen Status nach Datum/Uhrzeit sortieren
+    //     }]
+    //   });
+    // });
   }
+
+  
 
   ngOnDestroy() {
     this.webSocketService.disconnect();
   }
+  
+
+  
+  initializeDataTables(): void {
+    $(document).ready(() => {
+      if ($.fn.DataTable.isDataTable('#pendingOrdersTable')) {
+        $('#pendingOrdersTable').DataTable().destroy();
+      }
+      if ($.fn.DataTable.isDataTable('#completedOrdersTable')) {
+        $('#completedOrdersTable').DataTable().destroy();
+      }
+
+      $('#pendingOrdersTable').DataTable({
+        order: [[4, 'asc']],
+        columnDefs: [{ targets: 5, orderData: [5, 4] }]
+      });
+
+      $('#completedOrdersTable').DataTable({
+        order: [[4, 'asc']],
+        columnDefs: [{ targets: 5, orderData: [5, 4] }]
+      });
+    });
+  }
 
   ngAfterViewInit(): void {
+    this.initializeDataTables();
+    
+    
+   
     // Initialisierung der DataTable
    
   }
@@ -191,11 +315,19 @@ weekDays: any;
 
   loadOrders(): void {
     this.orderService.getOrders().subscribe((orders) => {
-      this.completedOrders = orders.filter(order => order.status !== 'BEARBEITUNG');
+      orders.forEach(order => {
+        order.bestellzeitpunkt = new Date(order.bestellzeitpunkt);
+        console.log(order.bestellzeitpunkt); 
+      });
+      this.pendingOrders = orders.filter(order => order.status.toLowerCase() === 'pending');
+      this.completedOrders = orders.filter(order => order.status.toLowerCase() !== 'pending')
+                                   .sort((a, b) => new Date(a.bestellzeitpunkt).getTime() - new Date(b.bestellzeitpunkt).getTime());
+      console.log('Pending Orders:', this.pendingOrders);
       console.log('Completed Orders:', this.completedOrders);
-      this.pendingOrders = orders.filter(order => order.status === 'BEARBEITUNG');
     });
+    
   }
+  
 
   loadItems(): void {
     this.orderService.getItems().subscribe((items) => {
@@ -229,29 +361,36 @@ weekDays: any;
  
 
 
-ngAfterViewInit2() {
-  // Initialisiere DataTables nach dem Laden der Ansicht
-  $(document).ready(function() {
-    $('#completedOrdersTable').DataTable();
-  });
-}
+  ngAfterViewInit2(): void {
+    
+    // $(document).ready(function() {
+    //   $('#completedOrdersTable').DataTable({
+    //     "order": [[5, 'asc'], [4, 'asc']], // Sortiert zuerst nach Status, dann nach Bestellzeitpunkt
+    //     "columnDefs": [{
+    //       "targets": 5,
+    //       "orderData": [5, 4] // Innerhalb des gleichen Status nach Datum/Uhrzeit sortieren
+    //     }]
+    //   });
+    // });
+  }
+  
 
 // Beispiel-Funktionen zum Abrufen der Bestellungen (Backend-Integration)
-getCompletedOrders() {
-  // Abrufen der abgeschlossenen Bestellungen von deinem Backend
-  this.completedOrders = [
-    { id: 1, customerName: 'John Doe', totalPrice: 25.99, orderedAt: new Date(), status: 'Completed' },
-    { id: 2, customerName: 'Jane Doe', totalPrice: 15.99, orderedAt: new Date(), status: 'Completed' }
-  ];
-}
+// getCompletedOrders() {
+//   // Abrufen der abgeschlossenen Bestellungen von deinem Backend
+//   this.completedOrders = [
+//     { id: 1, customerName: 'John Doe', totalPrice: 25.99, orderedAt: new Date(), status: 'Completed' },
+//     { id: 2, customerName: 'Jane Doe', totalPrice: 15.99, orderedAt: new Date(), status: 'Completed' }
+//   ];
+// }
 
-getPendingOrders() {
-  // Abrufen der ausstehenden Bestellungen von deinem Backend
-  this.pendingOrders = [
-    { id: 3, customerName: 'Mary Jane', totalPrice: 12.99, orderedAt: new Date(), status: 'Pending' },
-    { id: 4, customerName: 'Peter Parker', totalPrice: 8.99, orderedAt: new Date(), status: 'Pending' }
-  ];
-}
+// getPendingOrders() {
+//   // Abrufen der ausstehenden Bestellungen von deinem Backend
+//   this.pendingOrders = [
+//     { id: 3, customerName: 'Mary Jane', totalPrice: 12.99, orderedAt: new Date(), status: 'Pending' },
+//     { id: 4, customerName: 'Peter Parker', totalPrice: 8.99, orderedAt: new Date(), status: 'Pending' }
+//   ];
+// }
 
 
 // Öffnungszeiten aktualisieren

@@ -21,6 +21,12 @@
     
     
 }
+#Balance{
+  background-image: linear-gradient(122deg, #c1dbe9, #f596b6);
+  border-radius: 0 4px 4px 0;
+
+}
+
 
 #btn-save{
       background-image: linear-gradient(122deg, #c1dbe9, #f596b6);
@@ -128,12 +134,22 @@
     font-weight: bold;
     color: #007bff;
   }
+
+  #completedOrdersTable{
+   margin-top: 20px;
+    
+  }
+  .nav-tabs {
+    padding-bottom: 20px; /* Fügt Platz unter der Tab-Leiste hinzu */
+}
+
   
   .container {
     width: 70%;
     
   }
-  
+
+
   .form-control {
     border: 1px solid #ced4da;
     border-radius: 4px;
@@ -244,11 +260,6 @@
   color: #d42507 !important;
 }
 
-#Balance{
-  background-image: linear-gradient(122deg, #c1dbe9, #f596b6);
-  border-radius: 0 4px 4px 0;
-
-}
 
 .content {
   width: 75%;
@@ -336,3 +347,127 @@
   color: darkgray;
   font-size: 14px;
 }
+
+/* Gewinn */
+
+
+
+
+
+
+/* Common Class */
+
+.mb-50{margin-bottom: 50px;}
+
+
+.font-18{font-size: 18px; line-height: 1.6em;}
+
+
+.weight-500{font-weight: 500;}
+
+
+.text-blue{color: #1b00ff;}
+.text-dark{color: #000000;}
+.text-white{color: #ffffff;}
+.height-100-p{height: 100%;}
+.bg-white{background: #ffffff;}
+.border-radius-10{
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+.border-radius-100{
+	-webkit-border-radius: 100%;
+	-moz-border-radius: 100%;
+	border-radius: 100%;
+}
+.box-shadow{
+	-webkit-box-shadow: 0px 0px 28px rgba(0, 0, 0, .08);
+	-moz-box-shadow: 0px 0px 28px rgba(0, 0, 0, .08);
+	box-shadow: 0px 0px 28px rgba(0, 0, 0, .08);
+}
+
+
+
+/* widget style 1 */
+
+.widget-style1{
+	padding: 20px 10px;
+}
+.widget-style1 .circle-icon{
+	width: 60px;
+}
+.widget-style1 .circle-icon .icon{
+	width: 60px;
+	height: 60px;
+	background: #ecf0f4;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.widget-style1 .widget-data{
+	width: calc(100% - 150px);
+	padding: 0 15px;
+}
+.widget-style1 .progress-data{
+	width: 90px;
+}
+.widget-style1 .progress-data .apexcharts-canvas{
+	margin: 0 auto;
+}
+
+.widget-style2 .widget-data{
+	padding: 20px;
+}
+
+.widget-style3{
+	padding: 30px 20px;
+}
+.widget-style3 .widget-data{
+	width: calc(100% - 60px);
+}
+.widget-style3 .widget-icon{
+	width: 60px;
+	font-size: 45px;
+	line-height: 1;
+}
+
+.apexcharts-legend-marker{
+	margin-right: 6px !important;
+}
+#gradient-style{
+ background-image:  linear-gradient(122deg, #c1dbe9, #f596b6);
+ width: 30%;
+}
+
+.no-orders-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+}
+
+.no-orders-message {
+  text-align: center;
+  color: #6c757d; /* Dunkelgrau für subtilen Text */
+}
+
+.no-orders-message i {
+  color: #007bff; /* Bootstrap Primärfarbe */
+  margin-bottom: 10px;
+}
+
+.no-orders-message p {
+  font-size: 16px;
+  font-weight: 500;
+}
+.status-accepted {
+  color: #ffc107; /* Gelb für laufende Bestellungen */
+}
+.status-completed {
+  color: #28a745; /* Grün für abgeschlossene Bestellungen */
+}
+.status-cancelled {
+  color: #dc3545; /* Rot für stornierte Bestellungen */
+}
+
