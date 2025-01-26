@@ -45,7 +45,7 @@ export class UserRestaurantItemsComponent implements OnInit {
 
   updateBalance(): void {
     this.authService.getAccount().subscribe({
-      next: (data: any) => this.balance = data.body.geldbeutel - data.body.vorgemerkt,
+      next: (data: any) => {this.balance = data.body.geldbeutel - data.body.vorgemerkt; this.updateTotals();},
       error: (error) => console.error('Fehler beim Laden des Guthabens:', error)
     });
   }

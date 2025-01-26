@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-declare var $: any;
-import ApexCharts from 'apexcharts';
 import * as bootstrap from 'bootstrap';
+declare var $: any;
 
 import { OrderService } from '../services/order.service';
 import { RestaurantService } from '../services/restaurant.service';
@@ -182,6 +181,8 @@ weekDays: any;
   onSubmit(formData: any): void {
     const values = formData.value;
     values["imageUrl"] = this.item.imageUrl;
+    values["name"] = this.item.name;
+    values["preis"] = this.item.preis;
     this.restaurantService.addItem(values).subscribe({
       next: () => this.loadItems(),
       error: (error) => console.log('Fehler beim Hinzufügen', error),
@@ -319,8 +320,8 @@ weekDays: any;
         order.bestellzeitpunkt = new Date(order.bestellzeitpunkt);
         console.log(order.bestellzeitpunkt); 
       });
-      this.pendingOrders = orders.filter(order => order.status.toLowerCase() === 'pending');
-      this.completedOrders = orders.filter(order => order.status.toLowerCase() !== 'pending')
+      this.pendingOrders = orders.filter(order => order.status.toLowerCase() === 'bearbeitung');
+      this.completedOrders = orders.filter(order => order.status.toLowerCase() !== 'bearbeitung')
                                    .sort((a, b) => new Date(a.bestellzeitpunkt).getTime() - new Date(b.bestellzeitpunkt).getTime());
       console.log('Pending Orders:', this.pendingOrders);
       console.log('Completed Orders:', this.completedOrders);
@@ -351,6 +352,7 @@ weekDays: any;
       next: (response) =>   {
         // Stelle sicher, dass response.plz ein Array ist
         this.deliveryPlzs = Array.isArray(response.plz) ? response.plz : [response.plz];
+        this.plz = response.plz;
       },
       error: (error) => console.error('Fehler beim Laden der Öffnungszeiten', error)
     });
@@ -406,7 +408,6 @@ updateOpeningHours() {
 }
 updateDeliveryPlz() {
   this.deliveryPlzs.push(this.plz); // Füge die neue PLZ zur Liste hinzu
-  this.plz = ''; 
   this.settingsService.updateDeliveryPlz(this.plz).subscribe({
     next: (response) => {
       console.log('LieferPlz erfolgreich aktualisiert', response);
