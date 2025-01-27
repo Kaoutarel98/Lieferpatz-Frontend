@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 declare var $: any;
@@ -11,6 +11,7 @@ import { OrderService } from '../services/order.service';
 import { RestaurantService } from '../services/restaurant.service';
 import { SettingsService } from '../services/settings.service';
 import { WebSocketService } from '../services/WebSocketService';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-restaurant-profile',
@@ -23,22 +24,23 @@ import { WebSocketService } from '../services/WebSocketService';
 export class RestaurantProfileComponent  implements OnInit, AfterViewInit{
 orders: any;
 deliveryPlzs: string[] = [];
- 
+items: any[] = [];
+selectedFile!: File;
+restaurantBalance: number =1000;
+selectedTab: any;
 selectedOrder: any;
-
-getOrderStatusClass(arg0: any): string|string[]|Set<string>|{ [klass: string]: any; } {
-throw new Error('Method not implemented.');
-}
-
+targetBalance: number = 1000; // Ziel-Guthaben
+selectedItem: any = {};
 weekDays: any;
 
-  item = {name: '', preis: '', imageUrl: '', beschreibung: ''};
+
+item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
+
   activeSection: string = 'activeOrders'; // Die Standardsektion
   openingHours: any[] = [{
     'dayOfWeek': 'Monday',
     'openTime': '',
-    'closeTime': ''
-  },
+    'closeTime': ''},
   {
     'dayOfWeek': 'Tuesday',
     'openTime': '',
@@ -70,73 +72,74 @@ weekDays: any;
   }]
   plz: string = '';
   completedOrders: any[] = [
-    {
-      id: 1,
-      kundeName: 'John Doe',
-      lieferAdresse: 'Beispielstraße 1, 10101 Musterstadt',
-      gesamtpreis: 25.99,
-      bestellzeitpunkt: new Date('2025-01-23T18:30:00'),
-      status: 'accepted',
-      items: [
-        { label: "Pizza Margherita", quantity: 2, price: 7.50 },
-        { label: "Cola 0.5L", quantity: 1, price: 2.50 }
-      ]
-    },
-    {
-      id: 2,
-      kundeName: 'Jane Doe',
-      lieferAdresse: 'Musterweg 2, 10202 Beispielstadt',
-      gesamtpreis: 15.99,
-      bestellzeitpunkt: new Date('2025-01-23T19:00:00'),
-      status: 'completed',
-      items: [
-        { label: "Sushi Set", quantity: 1, price: 15.99 }
-      ]
-    }
+    // {
+    //   id: 1,
+    //   kundeName: 'John Doe',
+    //   lieferAdresse: 'Beispielstraße 1, 10101 Musterstadt',
+    //   gesamtpreis: 25.99,
+    //   bestellzeitpunkt: new Date('2025-01-23T18:30:00'),
+    //   status: 'accepted',
+    //   items: [
+    //     { label: "Pizza Margherita", quantity: 2, price: 7.50 },
+    //     { label: "Cola 0.5L", quantity: 1, price: 2.50 }
+    //   ]
+    // },
+    // {
+    //   id: 2,
+    //   kundeName: 'Jane Doe',
+    //   lieferAdresse: 'Musterweg 2, 10202 Beispielstadt',
+    //   gesamtpreis: 15.99,
+    //   bestellzeitpunkt: new Date('2025-01-23T19:00:00'),
+    //   status: 'completed',
+    //   items: [
+    //     { label: "Sushi Set", quantity: 1, price: 15.99 }
+    //   ]
+    // }
   ];
 
   pendingOrders: any[] = [
-    {
-      id: 3,
-      kundeName: 'Alice Müller',
-      lieferAdresse: 'Waldstraße 12, 10303 Waldstadt',
-      gesamtpreis: 39.90,
-      bestellzeitpunkt: new Date('2025-01-24T14:00:00'),
-      status: 'pending',
-      items: [
-        { label: "Burger Deluxe", quantity: 1, price: 11.90 },
-        { label: "Pommes Frites", quantity: 2, price: 5.00 },
-        { label: "Salat Caesar", quantity: 1, price: 8.00 }
-      ]
-    },
-    {
-      id: 4,
-      kundeName: 'Bob Schmidt',
-      lieferAdresse: 'Hauptstraße 5, 10404 Hauptstadt',
-      gesamtpreis: 18.50,
-      bestellzeitpunkt: new Date('2025-01-24T15:30:00'),
-      status: 'pending',
-      items: [
-        { label: "Pasta Carbonara", quantity: 1, price: 12.50 },
-        { label: "Garlic Bread", quantity: 1, price: 6.00 }
-      ]
-    }
+    // {
+    //   id: 3,
+    //   kundeName: 'Alice Müller',
+    //   lieferAdresse: 'Waldstraße 12, 10303 Waldstadt',
+    //   gesamtpreis: 39.90,
+    //   bestellzeitpunkt: new Date('2025-01-24T14:00:00'),
+    //   status: 'pending',
+    //   items: [
+    //     { label: "Burger Deluxe", quantity: 1, price: 11.90 },
+    //     { label: "Pommes Frites", quantity: 2, price: 5.00 },
+    //     { label: "Salat Caesar", quantity: 1, price: 8.00 }
+    //   ]
+    // },
+    // {
+    //   id: 4,
+    //   kundeName: 'Bob Schmidt',
+    //   lieferAdresse: 'Hauptstraße 5, 10404 Hauptstadt',
+    //   gesamtpreis: 18.50,
+    //   bestellzeitpunkt: new Date('2025-01-24T15:30:00'),
+    //   status: 'pending',
+    //   items: [
+    //     { label: "Pasta Carbonara", quantity: 1, price: 12.50 },
+    //     { label: "Garlic Bread", quantity: 1, price: 6.00 }
+    //   ]
+    // }
 ];
 
   
-  items: any[] = [];
-  selectedFile!: File;
-  restaurantBalance: number =1000;
-  selectedTab: any;
+ 
 
   
   constructor(
+    private cdRef: ChangeDetectorRef,
     private settingsService: SettingsService,
     private orderService: OrderService,
     private webSocketService: WebSocketService,
-    private restaurantService: RestaurantService
+    private restaurantService: RestaurantService,
+    private ngZone: NgZone, 
+    
+
   ) { }
-  targetBalance: number = 1000; // Ziel-Guthaben
+  
 
   getStatusClass(status: string): string {
     switch (status.toLowerCase()) {
@@ -157,7 +160,9 @@ weekDays: any;
     modal.show();
   }
 
-
+  getOrderStatusClass(arg0: any): string|string[]|Set<string>|{ [klass: string]: any; } {
+    throw new Error('Method not implemented.');
+    }
 
   setActiveSection(section: string): void {
     this.activeSection = section;
@@ -180,14 +185,22 @@ weekDays: any;
   }
 
   onSubmit(formData: any): void {
+    console.log('Aktuelles Item:', this.item);
+    if (!this.item) {
+      console.error('Item-Objekt ist nicht definiert.');
+      return;
+    }
+  
     const values = formData.value;
     values["imageUrl"] = this.item.imageUrl;
     this.restaurantService.addItem(values).subscribe({
-      next: () => this.loadItems(),
+      next: () => {
+        this.loadItems();
+        console.log('Item hinzugefügt und Items neu geladen');
+      },
       error: (error) => console.log('Fehler beim Hinzufügen', error),
       complete: () => formData.reset()
     });
-
   
   }
 
@@ -200,18 +213,38 @@ weekDays: any;
       const reader = new FileReader();
       reader.onload = () => {
         this.item.imageUrl = reader.result as string;
+        console.log("Loaded Base64 URL:", this.item.imageUrl);
       };
       reader.readAsDataURL(input.files[0]);
     }
   }
 
+  
+
   editItem(item: any) {
-    // TODO: implement editItem
-    // this.restaurantService.updateItem(item).subscribe({
-    //   next: () => this.loadItems(),
-    //   error: (error) => console.log('Fehler bei der Update', error),
-    // });
+    this.selectedItem = {...item}; // Kopiert das Item, um es im Modal zu bearbeiten
+    const editModal = new bootstrap.Modal(document.getElementById('editItemModal'));
+    editModal.show();
   }
+
+  updateItem() {
+    this.restaurantService.updateItem(this.selectedItem).subscribe({
+      next: (updatedItem) => {
+        const index = this.items.findIndex(item => item.id === this.selectedItem.id);
+        if (index !== -1) {
+          this.ngZone.run(() => { // Dies stellt sicher, dass die View-Aktualisierung in Angulars Zone ausgeführt wird.
+            this.items[index] = updatedItem;
+          });
+        }
+      },
+      error: (error) => console.error('Fehler beim Update des Items', error)
+    });
+  
+    const editModal = bootstrap.Modal.getInstance(document.getElementById('editItemModal'));
+    editModal.hide(); 
+  }
+  
+  
 
   deleteItem(item: any) {
     const confirmed = window.confirm('Are you sure you want to delete the item?');
@@ -259,27 +292,17 @@ weekDays: any;
     this.loadSettings();
     this.loadPlz();
     
-   
     
-  
-    // $(document).ready(function() {
-    //   $('#pendingOrdersTable').DataTable();
-    //   $('#completedOrdersTable').DataTable({
-    //     "order": [[4, 'asc']], // Bestellzeitpunkt sortieren
-    //     "columnDefs": [{
-    //       "targets": 5,
-    //       "orderData": [5, 4] // Innerhalb des gleichen Status nach Datum/Uhrzeit sortieren
-    //     }]
-    //   });
-    // });
   }
-
   
-
   ngOnDestroy() {
+   
     this.webSocketService.disconnect();
   }
+
   
+
+ 
 
   
   initializeDataTables(): void {
@@ -330,8 +353,12 @@ weekDays: any;
   
 
   loadItems(): void {
-    this.orderService.getItems().subscribe((items) => {
-      this.items = items;
+    this.orderService.getItems().subscribe({
+      next: (items) => {
+        console.log('Geladene Items:', items);
+        this.items = items;
+      },
+      error: (error) => console.error('Fehler beim Laden der Items:', error)
     });
   }
 

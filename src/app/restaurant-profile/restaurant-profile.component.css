@@ -4,20 +4,25 @@
   
   .dashboard {
     display: flex;
+    flex-direction: row; 
+    align-items: stretch; 
     /* margin: 90px auto; */
     background-color: #F8F8FD;
     max-width: 1500px;
+   
     -webkit-box-shadow: 0px 0px 40px 1px rgba(0,0,0,0.1); 
     box-shadow: 0px 0px 40px 1px rgba(0,0,0,0.1);
     font-weight: light;
-    overflow-y: auto;
-    min-height: 100vh;
+    /* overflow-y: auto; */
+    /* min-height: 100vh; */
   }
   #Container {
-    height: 70vh;
+    /* height: 70vh; */
     width: 100%;
     flex-direction:inherit;
     margin: 50px;
+    min-height: 100vh;
+    height: auto;
     
     
 }
@@ -39,12 +44,13 @@
     box-sizing: border-box;
     width: 300px;
     background-color: #E9E9EF;
-    min-height: 100vh;
+    flex-direction: column;
     padding: 30px;
     display: flex;
-    flex-direction: column;
+    min-height: 100vh;
+    
+    height: auto;
     vertical-align: top;
-    overflow-y: auto;
     
   }
   
@@ -470,4 +476,59 @@
 .status-cancelled {
   color: #dc3545; /* Rot für stornierte Bestellungen */
 }
+
+.ItemContent {
+  display: flex;        /* Flex-Container aktivieren */
+  justify-content: center; /* Zentriere die Items horizontal */
+  flex-wrap: wrap;      /* Erlaube Zeilenumbrüche */
+  margin-top: 5rem;     /* Abstand nach oben */
+  margin-bottom: 5rem;  /* Abstand nach unten */
+}
+
+.card {
+  margin: 0.5rem;       /* Außenabstand für jede Karte */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-body .btn {
+  margin-top: 10px; /* Optional: Abstand zwischen den Buttons und dem Text oberhalb */
+  
+}
+
+.btn-container {
+  display: flex;
+  width: 100%; /* Stellt sicher, dass der Button-Container die volle Breite einnimmt */
+  justify-content: center; /* Zentriert die Buttons horizontal */
+}
+
+#ItemContent {
+  display: flex;
+  flex-wrap: wrap; /* Erlaubt das Umbrechen auf die nächste Zeile */
+  justify-content: flex-start; /* Startet das Hinzufügen von Elementen von links */
+  align-items: center; /* Zentriert die Karten vertikal, wenn notwendig */
+  gap: 10px; /* Gibt einen kleinen Raum zwischen den Karten */
+  
+}
+.inf{
+  text-align: left; /* Stellt die Ausrichtung des Textes auf links ein */
+  margin-left: 0;
+  padding: 0;
+}
+
+
+
+.card-title, .card-text {
+  text-align: left; /* Stellt die Ausrichtung des Textes auf links ein */
+  margin-left: 0; /* Entfernt jeden zusätzlichen linken Abstand */
+  padding: 0;
+
+}
+
+
+
 

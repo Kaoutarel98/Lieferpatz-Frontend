@@ -7,6 +7,7 @@
 
 
 <div class="dashboard">
+
   <div class="sidebar">
     <a class="navbar-brand" href="#" id="logo">
           <img src="../../assets/Logo.png" alt="Logo" width="45" height="44" class="d-inline-block align-text-top">
@@ -42,8 +43,8 @@
 
               
      </div>
-
-     <button class="btn btn-outline-danger mt-auto" id="Logout-Button">Logout</button>
+     
+     <button routerLink="/partner" routerLinkActive="active" class="btn btn-outline-danger mt-auto" id="Logout-Button">Logout</button>
     
   </div>
 
@@ -64,30 +65,25 @@ Add Item
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <form class="item needs-validation" #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" novalidate>
-              <label for="itemName">Item Name</label>
-              <input type="text" name="itemName" class="form-control" id="itemName" [(ngModel)]="item.name" required />
-              
-              <label for="itemPrice">Item Price</label>
-              <input type="text" name="itemPrice" class="form-control" id="itemPrice" [(ngModel)]="item.preis" required/>
-            
-              <label for="image">Choose an Image</label>
-              <input type="file" name="image" accept="image/*" class="form-control" id="image" [(ngModel)]="item.imageUrl" required/>
-              
-
-            
-
-                <label for="beschreibung">Description</label>
-                <textarea name="beschreibung" class="form-control" id="beschreibung" [(ngModel)]="item.beschreibung"></textarea>
-            
-
-            
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  
-                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
-                </div>
-            </form>
+        <form class="item needs-validation" #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" novalidate>
+          <label for="name">Item Name</label>
+          <input type="text" class="form-control" [(ngModel)]="item.name" name="name" required />
+      
+          <label for="preis">Item Price</label>
+          <input type="number" class="form-control" [(ngModel)]="item.preis" name="preis" required/>
+      
+          <label for="image">Choose an Image</label>
+          <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" required/>
+      
+          <label for="beschreibung">Description</label>
+          <textarea class="form-control" [(ngModel)]="item.beschreibung" name="beschreibung"></textarea>
+      
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+          </div>
+      </form>
+      
       </div>
     
     </div>
@@ -97,23 +93,67 @@ Add Item
 
 
    
- <div class="ItemContent d-flex justify-content-center my-5">
-    <div class="card" style="width: 18rem; margin: 10px;">
-      <div *ngFor="let item of items" class="card" style="width: 18rem; margin: 10px;">
-        <img [src]="item.imageUrl" class="card-img-top" >
-        <div class="card-body">
-        <h5 class="card-title">{{item.name}}</h5>
-        <p class="card-text">{{item.beschreibung}}</p>
-        <p class="card-text">{{item.preis}}</p>
-        <button class="btn btn-primary " (click)="editItem(item)">Edit</button>
-        <button href="#" class="btn btn-danger ms-2" (click)="deleteItem(item)">Delete</button>
+
+  <div class=" d-flex flex-wrap " id="ItemContent">
+    <div *ngFor="let item of items" class="card m-2" style="width: 18rem;">
+      <img [src]="item.imageUrl" class="card-img-top">
+      <div class="card-body">
+      
+         <ul >
+          <h5 class="card-title"><strong class="inf me-3 ms-0">Name:</strong>{{item.name}}</h5>
+          <p class="card-text"><strong  class="inf me-3">Description:</strong>{{item.beschreibung}}</p>
+          <p class="card-text"><strong  class="inf me-3">Price:</strong>{{item.preis}}€</p>
+
+
+         </ul>      
+             
+      
+        
+        <div class="btn-container">
+          <button class="btn btn-primary" (click)="editItem(item)"data-bs-target="#editItemModal">Edit</button>
+          <button class="btn btn-danger ms-2" (click)="deleteItem(item)">Delete</button>
         </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Edit Item Modal -->
+<div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="editItemModalLabel" aria-hidden="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editItemModalLabel">Edit Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="itemName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="itemName" [(ngModel)]="selectedItem.name" name="name">
+          </div>
+          <div class="mb-3">
+            <label for="itemDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="itemDescription" [(ngModel)]="selectedItem.beschreibung" name="description"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="itemPrice" class="form-label">Price</label>
+            <input type="number" class="form-control" id="itemPrice" [(ngModel)]="selectedItem.preis" name="price">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="updateItem()">Save changes</button>
+      </div>
     </div>
+  </div>
+</div>
+
+
 
    
 
-</div>
+
 </section> 
 
     <!-- Button trigger modal -->
