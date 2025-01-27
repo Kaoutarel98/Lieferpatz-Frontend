@@ -65,6 +65,7 @@ Add Item
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+<<<<<<< HEAD
         <form class="item needs-validation" #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" novalidate>
           <label for="name">Item Name</label>
           <input type="text" class="form-control" [(ngModel)]="item.name" name="name" required />
@@ -84,6 +85,32 @@ Add Item
           </div>
       </form>
       
+=======
+          <form class="item needs-validation" #itemForm="ngForm" (ngSubmit)="onSubmit(itemForm)" novalidate>
+              <label for="itemName">Item Name</label>
+              <input type="text" name="itemName" class="form-control" id="itemName" [(ngModel)]="item.name" required />
+              
+              <label for="itemPrice">Item Price</label>
+              <input type="text" name="itemPrice" class="form-control" id="itemPrice" [(ngModel)]="item.preis" required/>
+            
+              <label for="image">Choose an Image</label>
+              <input type="file" name="image" accept="image/*" class="form-control" id="image" [(ngModel)]="item.imageUrl" required (change)="onFileSelected($event)"/>
+              
+
+            
+
+                <label for="beschreibung">Description</label>
+                <textarea name="beschreibung" class="form-control" id="beschreibung" [(ngModel)]="item.beschreibung"></textarea>
+            
+
+            
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  
+                  <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+                </div>
+            </form>
+>>>>>>> 4ccd002678d2188a30382829b79ee8b2b8561a80
       </div>
     
     </div>
@@ -314,7 +341,7 @@ Add Item
         <div class="modal-body">
           <strong>Items:</strong>
           <ul>
-            <li *ngFor="let item of selectedOrder?.items">{{ item.quantity }}x {{ item.label }} </li>
+            <li *ngFor="let item of selectedOrder?.bestellungItems">{{ item.quantity }}x {{ item.itemLabel }} </li>
           </ul>
         </div>
         <div class="modal-footer">
@@ -405,7 +432,7 @@ Add Item
     <form (ngSubmit)="updateDeliveryPlz()">
       <div class="form-group">
         <label for="deliveryRadius" class="form-label fw-bold">Delivery Radius</label>
-        <input type="number" id="deliveryRadius" class="form-control" [(ngModel)]="plz" name="deliveryRadius" required />
+        <input id="deliveryRadius" class="form-control" [(ngModel)]="plz" name="deliveryRadius" required />
       </div>
       <button type="submit" id="btn-save" class="btn btn-primary mt-4 w-100">Save Changes</button>
     </form>
