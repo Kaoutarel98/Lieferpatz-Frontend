@@ -57,7 +57,7 @@ userBalance:number =0;
   
   getAccountBalance(): void {
     this.authservice.getAccount().subscribe({
-      next: (kunde) => this.userBalance = kunde.body.geldbeutel,
+      next: (kunde) => this.userBalance =  kunde.body.geldbeutel - kunde.body.vorgemerkt,
       error: (error) => console.error('Fehler beim Laden des Geldbeutelstands:', error)
     });
   }

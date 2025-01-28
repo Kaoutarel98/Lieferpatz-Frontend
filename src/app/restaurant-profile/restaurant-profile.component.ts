@@ -281,10 +281,7 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
   
 
   ngOnInit(): void {
-    this.authservice.getAccount().subscribe({
-      next: (data) => this.restaurantBalance = data.body.geldbeutel,
-      error: (error) => console.error('Fehler beim Laden des Geldbeutelstands:', error)
-    });
+    this.loadBalance()
     this.webSocketService.connect((msg: any) => {
       let newOrder = JSON.parse(msg);
       this.pendingOrders.unshift(newOrder); // Füge die neue Bestellung direkt zu den laufenden hinzu
@@ -296,6 +293,13 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
     this.loadPlz();
     
     
+  }
+
+  loadBalance() {
+    this.authservice.getAccount().subscribe({
+      next: (data) => this.restaurantBalance = data.body.geldbeutel,
+      error: (error) => console.error('Fehler beim Laden des Geldbeutelstands:', error)
+    });
   }
   
   ngOnDestroy() {
@@ -455,7 +459,7 @@ removeDeliveryPlz(plz: string) {
 
 acceptOrder(order: any) {
   this.orderService.confirmOrder(order.id).subscribe({
-    next: () => this.loadOrders(),
+    next: () => {this.loadOrders(); this.loadBalance()},
     error: (error) => console.error('Fehler beim Bestätigen der Bestellung', error)
   });
 }
