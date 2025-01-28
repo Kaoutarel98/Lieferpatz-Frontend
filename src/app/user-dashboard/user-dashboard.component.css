@@ -15,6 +15,43 @@
     margin-top: 200px;
     
 }
+.widget-style1{
+	padding: 20px 10px;
+}
+.widget-style1 .circle-icon{
+	width: 60px;
+}
+.widget-style1 .circle-icon .icon{
+	width: 60px;
+	height: 60px;
+	background: #ecf0f4;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.widget-style1 .widget-data{
+	width: calc(100% - 150px);
+	padding: 0 15px;
+}
+.widget-style1 .progress-data{
+	width: 90px;
+}
+.widget-style1 .progress-data .apexcharts-canvas{
+	margin: 0 auto;
+}
+
+
+
+
+
+.apexcharts-legend-marker{
+	margin-right: 6px !important;
+}
+#gradient-style{
+ background-image:  linear-gradient(122deg, #c1dbe9, #f596b6);
+ width: 10%;
+}
+
 .restaurant-name {
     font-size: 1.25rem; /* Größer als Beschreibung */
     font-weight: bold;  /* Dickere Schrift */

@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule, Router } from '@angular/router';
 import { CustomerService } from '../services/customer.service';
+import { WebSocketService } from '../services/WebSocketService';
+import { AuthService } from '../services/auth.service';
 
 interface Restaurant {
   id: string;
@@ -23,14 +25,25 @@ interface Restaurant {
 })
 export class UserDashboardComponent {
   restaurants: Restaurant[] = [];
-  router: any;
+userBalance:number =0;
 
-  constructor(private customerService: CustomerService) { }
+ 
+
+  constructor(private customerService: CustomerService, 
+     private webSocketService: WebSocketService, 
+     private router: Router,
+    private authservice: AuthService ) { }
 
   ngOnInit() {
+    this.webSocketService.connect((msg: any) => {
+      let restau = JSON.parse(msg);
+      this.restaurants.unshift(restau); // Füge die neue restaurant direkt zu den laufenden hinzu
+    });
     this.loadRestaurants();
+    this.getAccountBalance();
   }
 
+  
   loadRestaurants() {
     this.customerService.getRestaurants().subscribe({
       next: (data) => {
@@ -47,8 +60,21 @@ export class UserDashboardComponent {
     this.router.navigate(['/restaurant-details', restaurantId]);
   }
   
-
+  ngOnDestroy() {
+    this.webSocketService.disconnect();
+  }
   //
   
+  getAccountBalance(): void {
+    this.authservice.getAccount().subscribe({
+      next: (kunde) => {
+        this.userBalance = kunde.geldbeutel; // Nutze das 'geldbeutel' Feld
+        console.log('Aktueller Geldbeutelstand:', this.userBalance);
+      },
+      error: (error) => {
+        console.error('Fehler beim Laden des Geldbeutelstands:', error);
+      }
+    });
+  }
 
 }

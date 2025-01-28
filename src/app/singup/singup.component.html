@@ -36,13 +36,15 @@
       </div>
       
     </nav>
+
     <div class="d-flex align-items-center py-4 bg-white" id="mainContainer">
     
    <main class="form-signin w-100 m-auto">
+
       <form #signupForm="ngForm" (ngSubmit)="signup(signupForm.value)" class="needs-validation" novalidate>
         
         <h1 class="h3 mb-3 fw-normal">Create a new account</h1>
-    <div class="row my-2">
+        <div class="row my-2">
         <div class="field-wrap col-6">
             <input class="form-control" type="text" id="vorname" name="vorname" placeholder="First Name" [(ngModel)]="kunde.vorname" required #vorname="ngModel">
         </div>

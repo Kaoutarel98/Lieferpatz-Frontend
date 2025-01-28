@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -18,6 +18,12 @@ export class AuthService {
   // private apiUrl= 'Http:localhost:8080/api/v1/restaurant'; // Ändern Sie den Pfad entsprechend Ihrem Backend
 
   constructor(private http: HttpClient) { }
+
+  getaccount():Observable<any>{
+   
+    return this.http.get<void>(`${this.userApiUrl}`, {observe: 'response'});
+
+  }
   
   signup(restaurantData: any): Observable<HttpResponse<void>> {
     

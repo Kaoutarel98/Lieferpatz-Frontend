@@ -19,7 +19,9 @@ export class SingupComponent {
 
   signup(formValue: any) {
     console.log('formValue: ', formValue);
+
     this.authService.signupKunde(formValue).subscribe({
+      
       next: (response) => console.log('Registrierung erfolgreich', response),
       error: (error) => console.log('Fehler bei der Registrierung', error)
     });

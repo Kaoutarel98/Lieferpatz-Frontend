@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import * as bootstrap from 'bootstrap';
 declare var $: any;
-
+import * as bootstrap from 'bootstrap';
 import { OrderService } from '../services/order.service';
 import { RestaurantService } from '../services/restaurant.service';
 import { SettingsService } from '../services/settings.service';
 import { WebSocketService } from '../services/WebSocketService';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-restaurant-profile',
@@ -25,7 +25,7 @@ orders: any;
 deliveryPlzs: string[] = [];
 items: any[] = [];
 selectedFile!: File;
-restaurantBalance: number =1000;
+restaurantBalance: number =0;
 selectedTab: any;
 selectedOrder: any;
 targetBalance: number = 1000; // Ziel-Guthaben
@@ -40,11 +40,12 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
     'dayOfWeek': 'Monday',
     'openTime': '',
     'closeTime': ''},
-  {
+    {
     'dayOfWeek': 'Tuesday',
     'openTime': '',
     'closeTime': ''
   },
+  
   {
     'dayOfWeek': 'Wednesday',
     'openTime': '',
@@ -135,6 +136,7 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
     private webSocketService: WebSocketService,
     private restaurantService: RestaurantService,
     private ngZone: NgZone, 
+    private authservice:AuthService
     
 
   ) { }
@@ -184,6 +186,7 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
   }
 
   onSubmit(formData: any): void {
+    
     console.log('Aktuelles Item:', this.item);
     if (!this.item) {
       console.error('Item-Objekt ist nicht definiert.');
@@ -192,8 +195,6 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
   
     const values = formData.value;
     values["imageUrl"] = this.item.imageUrl;
-    values["name"] = this.item.name;
-    values["preis"] = this.item.preis;
     this.restaurantService.addItem(values).subscribe({
       next: () => {
         this.loadItems();
@@ -220,7 +221,11 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
     }
   }
 
-  
+  getaccount(){
+    this.authservice.getaccount();
+    
+
+  }
 
   editItem(item: any) {
     this.selectedItem = {...item}; // Kopiert das Item, um es im Modal zu bearbeiten
@@ -283,6 +288,15 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
   
 
   ngOnInit(): void {
+    this.authservice.getaccount().subscribe({
+      next: (data) => {
+        this.restaurantBalance = data.balance; // Angenommen, die Antwort enthält ein 'balance' Feld
+        console.log('Aktueller Geldbeutelstand geladen:', this.restaurantBalance);
+      },
+      error: (error) => {
+        console.error('Fehler beim Laden des Geldbeutelstands:', error);
+      }
+    });
     this.webSocketService.connect((msg: any) => {
       let newOrder = JSON.parse(msg);
       this.pendingOrders.unshift(newOrder); // Füge die neue Bestellung direkt zu den laufenden hinzu
@@ -343,8 +357,8 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
         order.bestellzeitpunkt = new Date(order.bestellzeitpunkt);
         console.log(order.bestellzeitpunkt); 
       });
-      this.pendingOrders = orders.filter(order => order.status.toLowerCase() === 'bearbeitung');
-      this.completedOrders = orders.filter(order => order.status.toLowerCase() !== 'bearbeitung')
+      this.pendingOrders = orders.filter(order => order.status.toLowerCase() === 'pending');
+      this.completedOrders = orders.filter(order => order.status.toLowerCase() !== 'pending')
                                    .sort((a, b) => new Date(a.bestellzeitpunkt).getTime() - new Date(b.bestellzeitpunkt).getTime());
       console.log('Pending Orders:', this.pendingOrders);
       console.log('Completed Orders:', this.completedOrders);
@@ -379,7 +393,6 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
       next: (response) =>   {
         // Stelle sicher, dass response.plz ein Array ist
         this.deliveryPlzs = Array.isArray(response.plz) ? response.plz : [response.plz];
-        this.plz = response.plz;
       },
       error: (error) => console.error('Fehler beim Laden der Öffnungszeiten', error)
     });
@@ -435,6 +448,7 @@ updateOpeningHours() {
 }
 updateDeliveryPlz() {
   this.deliveryPlzs.push(this.plz); // Füge die neue PLZ zur Liste hinzu
+  this.plz = ''; 
   this.settingsService.updateDeliveryPlz(this.plz).subscribe({
     next: (response) => {
       console.log('LieferPlz erfolgreich aktualisiert', response);
