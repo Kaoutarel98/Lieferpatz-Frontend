@@ -22,8 +22,8 @@ export class SingupComponent {
 
     this.authService.signupKunde(formValue).subscribe({
       
-      next: (response) => console.log('Registrierung erfolgreich', response),
-      error: (error) => console.log('Fehler bei der Registrierung', error)
+      next: (response) => alert('Registrierung erfolgreich. Bitte loggen Sie sich ein'),
+      error: (error) => alert('Fehler bei der Registrierung' +  JSON.stringify(error))
     });
   }
 }

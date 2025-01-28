@@ -19,12 +19,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  getaccount():Observable<any>{
-   
-    return this.http.get<void>(`${this.userApiUrl}`, {observe: 'response'});
-
-  }
-  
   signup(restaurantData: any): Observable<HttpResponse<void>> {
     
     return this.http.post<void>(`${this.restaurantApiUrl}/erstellen`, restaurantData, {observe: 'response'});

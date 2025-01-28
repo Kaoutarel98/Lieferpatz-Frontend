@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterModule, Router } from '@angular/router';
 import { CustomerService } from '../services/customer.service';
-import { WebSocketService } from '../services/WebSocketService';
 import { AuthService } from '../services/auth.service';
 
 interface Restaurant {
@@ -30,15 +29,10 @@ userBalance:number =0;
  
 
   constructor(private customerService: CustomerService, 
-     private webSocketService: WebSocketService, 
      private router: Router,
     private authservice: AuthService ) { }
 
   ngOnInit() {
-    this.webSocketService.connect((msg: any) => {
-      let restau = JSON.parse(msg);
-      this.restaurants.unshift(restau); // Füge die neue restaurant direkt zu den laufenden hinzu
-    });
     this.loadRestaurants();
     this.getAccountBalance();
   }
@@ -60,20 +54,11 @@ userBalance:number =0;
     this.router.navigate(['/restaurant-details', restaurantId]);
   }
   
-  ngOnDestroy() {
-    this.webSocketService.disconnect();
-  }
-  //
   
   getAccountBalance(): void {
     this.authservice.getAccount().subscribe({
-      next: (kunde) => {
-        this.userBalance = kunde.geldbeutel; // Nutze das 'geldbeutel' Feld
-        console.log('Aktueller Geldbeutelstand:', this.userBalance);
-      },
-      error: (error) => {
-        console.error('Fehler beim Laden des Geldbeutelstands:', error);
-      }
+      next: (kunde) => this.userBalance = kunde.body.geldbeutel,
+      error: (error) => console.error('Fehler beim Laden des Geldbeutelstands:', error)
     });
   }
 

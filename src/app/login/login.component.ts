@@ -36,7 +36,7 @@ export class LoginComponent {
           console.error('Unexpected response structure:', response);
         }
       },
-      error: (error: any) => console.log('Fehler beim Login', error)
+      error: (error: any) => alert('Fehler beim Login. E-Mail oder Passwort sind falsch')
     });
   }
 

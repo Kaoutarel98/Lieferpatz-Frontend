@@ -53,8 +53,8 @@ export class PartnerLoginComponent {
   signup(formValue: any) {
     formValue["image"] = this.user.image;
     this.authService.signup(formValue).subscribe({
-      next: (response) => console.log('Registrierung erfolgreich', response),
-      error: (error) => console.log('Fehler bei der Registrierung', error)
+      next: (response) => alert('Registrierung erfolgreich. Bitte loggen Sie sich ein'),
+      error: (error) => alert('Fehler bei der Registrierung' +  JSON.stringify(error))
     });
   }
 
@@ -90,7 +90,7 @@ export class PartnerLoginComponent {
           console.error('Unexpected response structure:', response);
         }
       },
-      error: (error: any) => console.log('Fehler beim Login', error)
+      error: (error: any) => alert('Fehler beim Login. E-Mail oder Passwort sind falsch')
     });
   }
 }

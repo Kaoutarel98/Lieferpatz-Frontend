@@ -73,7 +73,7 @@ Add Item
               <input type="text" name="itemPrice" class="form-control" id="itemPrice" [(ngModel)]="item.preis" required/>
             
               <label for="image">Choose an Image</label>
-              <input type="file" name="image" accept="image/*" class="form-control" id="image" [(ngModel)]="item.imageUrl" required (change)="onFileSelected($event)"/>
+              <input type="file" name="image" accept="image/*" class="form-control" id="image" [(ngModel)]="itemImage" required (change)="onFileSelected($event)"/>
               
 
             
@@ -180,7 +180,7 @@ Add Item
           </div>
           <div class="widget-data d-flex align-items-center">
             <div class="weight-500 me-3">Balance:</div>
-            <div class="weight-800 font-18">{{restaurantBalance}}€</div>
+            <div class="weight-800 font-18">{{restaurantBalance | currency: 'EUR'}}</div>
           </div>
           <div class="progress-data">
             <div id="chart4"></div>

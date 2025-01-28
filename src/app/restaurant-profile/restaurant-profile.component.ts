@@ -31,6 +31,7 @@ selectedOrder: any;
 targetBalance: number = 1000; // Ziel-Guthaben
 selectedItem: any = {};
 weekDays: any;
+itemImage = '';
 
 
 item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
@@ -194,7 +195,10 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
     }
   
     const values = formData.value;
+    this.itemImage = '';
     values["imageUrl"] = this.item.imageUrl;
+    values["name"] = this.item.name;
+    values["preis"] = this.item.preis;
     this.restaurantService.addItem(values).subscribe({
       next: () => {
         this.loadItems();
@@ -215,16 +219,9 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
       const reader = new FileReader();
       reader.onload = () => {
         this.item.imageUrl = reader.result as string;
-        console.log("Loaded Base64 URL:", this.item.imageUrl);
       };
       reader.readAsDataURL(input.files[0]);
     }
-  }
-
-  getaccount(){
-    this.authservice.getaccount();
-    
-
   }
 
   editItem(item: any) {
@@ -237,11 +234,7 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
     this.restaurantService.updateItem(this.selectedItem).subscribe({
       next: (updatedItem) => {
         const index = this.items.findIndex(item => item.id === this.selectedItem.id);
-        if (index !== -1) {
-          this.ngZone.run(() => { // Dies stellt sicher, dass die View-Aktualisierung in Angulars Zone ausgeführt wird.
-            this.items[index] = updatedItem;
-          });
-        }
+        this.loadItems();
       },
       error: (error) => console.error('Fehler beim Update des Items', error)
     });
@@ -288,14 +281,9 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
   
 
   ngOnInit(): void {
-    this.authservice.getaccount().subscribe({
-      next: (data) => {
-        this.restaurantBalance = data.balance; // Angenommen, die Antwort enthält ein 'balance' Feld
-        console.log('Aktueller Geldbeutelstand geladen:', this.restaurantBalance);
-      },
-      error: (error) => {
-        console.error('Fehler beim Laden des Geldbeutelstands:', error);
-      }
+    this.authservice.getAccount().subscribe({
+      next: (data) => this.restaurantBalance = data.body.geldbeutel,
+      error: (error) => console.error('Fehler beim Laden des Geldbeutelstands:', error)
     });
     this.webSocketService.connect((msg: any) => {
       let newOrder = JSON.parse(msg);
@@ -357,8 +345,8 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
         order.bestellzeitpunkt = new Date(order.bestellzeitpunkt);
         console.log(order.bestellzeitpunkt); 
       });
-      this.pendingOrders = orders.filter(order => order.status.toLowerCase() === 'pending');
-      this.completedOrders = orders.filter(order => order.status.toLowerCase() !== 'pending')
+      this.pendingOrders = orders.filter(order => order.status.toLowerCase() === 'bearbeitung');
+      this.completedOrders = orders.filter(order => order.status.toLowerCase() !== 'bearbeitung')
                                    .sort((a, b) => new Date(a.bestellzeitpunkt).getTime() - new Date(b.bestellzeitpunkt).getTime());
       console.log('Pending Orders:', this.pendingOrders);
       console.log('Completed Orders:', this.completedOrders);
@@ -393,6 +381,7 @@ item = {name: '', preis: 0, imageUrl: '', beschreibung: ''};
       next: (response) =>   {
         // Stelle sicher, dass response.plz ein Array ist
         this.deliveryPlzs = Array.isArray(response.plz) ? response.plz : [response.plz];
+        this.plz = response.plz
       },
       error: (error) => console.error('Fehler beim Laden der Öffnungszeiten', error)
     });
@@ -447,8 +436,7 @@ updateOpeningHours() {
   });
 }
 updateDeliveryPlz() {
-  this.deliveryPlzs.push(this.plz); // Füge die neue PLZ zur Liste hinzu
-  this.plz = ''; 
+  this.deliveryPlzs = [this.plz]; // Füge die neue PLZ zur Liste hinzu
   this.settingsService.updateDeliveryPlz(this.plz).subscribe({
     next: (response) => {
       console.log('LieferPlz erfolgreich aktualisiert', response);
